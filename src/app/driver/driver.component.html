@@ -1,0 +1,341 @@
+
+<div class="main-content" style="padding-top: 10px; padding-bottom: 30px;">
+    <div class="container-fluid">
+      <div class="row">
+        <div class="col"></div>
+        <div class="col"></div>
+        <div class="col"></div>
+        <!-- <div class="col"><button type="button" (click)="open()"  class="btn btn-light"><i class="fa fa-plus-circle"></i>Add Driver</button></div> -->
+    </div>
+        <div  class="card ">
+            <div class="card-header card-header-danger">
+                Driver Details
+            </div>  
+            <div class="card-body"> 
+        <div class="table-responsive">
+    <table id="myTable"  class="table">
+      <thead class="text-primary">
+        <tr>
+            
+            <th >
+                <a>
+                    <!-- <i (click)="open()" class="fa fa-plus-circle"></i> -->
+                </a>Sl.No
+            </th>
+            <th>CustomerName</th>
+            <th >Name</th>
+            <th >License Number</th>
+            <th >License Exp Date</th>
+            <th >Phone No</th>
+            <th >Address</th>
+            <th >DateOfBirth</th>
+            <th >DateOfJoining</th>
+            <th >Emergency Contact</th>
+            <!-- <th >AdharPic</th>
+            <th >PancardPic</th>
+            <th >LicensePic</th> -->
+           
+            <th>Actions</th>
+            <!-- <th>Login</th> -->
+            
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let row of data; let i = index">
+         
+       
+         
+        </tr>
+      </tbody>
+    </table>
+ 
+  </div>   
+  </div>
+</div>   
+
+
+<div class="modal"  id="userModal" >
+  <div class="modal-dialog-lg modal-dialog-scrollable" role="document">
+      <div class="modal-content">
+          <div class="modal-header">
+              <h5 class="modal-title">Create User</h5>
+              <button type="button" class="close" (click)="closeModal('userModal')" aria-label="Close">
+                  <span aria-hidden="true">&times;</span>
+              </button>
+          </div>
+          <div class="modal-body" style="max-height: 1500px; overflow-y: auto;">
+            <div style="padding: 16px; background-color: white;">
+              <h1>Register</h1>
+              <p>Please fill in this form to create an account.</p>
+              <hr style="border: 1px solid #f1f1f1; margin-bottom: 25px;">
+          
+              <label for="email"><b>Email</b></label>
+              <input type="text" [value]="user?.name" placeholder="Enter Email" name="email" id="email" required 
+                     style="width: 100%; padding: 15px; margin: 5px 0 22px 0; display: inline-block; border: none; background: #f1f1f1;">
+                     <div id="emailError" style="color: red;"></div>
+          
+              <label for="psw"><b>Password</b></label>
+              <input type="text" [value]="user?.password" placeholder="Enter Password" name="psw" id="psw" required 
+                     style="width: 100%; padding: 15px; margin: 5px 0 22px 0; display: inline-block; border: none; background: #f1f1f1;">
+          
+              <button (click)="createuser()" type="submit" style="background-color: #04AA6D; color: white; padding: 16px 20px; margin: 8px 0; border: none; cursor: pointer; width: 100%; opacity: 0.9;">Register</button>
+            </div>
+            
+            <div style="background-color: #f1f1f1; text-align: center; padding: 16px;">
+              <p>Already have an account? <a href="#" style="color: dodgerblue;">Sign in</a>.</p>
+            </div>
+          
+          </div>
+      </div>
+  </div>
+</div>
+<div class="modal"  id="addModal" >
+    <div class="modal-dialog-lg modal-dialog-scrollable" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Driver</h5>
+                <button type="button" class="close" (click)="closeModal('addModal')" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body" style="max-height: 1500px; overflow-y: auto;">
+                <form>
+                    <div class="form-row">
+                      <div class="form-group col-md-6">
+                        <label for="inputEmail4">Name</label>
+                        <input type="text" id="Name" class="form-control" >
+                      </div>
+                      <div class="form-group col-md-6">
+                        <label for="inputEmail4">Email</label>
+                        <input type="text" id="email" class="form-control" >
+                      </div>
+                      <div class="form-group col-md-6">
+                        <label for="inputPassword4">License Number</label>
+                        <input type="number" id="LicenseNumber" class="form-control" >
+                      </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group col-md-6">
+                          <label for="inputEmail4">License Exp Date</label>
+                          <input type="date" id="LicenseExpDate" class="form-control"  >
+                        </div>
+                        <div class="form-group col-md-6">
+                          <label for="inputPassword4">Phone NO</label>
+                          <input type="number" id="PhoneNo" class="form-control" >
+                        </div>
+                      </div>
+                      <div class="form-row">
+                        <div class="form-group col-md-6">
+                          <label for="inputEmail4">Address</label>
+                          <input type="text" id="Address" class="form-control"  >
+                        </div>
+                        <div class="form-group col-md-6">
+                          <label for="inputPassword4">DateOfBirth </label>
+                          <input type="date" id="DateOfBirth" class="form-control"  >
+                        </div>
+                      </div>
+                      <div class="form-row">
+                        <div class="form-group col-md-6">
+                          <label for="inputEmail4">DateOfJoining</label>
+                          <input type="date" id="DateOfJoining" class="form-control"  >
+                        </div>
+                        <div class="form-group col-md-6">
+                            <label for="inputEmail4">Emergency Contact</label>
+                            <input type="number" id="EmergencyContact" class="form-control"  >
+                          </div>
+                      </div>
+                     
+                     
+                      <div class="form-row">
+                        <div class="form-group col-md-6">
+                          <label for="uploadPic1">Adhar Pic</label>
+                          <input type="file" id="uploadPic1" (change)="previewFile($event, 'picPreview1','Adhar')" class="form-control" >
+                        </div>
+                        <div class="form-group col-md-6">
+                          <label></label>
+                          <img id="picPreview1" class="img-thumbnail" style="display: none; width: 100px; height: 100px;">
+                        </div>
+                      </div>
+  
+                      <div class="form-row">
+                        <div class="form-group col-md-6">
+                          <label for="uploadPic2">Pancard Pic</label>
+                          <input type="file" id="uploadPic3" (change)="previewFile($event, 'picPreview3','Pancard')" class="form-control" >
+                        </div>
+                       <div class="form-group col-md-6">
+                        <label></label>
+                        <img id="picPreview3" class="img-thumbnail" style="display: none; width: 100px; height: 100px;">
+                      </div>
+                      </div>
+                      <div class="form-row">
+                        <div class="form-group col-md-6">
+                          <label for="uploadPic3">License Pic</label>
+                          <input type="file" id="uploadPic2" (change)="previewFile($event, 'picPreview2','License')" class="form-control" >
+                        </div>
+                       <div class="form-group col-md-6">
+                        <label></label>
+                        <img id="picPreview2" class="img-thumbnail" style="display: none; width: 100px; height: 100px;">
+                      </div>
+                      </div>
+                      
+                    
+                    <button type="submit" (click)="create()" class="btn btn-primary">Create</button>
+                  </form>
+            </div>
+        </div>
+    </div>
+  </div>  
+  <div class="modal" id="viewModal" tabindex="-1" role="dialog">
+    <div class="modal-dialog-lg" role="document">
+        <div class="modal-content">
+          
+          <div class="modal-header">
+              <h3 class="modal-title" >Payment Screen Shot</h3>
+              <button type="button" (click)="closeModal('viewModal')" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+           
+          <div class="modal-body" style="max-height: 400px; overflow-y: auto;">
+              <div class="card">
+                  <div class="card-body">
+                      <div class="row">
+                          <div class="col-md-12">
+              <img id="modalImage" src="" alt="Image">
+              </div>
+              </div>
+              </div>
+              </div>
+            </div>
+  
+            <div class="modal-footer">
+              <button type="button"  (click)="closeModal('viewModal')"class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+              <button type="button" class="btn btn-primary"  (click)="downloadImage(modalImageSrc)">DOWNLOAD</button>
+            </div>
+        </div>
+    </div>
+  </div>
+ <div class="modal"  id="editModal" >
+    <div class="modal-dialog-lg modal-dialog-scrollable" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Driver</h5>
+                <button type="button" class="close" (click)="closeModal('editModal')" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body" style="max-height: 1500px; overflow-y: auto;">
+                <form>
+                    <div class="form-row">
+                      <div class="form-group col-md-6">
+                        <label for="inputEmail4">Name</label>
+                        <input type="text" id="Name1" [value] = "item?.name" class="form-control" >
+                      </div>
+                      <div class="form-group col-md-6">
+                        <label for="inputEmail4">Email</label>
+                        <input type="text" id="email1" [value] = "item?.email" class="form-control" >
+                      </div>
+                      <div class="form-group col-md-6">
+                        <label for="inputPassword4">License Number</label>
+                        <input type="text" id="LicenseNumber1" [value] = "item?.license_number" class="form-control" >
+                      </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group col-md-6">
+                          <label for="inputEmail4">License Exp Date</label>
+                          <input type="text" id="LicenseExpDate1" [value] = "item?.license_expiry_date"  class="form-control"  >
+                        </div>
+                        <div class="form-group col-md-6">
+                          <label for="inputPassword4">Phone NO</label>
+                          <input type="text" id="PhoneNo1"  [value] = "item?.phone_number"  class="form-control" >
+                        </div>
+                      </div>
+                      <div class="form-row">
+                        <div class="form-group col-md-6">
+                          <label for="inputEmail4">Address</label>
+                          <input type="text" id="Address1"  [value] = "item?.address"  class="form-control"  >
+                        </div>
+                        <div class="form-group col-md-6">
+                          <label for="inputPassword4">DateOfBirth </label>
+                          <input type="date" id="DateOfBirth1" [value] = "item?.date_of_birth"  class="form-control"  >
+                        </div>
+                      </div>
+                      <div class="form-row">
+                        <div class="form-group col-md-6">
+                          <label for="inputEmail4">DateOfJoining</label>
+                          <input type="number" id="DateOfJoining1" [value] = "item?.date_of_joining" class="form-control"  >
+                        </div>
+                        <div class="form-group col-md-6">
+                          <label for="inputPassword4">Emergency Contact</label>
+                          <input type="text" id="EmergencyContact1" [value] = "item?.emergency_contact" class="form-control"  >
+                        </div>
+                      </div>
+                     
+                      <div class="form-row">
+                        <div class="form-group col-md-6">
+                          <label for="uploadPic11">Adhar Pic</label>
+                          <input type="file" id="uploadPic11" (change)="previewFile($event, 'picPreview11','Adhar')" class="form-control" >
+                        </div>
+                        <div  #imageContainer1 class="form-group col-md-3">
+                          
+                          
+                          <label>Picture Preview</label>
+                          
+                          <img id="picPr" class="img-thumbnail" style="display: none; width: 100px; height: 100px;">
+                        </div>
+                        <!-- <div class="form-group col-md-3">
+                          <label>Edited Preview</label>
+                          <img id="picPreview11" class="img-thumbnail" style="display: none; width: 100px; height: 100px;">
+                        </div> -->
+                       
+                      </div>
+  
+                      <div class="form-row">
+                        <div class="form-group col-md-6">
+                          <label for="uploadPic21">Pancard Pic</label>
+                          <input type="file" id="uploadPic21" (change)="previewFile($event, 'picPreview33','Pancard')" class="form-control" >
+                        </div>
+                       <div #imageContainer2 class="form-group col-md-3">
+                        <label>Picture Preview</label>
+                        <img id="picPrev" class="img-thumbnail" style="display: none; width: 100px; height: 100px;">
+                      </div>
+                      <!-- <div  class="form-group col-md-3">
+                        <label>Edited Preview</label>
+                        <img id="picPreview33" class="img-thumbnail" style="display: none; width: 100px; height: 100px;">
+                      </div> -->
+                      </div>
+                      <div class="form-row">
+                        <div class="form-group col-md-6">
+                          <label for="uploadPic31">License Pic</label>
+                          <input type="file" id="uploadPic31" (change)="previewFile($event, 'picPreview23','License')" class="form-control" >
+                        </div>
+                       <div  #imageContainer class="form-group col-md-3">
+                        <label>Picture Preview</label>
+                        
+                        <img id="picPre"  class="img-thumbnail" style="display: none; width: 100px; height: 100px;">
+                      </div>
+                      <!-- <div class="form-group col-md-3">
+                        <label>Edited Preview</label>
+                        <img id="picPreview23"  class="img-thumbnail" style="display: none; width: 100px; height: 100px;">
+                      </div> -->
+                      </div>
+                      <div class="form-row">
+                      
+                       
+                      </div>
+                    
+                    <!-- <button (click)="update()" type="submit"class="btn btn-primary">Update</button> -->
+                  </form>
+            </div>
+        </div>
+    </div>
+  </div>  
+     
+
+    
+    
+    
+    </div>
+</div>
+    
+    

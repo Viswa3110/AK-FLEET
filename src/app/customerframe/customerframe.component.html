@@ -1,0 +1,26 @@
+
+
+<div class="main-content">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-md-3">
+                <div>
+                  
+                  
+                    <select class="form-control" (change)="select($event.target.value)" >
+                        <option value="" disabled selected>Select Customer</option>
+                        <option *ngFor="let items of customer" [value]="items.customerid">{{items.name}}</option>
+                    </select>
+                </div>
+                </div>
+                <div class="col-md-3">USERNAME:<input type="text" id="username" [value]="details?.username" readonly></div>
+                <div class="col-md-3"> PASSWORD:<input type="password" id="passwordDisplay" [value]="details?.password_hash" readonly ><i class="fa fa-copy" (click)="copyPassword()"></i></div>
+                </div>
+
+        </div><iframe
+        id="loginIframe"
+        src="https://aktypers-customer-panel.vercel.app/auth/login"
+        style="width: 100%; height: 600px;"
+      ></iframe>
+
+        </div>

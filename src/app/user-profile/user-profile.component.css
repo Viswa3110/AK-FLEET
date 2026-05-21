@@ -1,0 +1,15 @@
+.input-group {
+    display: flex;
+    align-items: center;
+}
+
+.input-group-append button {
+    background: none;
+    border: none;
+    cursor: pointer;
+}
+
+.input-group-append button span {
+    font-size: 8px;
+    color: #007bff;
+}

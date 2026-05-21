@@ -1,0 +1,186 @@
+<div class="main-content" style="padding-top: 10px; padding-bottom: 30px;">
+    <div class="container-fluid">
+
+        <div class="toast-container">
+            <div  style="background-color: lightgreen;"class="toast" role="alert" aria-live="assertive" aria-atomic="true" data-delay="5000">
+              <!-- <div class="toast-header">
+                <strong class="mr-auto">Toast Header</strong>
+                <button type="button" class="ml-2 mb-1 close" data-dismiss="toast" aria-label="Close">
+                  <span aria-hidden="true">&times;</span>
+                </button>
+              </div> -->
+              <div class="toast-body">
+                Successfully <button type="button" class="ml-2 mb-1 close" data-dismiss="toast" aria-label="Close">
+                  <span aria-hidden="true">&times;</span>
+                </button>
+              </div>
+            </div>
+          </div>
+<div class="form-group">
+    <div class="row">
+        <div class="col-3">
+          
+            <span style="font-weight: bold;">Customer</span>
+
+            <select class="form-control" (change)="selectcustomer($event.target.value)"  id="exampleFormControlSelect1">
+                <option value="" disabled selected>Select Customer</option>
+                <option *ngFor="let items of customer" [value]="items.customerid">{{items.name}}</option>
+            </select></div><div class="col-3">
+                <span style="font-weight: bold;">Vehicle</span>
+
+        <select class="form-control" (change)="selectvehicle($event.target.value);filter();" id="exampleFormControlSelect1">
+            <option value="" disabled selected>Select Vehicle</option>
+                <option *ngFor="let items of truck" [value]="items.id">{{items.registration_number}}</option>
+        </select></div><div class="col-3"> 
+        
+            <span style="font-weight: bold;">From</span>
+            <input type="date"  [(ngModel)]="from" 
+             class="form-control" id="exampleFormControlSelect1" ></div>
+            <div class="col-3"> 
+             
+                <span style="font-weight: bold;">To</span>
+                <input type="date" [(ngModel)]="to" (change) = "filter()" class="form-control" id="exampleFormControlSelect1" ></div>
+               
+            </div>
+    
+</div>
+<div class="modal"  id="getModal1" >
+  <div class="modal-dialog-lg modal-dialog-scrollable" role="document">
+      <div class="modal-content">
+          <div class="modal-header">
+              <h5 class="modal-title">Tyre Pressure</h5>
+              <button type="button" class="close" (click)="closeModal('getModal1')" aria-label="Close">
+                  <span aria-hidden="true">&times;</span>
+              </button>
+          </div>
+          <div class="modal-body" style="max-height: 1500px; overflow-y: auto;">
+              <form>
+                  <div class="form-row">
+                    <div class="form-group col-md-6">
+                      <label for="inputEmail4">Tyre Position</label>
+                      <input type="text" [value]="selectedcus?.tyre_position" id="Name1" class="form-control" >
+                    </div>
+                    <div class="form-group col-md-6">
+                      <label for="inputPassword4">Tyre Positon</label>
+                      <input type="text" [value]="selectedcus?.tyre_pressure" id="mobile_number1" class="form-control" >
+                    </div>
+                  </div>
+                  <div class="form-row">
+                      <div class="form-group col-md-6">
+                        <label for="inputEmail4">Recorded At</label>
+                        <input type="date" [value]="selectedcus?.recorded_at" id="companyname1" class="form-control"  >
+                      </div>
+                      <div class="form-group col-md-6">
+                        <label for="inputPassword4">Depth</label>
+                        <input type="text" id="companyAdd1" [value]="selectedcus?.Depth" class="form-control" >
+                      </div>
+                    </div>
+               
+                    <div class="form-row">
+                      <div class="form-group col-md-6">
+                        <label for="inputEmail4">Fixed Depth</label>
+                        <input type="number" [value]="selectedcus?.fixedDep" id="fixedDep" class="form-control"  >
+                      </div>
+                      <div class="form-group col-md-6">
+                        <label for="inputPassword4">Actual Depth</label>
+                        <input type="text" id="ActualDep" [value]="selectedcus?.actualDep" class="form-control" >
+                      </div>
+                    </div>
+                    <div class="form-row">
+                      <div class="form-group col-md-6">
+                        <label for="inputEmail4">Toberun</label>
+                        <input type="text" [value]="selectedcus?.Toberun" id="Toberun" class="form-control"  >
+                      </div>
+                   
+                    </div>
+                  <button type="submit" (click)="saveChanges()" class="btn btn-primary">Update</button>
+                </form>
+          </div>
+      </div>
+  </div> 
+</div>
+<div id="modalcreate" class="modal" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background-color: rgba(0,0,0,0.5);">
+    <div class="modal-content" style="background-color: #fefefe; margin: auto; padding: 20px; border: 1px solid #888; width: 90%; max-width: 1200px; max-height: 90%; overflow-y: auto; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);">
+      <span class="close" style="float: right; font-size: 28px; font-weight: bold; cursor: pointer;" (click)="closeModal('modalcreate')">&times;</span>
+      <div class="formbold-main-wrapper" style="display: flex; flex-direction: column; justify-content: center; align-items: center; height: 100%;">
+        <div class="formbold-form-wrapper" style="width: 100%; display: flex; flex-direction: column; align-items: center;">
+      
+            <form>
+            <table style="width: 100%; border-collapse: collapse; text-align: center;">
+              <tr style="background-color: #f2f2f2;">
+                <th style="padding: 8px; text-align: left; border-bottom: 1px solid #ddd;">TyrePosition</th>
+                <th style="padding: 8px; text-align: left; border-bottom: 1px solid #ddd;">TyrePressure</th>
+                <th style="padding: 8px; text-align: left; border-bottom: 1px solid #ddd;">Fixed Depth</th>
+                <th style="padding: 8px; text-align: left; border-bottom: 1px solid #ddd;">Current Depth</th>
+                <!-- <th style="padding: 8px; text-align: left; border-bottom: 1px solid #ddd;">Depth</th> -->
+                <th style="padding: 8px; text-align: left; border-bottom: 1px solid #ddd;">To Be Run</th>
+                <th style="padding: 8px; text-align: left; border-bottom: 1px solid #ddd;">Date</th>
+              </tr>
+              <tr *ngFor="let item of position">
+                <td style="padding: 8px; border-bottom: 1px solid #ddd;">{{item.tyre_position}}</td>
+                <td style="padding: 8px; border-bottom: 1px solid #ddd;">
+                    <input type="number" [(ngModel)]="item.tyre_pressure" style="width: 100%; border: none; background-color: transparent;" />
+                </td>
+                <td style="padding: 8px; border-bottom: 1px solid #ddd;">
+                  <input type="number" [value]="item.fixedDep" style="width: 100%; border: none; background-color: transparent;" (change)="onfixedDepth($event)" />
+              </td>
+              <td style="padding: 8px; border-bottom: 1px solid #ddd;">
+                <input type="number" [(ngModel)]="item.actualDep" style="width: 100%; border: none; background-color: transparent;" />
+            </td>
+                <!-- <td style="padding: 8px; border-bottom: 1px solid #ddd;">
+                  <input type="number" [(ngModel)]="item.Depth" style="width: 100%; border: none; background-color: transparent;" />
+              </td> -->
+              <td style="padding: 8px; border-bottom: 1px solid #ddd;">
+                <input [(ngModel)]="item.Toberun" style="width: 100%; border: none; background-color: transparent;" />
+            </td>
+                <td style="padding: 8px; border-bottom: 1px solid #ddd;">
+                    <input [value]="item.recorded_at" type="date" style="width: 100%; border: none; background-color: transparent;"  (change)="onDate($event)" />
+                </td>
+              </tr>
+            </table>
+            <button (click)="submit()" class="formbold-btn" style="margin-top: 15px; padding: 10px 20px; font-size: 16px; background-color: #4CAF50; color: white; border: none; cursor: pointer;">Submit</button>
+          </form>
+        </div>
+      </div>
+    </div>
+</div>
+
+
+<button type="button" (click)="getdata()"  class="btn btn-light"><i class="fa fa-plus-circle"></i></button> 
+<div class="row" >
+    <div class="col-md-12">
+        <div class="card">
+            <div class="card-header card-header-danger">
+                <h4 class="card-title">Tyre pressure</h4>
+            </div>
+            <div class="card-body">
+                <div class="table-responsive">
+                    <table id="myTable"  class="table">
+                        <thead class="text-primary">
+                            <!-- <th>Sl.No</th>
+                            <th>Tyre Position</th>
+                            <th>Pressure</th>
+                            <th>Date</th> -->
+                           
+                            
+                            
+                        </thead>
+                        <!-- <tbody>
+                            <tr *ngFor="let row of data; let i = index">
+                                <td>{{ i + 1 }}</td>
+                                <td>{{ row.tyre_position }}</td>
+                                <td>{{ row.tyre_pressure}}</td>
+                             <td>{{row.recorded_at}}</td>
+                               
+                              </tr>
+                        </tbody> -->
+                    </table>
+  
+                 
+                </div>
+            </div>
+        </div>
+    </div>
+  </div>
+</div>
+</div>

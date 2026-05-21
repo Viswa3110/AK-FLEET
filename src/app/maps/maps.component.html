@@ -1,0 +1,1574 @@
+
+<div class="main-content" style="padding-top: 10px; padding-bottom: 30px;">
+    <div class="container-fluid">
+        
+        
+
+       
+
+       
+        <div class="row">
+            <div class="col"></div>
+            <div class="col"></div>
+            <div class="col"></div>
+            <div class="col"><button type="button" (click)="open()"  class="btn btn-light"><i class="fa fa-plus-circle"></i>Add Summary</button></div>
+        </div>
+
+        <div class="modal" id="editModal" tabindex="-1" role="dialog">
+            <div class="modal-dialog-xl" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title">Edit Row</h5>
+                        <button type="button" class="close" (click)="closeModal('editModal')" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body" style="max-height: 800px; overflow-y: auto;">
+                        <!-- Edit form here -->
+                        <section class="content" style="min-height:600px;">
+
+                            <div class="row">
+                                <div class="col">
+                                    <!-- <button (click)="fetchPetrolPrice()">Get Petrol Price</button> -->
+                                    <div id="price-display"></div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <!-- left column -->
+                                <div class="col-md-12">
+                                    <div class="box box-primary">
+                                        
+                                        <form>
+                                            <input type="hidden" name="VehicleId" id="VehicleId">
+                                            <div class="box-body">
+                                                <div class="row" style="padding-left: 15px;padding-right: 15px;">
+                                                    <div class="col-md-12" style="text-align: center;background-color: #6f88ae;color: white;">
+                                                        <h4 style="text-transform:uppercase">Basic Details</h4>
+                                                    </div>
+                                                </div>
+                                                <div style="padding: 10px;background-color: #797c7d29;">
+                                                  
+                                                    
+                              <div class="row">
+                                <div class = "col-4">
+                                    <input type="checkbox"  [checked]="!rows233" id="vehicle1" (change)="selectVehicle($event.target.value, 'vehicle1')" name="vehicle1" value="Single way">
+                              <label for="vehicle1"> Single way</label><br>
+                              <input type="checkbox" [checked]="rows233" (change)="selectVehicle($event.target.value, 'vehicle2')" id="vehicle2" name="vehicle2" value="Double way">
+                              <label for="vehicle2"> Double way</label><br>
+                                </div>
+                                <div class="col-4">
+                                    <div class="row">
+                                        <div class="col-md-2">
+                                            <label class="control-label" style="margin-top:5px;">Current km</label>
+                                        </div>
+                                        <div class="col-md-10">
+                                            <div class="form-group">
+                                                <textarea class="form-control" id="currentkm" name="RetRemarks" cols="3" rows="2"></textarea>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                </div>
+                                <div class="col-4">
+                                    <div class="row">
+                                        <div class="col-md-2">
+                                            <label class="control-label" style="margin-top:5px;">Fuel Level</label>
+                                        </div>
+                                        <div class="col-md-10">
+                                            <div class="form-group">
+                                                <textarea id="fuellevel"  class="form-control"  [value]="item?.fuel_level" name="RetRemarks" cols="3" rows="2"></textarea>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                </div>
+                              </div>
+                              <div class = "row">
+                                <div class="col">
+                                    <div class="row">
+                                        <div class="col-md-2">
+                                            <label class="control-label" style="margin-top:5px;">Complaint</label>
+                                        </div>
+                                        <div class="col-md-10">
+                                            <div class="form-group">
+                                                <textarea id="Editcomplaint" class="form-control" [value]="item?.complaint" name="RetRemarks" cols="3" rows="2"></textarea>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                              </div>
+                                                    <div class="row">
+                                                        <!-- <div class="col-md-2">
+                                                            <label class="control-label" style="margin-top:5px;">S.No.  <sup style="color:red">*</sup></label>
+                                                        </div>
+                                                        <div class="col-md-4">
+                                                            <div class="form-group">
+                                                                <input type="text" name="SNo" class="form-control" readonly=""  style="background-color: #ffa480;">
+                                                            </div>
+                                                        </div> -->
+                                                        <div class="col-md-2">
+                                                            <label class="control-label" style="margin-top:5px;">Date  <sup style="color:red">*</sup></label>
+                                                        </div>
+                                                        <div class="col-md-4">
+                                                            <div class="form-group">
+                                                                <input type="date" id="editdate" [value] = "item?.trip_date" name="ReturnDate" class="form-control datepicker" >
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-md-2">
+                                                            <label class="control-label"  style="margin-top:5px;">Broker Name<sup style="color:red">*</sup></label>
+                                                         </div>
+                                                            <div class="col-md-4">
+                                                                <div class="form-group">
+                                                                    <input type="text" id="brokername" [value] = "item?.broker" class="form-control"> 
+                                                                </div>
+                                                            </div>
+                                                    </div>
+                            
+                                                    <div class="row">
+                                                        <div class="col-md-2">
+                                                            <label class="control-label" style="margin-top:5px;">Truck No. <sup style="color:red">*</sup></label>
+                                                        </div>
+                                                        <div class="col-md-4">
+                                                            <div class="form-group">
+                                                                <select  id="truckno" (change)="Edittruck($event.target.value)" class="form-control " >
+                                                                    <!-- <option>-Select Truck No-</option>
+                                                                        <option value="wd8987j" data-drivername="fendy femaja" data-driverid="17" data-vehicleid="42">wd8987j</option> -->
+                                                                        <option  selected>{{item?.truck_no}}</option>
+                                                                        <option *ngFor="let item of truck" [value]="item.id">{{item.registration_number}}</option>
+                                                               
+                                                                    </select>
+                                                            </div>
+                                                        </div>
+                            
+                                                        <div class="col-md-2">
+                                                            <label class="control-label" style="margin-top:5px;">Driver Name<sup style="color:red">*</sup></label>
+                                                        </div>
+                                                        <div class="col-md-4">
+                                                            <div class="form-group">
+                                                                <select id="editdriver"  (change)="Editdriver1($event.target.value)" class="form-control " >
+                                                                    <!-- <option>-Select Truck No-</option>
+                                                                        <option value="wd8987j" data-drivername="fendy femaja" data-driverid="17" data-vehicleid="42">wd8987j</option> -->
+                                                                        <option  selected> {{item?.driver}}</option>
+                                                                        <option *ngFor="let item of driver" [value]="item.id">{{item.name}}</option>
+                                                               
+                                                                    </select>  </div>
+                                                        </div>
+                            
+                                                    </div>
+                            
+                                                    <div class="row">
+                                                        <div class="col-md-2">
+                                                            <label class="control-label" style="margin-top:5px;">From <sup style="color:red">*</sup></label>
+                                                        </div>
+                                                        <div class="col-md-4">
+                                                            <div class="form-group">
+                                                                <input class="form-control" (input)="Editlocation($event.target.value)" placeholder="Type to search location">
+
+                                                                <select  id="fromedit" class="form-control"  >
+                                                                    <option selected> {{item?.from_location}}</option>
+                                                                        <option *ngFor="let item of lEditlocation" [ngValue]="item">{{item.name}}</option>
+                                                               
+                                                                    </select>
+                                                                    <!-- <ul *ngIf="location?.length > 0" class="dropdown-menu show">
+                                                                        <li *ngFor="let item of location" (click)="getlioc(item)" class="dropdown-item">
+                                                                          {{ item.name }}
+                                                                        </li>
+                                                                      </ul> -->
+                                            
+                                                                     </div>
+                                                        </div>
+                                                        <div class="col-md-2">
+                                                            <label class="control-label" style="margin-top:5px;">To  <sup style="color:red">*</sup></label>
+                                                        </div>
+                                                        <div class="col-md-4">
+                                                            <div class="form-group">
+                                                                <input class="form-control"(input)="Editlocation1($event.target.value)" placeholder="Type to search location">
+
+                                                                <select  id="editto" (change)="Edittolocation($event.target.value)"  class="form-control"  >
+                                                                    <option  selected> {{item?.to_location}}</option>
+                                                                        <option *ngFor="let item of lEditlocation2" [ngValue]="item">{{item.name}}</option>
+                                                               
+                                                                    </select>
+                                                          </div>
+                                                        </div>
+                                                    </div>
+                                                    <!-- <div class="row">
+                                                        <div class="col-md-2">Calculated Distance</div>
+                                                        <div class="col-md-1">
+                                                            {{calculatedDistance}}
+                                                        </div>
+                                                        <div class="col-md-2">Mileage</div>
+                                                        <div class="col-md-1">
+                                                            <input class="form-control"[(ngModel)]="mileage" (input)="mileage1($event.target.value)" placeholder="Enter the mileage">
+                                                   
+                                                        </div>
+                                                        <div class="col-md-2">Today Diesel</div>
+                                                        <div class="col-md-1">
+                                                         {{petrol}}
+                                                        </div>
+                                                        <div class="col-md-2">Expected amount</div>
+                                                        <div class="col-md-1">{{expense }} </div>
+                                                    </div> -->
+                                                    <div class="row">
+                                                        <div class="col-md-2">
+                                                            <label class="control-label" style="margin-top:5px;">Remarks</label>
+                                                        </div>
+                                                        <div class="col-md-10">
+                                                            <div class="form-group">
+                                                                <textarea id="remark" class="form-control" [value] = "item?.remark" name="RetRemarks" cols="3" rows="2"></textarea>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                            
+                                                 <button> <i class="fa fa-plus-circle"(click)="EditaddRow1()">Add Item</i>
+                                                 </button>
+                                                 <button> <i class="fa fa-plus-circle"(click)="EditdeleteRow1()">Delete Item</i>
+                                                 </button>
+                                                                                                       <table class="table table-bordered table-condensed">
+                            
+                                                        <tbody><tr class="row">
+                                                            <th class="col-md-1">
+                                                                S.NO
+                                                            </th>
+                                                            <th class="col-md-2">
+                                                                ITEM
+                                                            </th>
+                                                            <!-- <th class="col-md-2">
+                                                                UNIT
+                                                            </th> -->
+                                                            <th class="col-md-2">
+                                                                WEIGHT <br><small>(in tons)</small>
+                                                            </th>
+                                                             <th class="col-md-1">
+                                                                DRIVER ADVANCE <br><small>(Rs.)</small>
+                                                            </th>
+                                                            <th class="col-md-1">
+                                                                TONAGE RATE <br><small>(Rs.)</small>
+                                                            </th>
+                                                               <th class="col-md-1">
+                                                                TOTAL <br><small>(Rs.)</small>
+                                                            </th>
+                                                            <th class="col-md-2">
+                                                                BALANCE <br><small>(Rs.)</small>
+                                                            </th>
+                                                            
+                                                            <th class="col-md-1">
+                                                                REMARKS
+                                                            </th>
+                                                        </tr>
+                            
+                                                        </tbody><tbody>
+                                                            <tr *ngFor="let row of rows23; let i = index" class="row">
+                                                                <th class="col-md-1" scope="row">{{ i + 1 }}</th>
+                                                                <th class="col-md-2" >
+                                                                    <!-- <select class="form-control select2 select2-hidden-accessible" name="Item" id="baitemsdropdown" tabindex="-1" aria-hidden="true"><option value="ty">ty</option><option value="Item_master_test1">Item_master_test1</option><option value="Test">Test</option><option value="sadf">sadf</option><option value="asdf">asdf</option><option value="jj">jj</option><option value="Bricks">Bricks</option><option value="заявка">заявка</option><option value="соф-плд">соф-плд</option><option value="Test_item_one">Test_item_one</option><option value="ffg">ffg</option><option value="Finişer">Finişer</option><option value="dfda">dfda</option><option value="vivo phones">vivo phones</option></select><span class="select2 select2-container select2-container--default" dir="ltr" style="width: 293.5px;"><span class="selection"><span class="select2-selection select2-selection--single" role="combobox" aria-haspopup="true" aria-expanded="false" tabindex="0" aria-labelledby="select2-baitemsdropdown-container"><span class="select2-selection__rendered" id="select2-baitemsdropdown-container" title="ty">ty</span><span class="select2-selection__arrow" role="presentation"><b role="presentation"></b></span></span></span><span class="dropdown-wrapper" aria-hidden="true"></span></span> -->
+                                                                    <input  class="form-control calc" [value]="row?.item"   (change)="editProduct($event.target.value,i)" type="text">
+                                                                 
+                                                                    <!-- <button id="btnAddItem" type="button" class="btn btn-primary" style="margin-top: 8px;"><i class="fa fa-plus-circle"></i> Add New</button> -->
+                                                                </th>
+                                                              
+                                                                <!-- <th class="col-md-2">
+                                                                    <input  class="form-control calc" type="number">
+                                                                </th> -->
+                                                                <th class="col-md-2">
+                                                                    <input type="number" [value]="row?.weight" (change)="editweight($event.target.value,i)" class="form-control calc" >
+                                                                </th>
+                                                                 <th class="col-md-1">
+                                                                    <input type="number" [value]="row?.driver_advance" (change)="editadvance($event.target.value,i)" class="form-control calc" >
+                                                                </th>
+                                                                <th class="col-md-1">
+                                                                    <input type="number"  [value]="row?.tonnage_rate" (change)="edittonerate($event.target.value,i)" class="form-control calc" value="0" >
+                                                                </th>
+                                                                <th class="col-md-1">
+                                                                    <input type="number"   [value]="row?.total" class="form-control calc">
+                                                                </th>
+                                                                <th class="col-md-2">
+                                                                    <input type="number" [value]="row?.balance" (change)="editBalance($event.target.value,i)" class="form-control calc" >
+                                                                </th>
+                                                                <th class="col-md-1">
+                                                                    <input type="text" [value]="row?.remarks"  (change)="editRemarks($event.target.value,i)" class="form-control calc" >
+                                                                </th>
+                            
+                                                            </tr>
+                                                        </tbody>
+                            
+                                                    </table>
+                                                    <h5>DRIVER EXPENSES</h5>
+                                                    <button> <i class="fa fa-plus-circle"(click)="addexpense1()">Add Item</i>
+                                                    </button>
+                                                    <button> <i class="fa fa-plus-circle"(click)="removeexpense1()">Delete Item</i>
+                                                    </button>
+                                                                                                        <table class="table table-bordered table-condensed">
+                                                                                
+                                                                                                            <tbody><tr class="row">
+                                                                                                                <th class="col-md-1">
+                                                                                                                    S.NO
+                                                                                                                </th>
+                                                                                                                <th class="col-md-3">
+                                                                                                                    ITEM
+                                                                                                                </th>
+                                                                                                                <th class="col-md-1">
+                                                                                                                    AMOUNT
+                                                                                                                </th>
+                                                                                                                <th class="col-md-1">
+                                                                                                                    REMARKS
+                                                                                                                </th>
+                                                                                                            </tr>
+                                                                                
+                                                                                                            </tbody><tbody>
+                                                                                                                <tr *ngFor="let row of expenseedit; let i = index" class="row">
+                                                                                                                    <th class="col-md-1" scope="row">{{ i + 1 }}</th>
+                                                                                                                    <th class="col-md-3" >
+                                                                                                                        <!-- <select class="form-control select2 select2-hidden-accessible" name="Item" id="baitemsdropdown" tabindex="-1" aria-hidden="true"><option value="ty">ty</option><option value="Item_master_test1">Item_master_test1</option><option value="Test">Test</option><option value="sadf">sadf</option><option value="asdf">asdf</option><option value="jj">jj</option><option value="Bricks">Bricks</option><option value="заявка">заявка</option><option value="соф-плд">соф-плд</option><option value="Test_item_one">Test_item_one</option><option value="ffg">ffg</option><option value="Finişer">Finişer</option><option value="dfda">dfda</option><option value="vivo phones">vivo phones</option></select><span class="select2 select2-container select2-container--default" dir="ltr" style="width: 293.5px;"><span class="selection"><span class="select2-selection select2-selection--single" role="combobox" aria-haspopup="true" aria-expanded="false" tabindex="0" aria-labelledby="select2-baitemsdropdown-container"><span class="select2-selection__rendered" id="select2-baitemsdropdown-container" title="ty">ty</span><span class="select2-selection__arrow" role="presentation"><b role="presentation"></b></span></span></span><span class="dropdown-wrapper" aria-hidden="true"></span></span> -->
+                                                                                                                        <input [value]="row?.item"  class="form-control calc" (change)="select12($event.target.value,i)" type="text">
+                                                                                                                     
+                                                                                                                        <!-- <button id="btnAddItem" type="button" class="btn btn-primary" style="margin-top: 8px;"><i class="fa fa-plus-circle"></i> Add New</button> -->
+                                                                                                                    </th>
+                                                                                                                 
+                                                                                                                    <th class="col-md-1">
+                                                                                                                        <input type="number" [value]="row?.amount" (change)="Remamount12($event.target.value,i)" class="form-control calc" >
+                                                                                                                    </th>
+                                                                                                                    <th class="col-md-1">
+                                                                                                                        <input type="text" [value]="row?.remark" (change)="Rem12($event.target.value,i)" class="form-control calc" >
+                                                                                                                    </th>
+                                                                                
+                                                                                                                </tr>
+                                                                                                            </tbody>
+                                                                                
+                                                                                                        </table>
+                                                                                                        <div class="row">
+                                                                                                            <div class="col">
+                                                            
+                                                                                                            <h2>TOTAL</h2> <br> - <h2>{{supertotal1}}</h2>
+                                                                                                            </div>
+                                                                                                           </div>
+                                                </div>
+                                  
+                            
+                                                <div class="row" style="padding-left: 15px;padding-right: 15px;">
+                                                    <div class="col-md-12" style="text-align: center;background-color: #6f88ae;color: white;">
+                                                        <h4 style="text-transform:uppercase">Return Details</h4>
+                                                    </div>
+                                                </div>
+                                                <div style="background-color: #f7f6fa69;padding: 10px;">
+                            
+                            
+                            
+                                                    <div class="row">
+                                                        <div class="col-md-2">
+                                                            <label class="control-label" style="margin-top:5px;">Return Date  <sup style="color:red">*</sup></label>
+                                                        </div>
+                                                        <div class="col-md-4">
+                                                            <div class="form-group">
+                                                                <input type="date" id="editretrundate" [value] = "item?.reverse_date" name="ReturnDate" class="form-control datepicker" >
+                                                            </div>
+                                                        </div>
+                            
+                                                        <!-- <div class="col-md-2">
+                                                            <label class="control-label"  style="margin-top:5px;">Broker Name<sup style="color:red">*</sup></label>
+                                                         </div>
+                                                            <div class="col-md-4">
+                                                                <div class="form-group">
+                                                                    <input type="text" class="form-control"[(ngModel)]="broker1"  > 
+                                                                </div>
+                                                            </div> -->
+                                                    </div>
+                                                    <div class="row">
+                                                        
+                                                        <div class="col-md-2">
+                                                            <label class="control-label"  style="margin-top:5px;">Broker Name<sup style="color:red">*</sup></label>
+                                                         </div>
+                                                            <div class="col-md-4">
+                                                                <div class="form-group">
+                                                                    <input type="text" id = "editreturnbroker"class="form-control" [value] = "item?.broker1" > 
+                                                                </div>
+                                                            </div>
+                                                        <!-- <div class="col-md-2">
+                                                            <label class="control-label" style="margin-top:5px;">Truck No. <sup style="color:red">*</sup></label>
+                                                        </div>
+                                                        <div class="col-md-4">
+                                                            <div class="form-group">
+                                                                <select  (click) = "truckno2($event.target.value)" class="form-control " >
+                         
+                                                                        <option value="" selected>Select Truck No-</option>
+                                                                        <option *ngFor="let item of truck" [value]="item.id">{{item.registration_number}}</option>
+                                                               
+                                                                    </select>
+                                                            </div>
+                                                        </div> -->
+                            
+                                                        <div class="col-md-2">
+                                                            <label class="control-label" style="margin-top:5px;">Driver Name<sup style="color:red">*</sup></label>
+                                                        </div>
+                                                        <div class="col-md-4">
+                                                            <div class="form-group">
+                                                                <select  id="returndriver"  (click) = "Editreturndriver1($event.target.value)" class="form-control " >
+                                                                    <!-- <option>-Select Truck No-</option>
+                                                                        <option value="wd8987j" data-drivername="fendy femaja" data-driverid="17" data-vehicleid="42">wd8987j</option> -->
+                                                                        <option  selected> {{item?.Rdriver}}</option>
+                                                                        <option *ngFor="let item of driver" [value]="item.id">{{item.name}}</option>
+                                                               
+                                                                    </select>  </div>
+                                                        </div>
+                            
+                                                    </div>
+                            
+                                                    <div class="row">
+                                                        <div class="col-md-2">
+                                                            <label class="control-label" style="margin-top:5px;">From <sup style="color:red">*</sup></label>
+                                                        </div>
+                                                        <div class="col-md-4">
+                                                            <div class="form-group">
+                                                                <input class="form-control" (input)="Editreturnlocation2($event.target.value)" placeholder="Type to search location">
+
+                                                                <select id="returnfrom2"  class="form-control"  >
+                                                                    <option  selected>{{item?.Rfrom}}</option>
+                                                                        <option *ngFor="let item of lEditreturnlocation2" [ngValue]="item">{{item.name}}</option>
+                                                               
+                                                                    </select>
+                                                                    <!-- <ul *ngIf="location?.length > 0" class="dropdown-menu show">
+                                                                        <li *ngFor="let item of location" (click)="getlioc(item)" class="dropdown-item">
+                                                                          {{ item.name }}
+                                                                        </li>
+                                                                      </ul> -->
+                                            
+                                                                     </div>
+                                                        </div>
+                                                        <div class="col-md-2">
+                                                            <label class="control-label" style="margin-top:5px;">To  <sup style="color:red">*</sup></label>
+                                                        </div>
+                                                        <div class="col-md-4">
+                                                            <div class="form-group">
+                                                                <input class="form-control" (input)="Editreturnlocation3($event.target.value)" placeholder="Type to search location">
+
+                                                                <select id="returnto2"  (change)="Edittolocation1($event.target.value)"  class="form-control"  >
+                                                                    <option  selected>{{item?.Rto}}</option>
+                                                                        <option *ngFor="let item of lEditreturnlocation3" [ngValue]="item">{{item.name}}</option>
+                                                               
+                                                                    </select>
+                                                          </div>
+                                                        </div>
+                                                    </div>
+                            
+                                                    <!-- <div class="row">
+                                                        <div class="col-md-2">Calculated Distance</div>
+                                                        <div class="col-md-1">
+                                                            {{calculatedDistance1}}
+                                                        </div>
+                                                        <div class="col-md-2">Mileage</div>
+                                                        <div class="col-md-1">
+                                                            <input class="form-control"  (input)="mileage23($event.target.value)" placeholder="Enter the mileage">
+                                                   
+                                                        </div>
+                                                        <div class="col-md-2">Today Diesel</div>
+                                                        <div class="col-md-1">
+                                                         {{petrol}}
+                                                        </div>
+                                                        <div class="col-md-2">Expected amount</div>
+                                                        <div class="col-md-1">{{expense1 }} </div>
+                                                    </div> -->
+                            
+                            
+                                                    <div class="row">
+                                                        <div class="col-md-2">
+                                                            <label class="control-label" style="margin-top:5px;">Remarks</label>
+                                                        </div>
+                                                        <div class="col-md-10">
+                                                            <div class="form-group">
+                                                                <textarea id="retrunremark" class="form-control" [value]="item?.reverse_remark" name="RetRemarks" cols="3" rows="2"></textarea>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div *ngIf = "rows233">
+                                                    <button> <i class="fa fa-plus-circle"(click)="EditaddRow12()">Add Item</i>
+                                                    </button>
+                                                    <button> <i class="fa fa-plus-circle"(click)="EditdeleteRow21()">Delete Item</i>
+                                                    </button>
+                                                                                                          <table class="table table-bordered table-condensed">
+                               
+                                                           <tbody><tr class="row">
+                                                               <th class="col-md-1">
+                                                                   S.NO
+                                                               </th>
+                                                               <th class="col-md-2">
+                                                                   ITEM
+                                                               </th>
+                                                               <!-- <th class="col-md-2">
+                                                                   UNIT
+                                                               </th> -->
+                                                               <th class="col-md-2">
+                                                                   WEIGHT <br><small>(in tons)</small>
+                                                               </th>
+                                                                <th class="col-md-1">
+                                                                   DRIVER ADVANCE <br><small>(Rs.)</small>
+                                                               </th>
+                                                               <th class="col-md-1">
+                                                                   TONAGE RATE <br><small>(Rs.)</small>
+                                                               </th>
+                                                                  <th class="col-md-1">
+                                                                   TOTAL <br><small>(Rs.)</small>
+                                                               </th>
+                                                               <th class="col-md-2">
+                                                                   BALANCE <br><small>(Rs.)</small>
+                                                               </th>
+                                                               
+                                                               <th class="col-md-1">
+                                                                   REMARKS
+                                                               </th>
+                                                           </tr>
+                               
+                                                           </tbody><tbody>
+                                                               <tr *ngFor="let row of rows233; let i = index" class="row">
+                                                                   <th class="col-md-1" scope="row">{{ i + 1 }}</th>
+                                                                   <th class="col-md-2" >
+                                                                       <!-- <select class="form-control select2 select2-hidden-accessible" name="Item" id="baitemsdropdown" tabindex="-1" aria-hidden="true"><option value="ty">ty</option><option value="Item_master_test1">Item_master_test1</option><option value="Test">Test</option><option value="sadf">sadf</option><option value="asdf">asdf</option><option value="jj">jj</option><option value="Bricks">Bricks</option><option value="заявка">заявка</option><option value="соф-плд">соф-плд</option><option value="Test_item_one">Test_item_one</option><option value="ffg">ffg</option><option value="Finişer">Finişer</option><option value="dfda">dfda</option><option value="vivo phones">vivo phones</option></select><span class="select2 select2-container select2-container--default" dir="ltr" style="width: 293.5px;"><span class="selection"><span class="select2-selection select2-selection--single" role="combobox" aria-haspopup="true" aria-expanded="false" tabindex="0" aria-labelledby="select2-baitemsdropdown-container"><span class="select2-selection__rendered" id="select2-baitemsdropdown-container" title="ty">ty</span><span class="select2-selection__arrow" role="presentation"><b role="presentation"></b></span></span></span><span class="dropdown-wrapper" aria-hidden="true"></span></span> -->
+                                                                       <input  class="form-control calc" [value]="row?.item" (change)="editselectProduct1($event.target.value,i)" type="text">
+                                                                    
+                                                                       <!-- <button id="btnAddItem" type="button" class="btn btn-primary" style="margin-top: 8px;"><i class="fa fa-plus-circle"></i> Add New</button> -->
+                                                                   </th>
+                                                                 
+                                                                   <!-- <th class="col-md-2">
+                                                                       <input  class="form-control calc" type="number">
+                                                                   </th> -->
+                                                                   <th class="col-md-2">
+                                                                       <input type="number" [value]="row?.weight"  (change)="editselectweight1($event.target.value,i)" class="form-control calc" >
+                                                                   </th>
+                                                                    <th class="col-md-1">
+                                                                       <input type="number"  [value]="row?.driver_advance"  (change)="editselectadvance1($event.target.value,i)" class="form-control calc" >
+                                                                   </th>
+                                                                   <th class="col-md-1">
+                                                                       <input type="number"   [value]="row?.tonnage_rate" (change)="editselecttonerate1($event.target.value,i)" class="form-control calc" value="0" >
+                                                                   </th>
+                                                                   <th class="col-md-1">
+                                                                       <input type="number" [value]="row?.total" class="form-control calc">
+                                                                   </th>
+                                                                   <th class="col-md-2">
+                                                                       <input type="number" [value]="row?.balance" (change)="editBalance1()" class="form-control calc" >
+                                                                   </th>
+                                                                   <th class="col-md-1">
+                                                                       <input type="text"  [value]="row?.remarks" (change)="editRemarks1($event.target.value,i)" class="form-control calc" >
+                                                                   </th>
+                               
+                                                               </tr>
+                                                               
+                                       
+                                                           </tbody>
+                                                           
+                                                       </table>
+
+                                                       <h5>DRIVER EXPENSES</h5>
+                                                       <button> <i class="fa fa-plus-circle"(click)="addexpense2()">Add Item</i>
+                                                       </button>
+                                                       <button> <i class="fa fa-plus-circle"(click)="removeexpense2()">Delete Item</i>
+                                                       </button>
+                                                                                                           <table class="table table-bordered table-condensed">
+                                                                                   
+                                                                                                               <tbody><tr class="row">
+                                                                                                                   <th class="col-md-1">
+                                                                                                                       S.NO
+                                                                                                                   </th>
+                                                                                                                   <th class="col-md-3">
+                                                                                                                       ITEM
+                                                                                                                   </th>
+                                                                                                                   <th class="col-md-1">
+                                                                                                                       AMOUNT
+                                                                                                                   </th>
+                                                                                                                   <th class="col-md-1">
+                                                                                                                       REMARKS
+                                                                                                                   </th>
+                                                                                                               </tr>
+                                                                                   
+                                                                                                               </tbody><tbody>
+                                                                                                                   <tr *ngFor="let row of expenseedit1; let i = index" class="row">
+                                                                                                                       <th class="col-md-1" scope="row">{{ i + 1 }}</th>
+                                                                                                                       <th class="col-md-3" >
+                                                                                                                           <!-- <select class="form-control select2 select2-hidden-accessible" name="Item" id="baitemsdropdown" tabindex="-1" aria-hidden="true"><option value="ty">ty</option><option value="Item_master_test1">Item_master_test1</option><option value="Test">Test</option><option value="sadf">sadf</option><option value="asdf">asdf</option><option value="jj">jj</option><option value="Bricks">Bricks</option><option value="заявка">заявка</option><option value="соф-плд">соф-плд</option><option value="Test_item_one">Test_item_one</option><option value="ffg">ffg</option><option value="Finişer">Finişer</option><option value="dfda">dfda</option><option value="vivo phones">vivo phones</option></select><span class="select2 select2-container select2-container--default" dir="ltr" style="width: 293.5px;"><span class="selection"><span class="select2-selection select2-selection--single" role="combobox" aria-haspopup="true" aria-expanded="false" tabindex="0" aria-labelledby="select2-baitemsdropdown-container"><span class="select2-selection__rendered" id="select2-baitemsdropdown-container" title="ty">ty</span><span class="select2-selection__arrow" role="presentation"><b role="presentation"></b></span></span></span><span class="dropdown-wrapper" aria-hidden="true"></span></span> -->
+                                                                                                                           <input [value]="row?.item" class="form-control calc" (change)="select2($event.target.value,i)" type="text">
+                                                                                                                        
+                                                                                                                           <!-- <button id="btnAddItem" type="button" class="btn btn-primary" style="margin-top: 8px;"><i class="fa fa-plus-circle"></i> Add New</button> -->
+                                                                                                                       </th>
+                                                                                                                    
+                                                                                                                       <th class="col-md-1">
+                                                                                                                           <input type="number" [value]="row?.amount" (change)="Remamount2($event.target.value,i)" class="form-control calc" >
+                                                                                                                       </th>
+                                                                                                                       <th class="col-md-1">
+                                                                                                                           <input type="text" [value]="row?.remark" (change)="Rem22($event.target.value,i)" class="form-control calc" >
+                                                                                                                       </th>
+                                                                                   
+                                                                                                                   </tr>
+                                                                                                               </tbody>
+                                                                                   
+                                                                                                           </table>
+                                                    </div>
+                                                    <td class="col-md-9">
+                                                        <div class="input-group">
+                                                            <button type="submit" class="btn btn-primary" (click) = "edittrip()" style="width: 100px;"><i class="fa fa-save"> </i> Update</button>
+                                                            <button type="reset" class="btn btn-danger" style="margin-right: 30px; width: 100px;">
+                                                                <i class="fa fa-remove"> </i> Close
+                                                            </button>
+                                                        </div>
+                                                    </td>
+                                                </div>
+                            
+                            
+                            
+                                                <table class="table table-bordered table-condensed">
+                                                    <tbody><tr class="row">
+                                                        <td class="col-md-3">
+                                                            &nbsp;
+                                                        </td>
+                                                        <td class="col-md-9">
+                                                            <div class="input-group">
+                                                                <button type="submit" class="btn btn-primary" style="width: 100px;"><i class="fa fa-save"> </i> Save</button>
+                                                                <button type="reset" class="btn btn-danger" style="margin-right: 30px; width: 100px;">
+                                                                    <i class="fa fa-remove"> </i> Reset
+                                                                </button>
+                                                            </div>
+                                                        </td>
+                                                    </tr>
+                            
+                                                </tbody></table>
+                                            </div>
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            
+                            
+                            
+                            <div class="modal" id="ModelPopupId" tabindex="-1" role="dialog" aria-hidden="true">
+                                <div class="modal-dialog" role="document">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <h5 class="modal-title" id="example-Modal3">Add New Item</h5>
+                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                <span aria-hidden="true">×</span>
+                                            </button>
+                                        </div>
+                                        <div class="modal-body">
+                                            <form action="" method="post" id="frmItem">
+                                                <input type="hidden" name="FrmType" id="FrmType" value="Basic">
+                                                <div class="form-group">
+                                                    <label class="form-control-label">Item Name</label>
+                                                    <input type="text" id="ItemName" name="Name" class="form-control" required="">
+                                                </div>
+                                                <span style="color:green;display:none" id="successtext"></span>
+                                                <span style="color:red;display:none" id="errortext"></span>
+                                                <div class="p-5 border-top" style="text-align: center;">
+                                                    <button type="submit" id="btnAddItem" class="btn btn-primary waves-effect waves-light"><i class="fa fa-save"></i> Save</button>
+                                                </div>
+                                            </form>
+                                        </div>
+                                        <div class="modal-footer">
+                                            <button type="button" class="btn btn-danger" data-dismiss="modal"><i class="fa fa-close"></i> Close</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            
+                            
+                            
+                                        </section>
+                            
+                        <!-- <form (submit)="saveChanges()">
+                            <div class="form-group">
+                                <label for="userProfile">Driver name</label>
+                                <input type="text" class="form-control" id="userProfile" [value]="selectedRow ? selectedRow['User Profile'] : ''">
+                            </div>
+                            <div class="form-group">
+                                <label for="userProfile">Date</label>
+                                <input type="date" class="form-control" id="userProfile" [value]="selectedRow ? selectedRow['User Profile'] : ''">
+                            </div>
+                            <div class="form-group">
+                                <label for="vehicleDetails">Mobile number</label>
+                                <input type="text" class="form-control" id="vehicleDetails" [value]="selectedRow ? selectedRow['Vehicle Details'] : ''">
+                            </div>
+                            <div class="form-group">
+                                <label for="newTyresPurchase">License number</label>
+                                <input type="text" class="form-control" id="newTyresPurchase" [value]="selectedRow ? selectedRow['New Tyres Purchase'] : ''">
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="tyreComplaint">Current KM</label>
+                                <input type="text" class="form-control" id="tyreComplaint" >
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="driverShiftChange">Fuel Level</label>
+                                <input type="text" class="form-control" id="tyreComplaint" >
+                            </div>
+                            <div class="form-group">
+                                <label for="transaction">Complaint</label>
+                                <input type="text" class="form-control" id="tyreComplaint">
+                            </div>
+                           
+                            <div class="form-group">
+                                <label for="tyreFitting">Remark</label>
+                                <input type="text" class="form-control" id="tyreComplaint" >
+                            </div>
+                          
+    
+                            <label for="tyreForChase">Photos</label>                       
+    <form action="/action_page.php">
+        <input type="file" id="myFile" name="filename">
+        <input type="submit">
+      </form>
+                           
+                          
+                            <label for="tyreForChase">Tyre condition</label>                       
+                            
+                                <input type="text" class="form-control" id="tyreComplaint" >
+                        
+                            
+                            <button type="button" class="btn btn-primary" (click)="saveChanges()">Save</button>
+                        </form> -->
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="modal" id="openModal" tabindex="-1" role="dialog">
+            <div class="modal-dialog-xl" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title">Add Row</h5>
+                        <button type="button" class="close" (click)="closeModal('openModal')" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body" style="max-height: 800px; overflow-y: auto;">
+                        <!-- Edit form here -->
+                        <section class="content" style="min-height:600px;">
+
+                            <div class="row">
+                                <div class="col">
+                                    <!-- <button (click)="fetchPetrolPrice()">Get Petrol Price</button> -->
+                                    <div id="price-display1"></div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <!-- left column -->
+                                <div class="col-md-12">
+                                    <div class="box box-primary">
+                                        
+                                        <form>
+                                            <input type="hidden" name="VehicleId" id="VehicleId">
+                                            <div class="box-body">
+                                                <div class="row" style="padding-left: 15px;padding-right: 15px;">
+                                                    <div class="col-md-12" style="text-align: center;background-color: #6f88ae;color: white;">
+                                                        <h4 style="text-transform:uppercase">Basic Details</h4>
+                                                    </div>
+                                                </div>
+                                                <div style="padding: 10px;background-color: #797c7d29;">
+                                                  
+                                                    
+                              <div class="row">
+                                <div class = "col-4">
+                                    <input type="checkbox" id="vehicle11" (change)="selectVehicle1($event.target.value, 'vehicle11')" name="vehicle11" value="Single way">
+                              <label for="vehicle11"> Single way</label><br>
+                              <input type="checkbox" (change)="selectVehicle1($event.target.value, 'vehicle21')" id="vehicle21" name="vehicle21" value="Double way">
+                              <label for="vehicle21"> Double way</label><br>
+                                </div>
+                                <div class="col-4">
+                                    <div class="row">
+                                        <div class="col-md-2">
+                                            <label class="control-label" style="margin-top:5px;">Current Mileage</label>
+                                        </div>
+                                        <div class="col-md-10">
+                                            <div class="form-group">
+                                                <textarea class="form-control" [(ngModel)]="carmileage" name="RetRemarks" cols="3" rows="2"></textarea>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                </div>
+                                <div class="col-4">
+                                    <div class="row">
+                                        <div class="col-md-2">
+                                            <label class="control-label" style="margin-top:5px;">Closing Mileage</label>
+                                        </div>
+                                        <div class="col-md-10">
+                                            <div class="form-group">
+                                                <textarea class="form-control" [(ngModel)]="fuellevel" name="RetRemarks" cols="3" rows="2"></textarea>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                </div>
+                              </div>
+                              <div class = "row">
+                                <div class="col">
+                                    <!-- <div class="row">
+                                        <div class="col-md-2">
+                                            <label class="control-label" style="margin-top:5px;">Complaint</label>
+                                        </div>
+                                        <div class="col-md-10">
+                                            <div class="form-group">
+                                                <textarea class="form-control" [(ngModel)]="complaint" name="RetRemarks" cols="3" rows="2"></textarea>
+                                            </div>
+                                        </div>
+                                    </div> -->
+                                </div>
+                              </div>
+                                                    <div class="row">
+                                                        <!-- <div class="col-md-2">
+                                                            <label class="control-label" style="margin-top:5px;">S.No.  <sup style="color:red">*</sup></label>
+                                                        </div>
+                                                        <div class="col-md-4">
+                                                            <div class="form-group">
+                                                                <input type="text" name="SNo" class="form-control" readonly=""  style="background-color: #ffa480;">
+                                                            </div>
+                                                        </div> -->
+                                                        <div class="col-md-2">
+                                                            <label class="control-label" style="margin-top:5px;">Date  <sup style="color:red">*</sup></label>
+                                                        </div>
+                                                        <div class="col-md-4">
+                                                            <div class="form-group">
+                                                                <input type="date" [(ngModel)]="date1" name="ReturnDate" class="form-control datepicker" >
+                                                            </div>
+                                                        </div>
+                                                        <!-- <div class="col-md-2">
+                                                            <label class="control-label"  style="margin-top:5px;">Broker Name<sup style="color:red">*</sup></label>
+                                                         </div> -->
+                                                            <div class="col-md-4">
+                                                                <div class="form-group">
+                                                                    <input type="text" class="form-control"[(ngModel)]="broker" > 
+                                                                </div>
+                                                            </div>
+                                                    </div>
+                            
+                                                    <div class="row">
+                                                        <div class="col-md-2">
+                                                            <label class="control-label" style="margin-top:5px;">Truck No. <sup style="color:red">*</sup></label>
+                                                        </div>
+                                                        <div class="col-md-4">
+                                                            <div class="form-group">
+                                                                <select (change)="truck1($event.target.value)" class="form-control " >
+                                                                    <!-- <option>-Select Truck No-</option>
+                                                                        <option value="wd8987j" data-drivername="fendy femaja" data-driverid="17" data-vehicleid="42">wd8987j</option> -->
+                                                                        <option value="" selected>Select Truck No-</option>
+                                                                        <option *ngFor="let item of truck" [value]="item.id">{{item.registration_number}}</option>
+                                                               
+                                                                    </select>
+                                                            </div>
+                                                        </div>
+                            
+                                                        <div class="col-md-2">
+                                                            <label class="control-label" style="margin-top:5px;">Driver Name<sup style="color:red">*</sup></label>
+                                                        </div>
+                                                        <div class="col-md-4">
+                                                            <div class="form-group">
+                                                                <select  (change)="driver1($event.target.value)" class="form-control " >
+                                                                    <!-- <option>-Select Truck No-</option>
+                                                                        <option value="wd8987j" data-drivername="fendy femaja" data-driverid="17" data-vehicleid="42">wd8987j</option> -->
+                                                                        <option value="" selected> Select Driver Name</option>
+                                                                        <option *ngFor="let item of driver" [value]="item.id">{{item.name}}</option>
+                                                               
+                                                                    </select>  </div>
+                                                        </div>
+                            
+                                                    </div>
+                            
+                                                    <div class="row">
+                                                        <div class="col-md-2">
+                                                            <label class="control-label" style="margin-top:5px;">From <sup style="color:red">*</sup></label>
+                                                        </div>
+                                                        <div class="col-md-4">
+                                                            <div class="form-group">
+                                                                <input class="form-control"[(ngModel)]="loc" (input)="selectlocation($event.target.value)" placeholder="Type to search location">
+
+                                                                <select [(ngModel)]="selectedfrom"   class="form-control"  >
+                                                                    <option value="" selected> Select Location</option>
+                                                                        <option *ngFor="let item of location" [ngValue]="item">{{item.name}}</option>
+                                                               
+                                                                    </select>
+                                                                    <!-- <ul *ngIf="location?.length > 0" class="dropdown-menu show">
+                                                                        <li *ngFor="let item of location" (click)="getlioc(item)" class="dropdown-item">
+                                                                          {{ item.name }}
+                                                                        </li>
+                                                                      </ul> -->
+                                            
+                                                                     </div>
+                                                        </div>
+                                                        <div class="col-md-2">
+                                                            <label class="control-label" style="margin-top:5px;">To  <sup style="color:red">*</sup></label>
+                                                        </div>
+                                                        <div class="col-md-4">
+                                                            <div class="form-group">
+                                                                <input class="form-control"[(ngModel)]="loc1" (input)="selectlocation1($event.target.value)" placeholder="Type to search location">
+
+                                                                <select  [(ngModel)]="selectedto"   (change)="tolocation($event.target.value)"  class="form-control"  >
+                                                                    <option value="" selected> Select Location</option>
+                                                                        <option *ngFor="let item of location1" [ngValue]="item">{{item.name}}</option>
+                                                               
+                                                                    </select>
+                                                          </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="row">
+                                                        <div class="col-md-2">Calculated Distance</div>
+                                                        <div class="col-md-1">
+                                                            {{calculatedDistance}}
+                                                        </div>
+                                                        <div class="col-md-2">Mileage</div>
+                                                        <div class="col-md-1">
+                                                            <input class="form-control"[(ngModel)]="mileage" (input)="mileage1($event.target.value)" placeholder="Enter the mileage">
+                                                   
+                                                        </div>
+                                                        <div class="col-md-2">Today Diesel</div>
+                                                        <div class="col-md-1">
+                                                         {{petrol}}
+                                                        </div>
+                                                        <div class="col-md-2">Expected amount</div>
+                                                        <div class="col-md-1">{{expense }} </div>
+                                                    </div>
+                                                    <!-- <div class="row">
+                                                        <div class="col-md-2">
+                                                            <label class="control-label" style="margin-top:5px;">Remarks</label>
+                                                        </div>
+                                                        <div class="col-md-10">
+                                                            <div class="form-group">
+                                                                <textarea class="form-control" [(ngModel)]="remark" name="RetRemarks" cols="3" rows="2"></textarea>
+                                                            </div>
+                                                        </div>
+                                                    </div> -->
+                            
+                                                 <button> <i class="fa fa-plus-circle"(click)="addRow()">Add Item</i>
+                                                 </button>
+                                                 <button> <i class="fa fa-plus-circle"(click)="removeRow()">Delete Item</i>
+                                                 </button>
+                                                                                                       <table class="table table-bordered table-condensed">
+                            
+                                                        <tbody><tr class="row">
+                                                            <th class="col-md-1">
+                                                                S.NO
+                                                            </th>
+                                                            <th class="col-md-2">
+                                                                ITEM
+                                                            </th>
+                                                            <!-- <th class="col-md-2">
+                                                                UNIT
+                                                            </th> -->
+                                                            <th class="col-md-2">
+                                                                WEIGHT <br><small>(in tons)</small>
+                                                            </th>
+                                                             <!-- <th class="col-md-1">
+                                                                DRIVER ADVANCE <br><small>(Rs.)</small>
+                                                            </th> -->
+                                                            <th class="col-md-1">
+                                                                TONAGE RATE <br><small>(Rs.)</small>
+                                                            </th>
+                                                               <th class="col-md-1">
+                                                                TOTAL <br><small>(Rs.)</small>
+                                                            </th>
+                                                            <th class="col-md-2">
+                                                                BALANCE <br><small>(Rs.)</small>
+                                                            </th>
+                                                            
+                                                            <th class="col-md-1">
+                                                                REMARKS
+                                                            </th>
+                                                        </tr>
+                            
+                                                        </tbody><tbody>
+                                                            <tr *ngFor="let row of rows; let i = index" class="row">
+                                                                <th class="col-md-1" scope="row">{{ i + 1 }}</th>
+                                                                <th class="col-md-2" >
+                                                                    <!-- <select class="form-control select2 select2-hidden-accessible" name="Item" id="baitemsdropdown" tabindex="-1" aria-hidden="true"><option value="ty">ty</option><option value="Item_master_test1">Item_master_test1</option><option value="Test">Test</option><option value="sadf">sadf</option><option value="asdf">asdf</option><option value="jj">jj</option><option value="Bricks">Bricks</option><option value="заявка">заявка</option><option value="соф-плд">соф-плд</option><option value="Test_item_one">Test_item_one</option><option value="ffg">ffg</option><option value="Finişer">Finişer</option><option value="dfda">dfda</option><option value="vivo phones">vivo phones</option></select><span class="select2 select2-container select2-container--default" dir="ltr" style="width: 293.5px;"><span class="selection"><span class="select2-selection select2-selection--single" role="combobox" aria-haspopup="true" aria-expanded="false" tabindex="0" aria-labelledby="select2-baitemsdropdown-container"><span class="select2-selection__rendered" id="select2-baitemsdropdown-container" title="ty">ty</span><span class="select2-selection__arrow" role="presentation"><b role="presentation"></b></span></span></span><span class="dropdown-wrapper" aria-hidden="true"></span></span> -->
+                                                                    <input  class="form-control calc" (change)="selectProduct($event.target.value,i)" type="text">
+                                                                 
+                                                                    <!-- <button id="btnAddItem" type="button" class="btn btn-primary" style="margin-top: 8px;"><i class="fa fa-plus-circle"></i> Add New</button> -->
+                                                                </th>
+                                                              
+                                                                <!-- <th class="col-md-2">
+                                                                    <input  class="form-control calc" type="number">
+                                                                </th> -->
+                                                                <th class="col-md-2">
+                                                                    <input type="number"  (change)="selectweight($event.target.value,i)" class="form-control calc" >
+                                                                </th>
+                                                                 <!-- <th class="col-md-1">
+                                                                    <input type="number" (change)="selectadvance($event.target.value,i)" class="form-control calc" >
+                                                                </th> -->
+                                                                <th class="col-md-1">
+                                                                    <input type="number"  (change)="selecttonerate($event.target.value,i)" class="form-control calc" value="0" >
+                                                                </th>
+                                                                <th class="col-md-1">
+                                                                    <input type="number"  [value]="row.total" class="form-control calc">
+                                                                </th>
+                                                                <th class="col-md-2">
+                                                                    <input type="number" (change)="Balance($event.target.value,i)" class="form-control calc" >
+                                                                </th>
+                                                                <th class="col-md-1">
+                                                                    <input type="text" (change)="Remarks($event.target.value,i)" class="form-control calc" >
+                                                                </th>
+                            
+                                                            </tr>
+                                                        </tbody>
+                            
+                                                    </table>
+
+<h5>EXPENSES</h5>
+<button> <i class="fa fa-plus-circle"(click)="addexpense()">Add Item</i>
+</button>
+<button> <i class="fa fa-plus-circle"(click)="removeexpense()">Delete Item</i>
+</button>
+                                                    <table class="table table-bordered table-condensed">
+                            
+                                                        <tbody><tr class="row">
+                                                            <th class="col-md-1">
+                                                                S.NO
+                                                            </th>
+                                                            <th class="col-md-3">
+                                                                ITEM
+                                                            </th>
+                                                            <th class="col-md-1">
+                                                                AMOUNT
+                                                            </th>
+                                                            <th class="col-md-1">
+                                                                REMARKS
+                                                            </th>
+                                                        </tr>
+                            
+                                                        </tbody><tbody>
+                                                            <tr *ngFor="let row of expenseamount; let i = index" class="row">
+                                                                <th class="col-md-1" scope="row">{{ i + 1 }}</th>
+                                                                <th class="col-md-3" >
+                                                                    <!-- <select class="form-control select2 select2-hidden-accessible" name="Item" id="baitemsdropdown" tabindex="-1" aria-hidden="true"><option value="ty">ty</option><option value="Item_master_test1">Item_master_test1</option><option value="Test">Test</option><option value="sadf">sadf</option><option value="asdf">asdf</option><option value="jj">jj</option><option value="Bricks">Bricks</option><option value="заявка">заявка</option><option value="соф-плд">соф-плд</option><option value="Test_item_one">Test_item_one</option><option value="ffg">ffg</option><option value="Finişer">Finişer</option><option value="dfda">dfda</option><option value="vivo phones">vivo phones</option></select><span class="select2 select2-container select2-container--default" dir="ltr" style="width: 293.5px;"><span class="selection"><span class="select2-selection select2-selection--single" role="combobox" aria-haspopup="true" aria-expanded="false" tabindex="0" aria-labelledby="select2-baitemsdropdown-container"><span class="select2-selection__rendered" id="select2-baitemsdropdown-container" title="ty">ty</span><span class="select2-selection__arrow" role="presentation"><b role="presentation"></b></span></span></span><span class="dropdown-wrapper" aria-hidden="true"></span></span> -->
+                                                                    <input  class="form-control calc" (change)="select($event.target.value,i)" type="text">
+                                                                 
+                                                                    <!-- <button id="btnAddItem" type="button" class="btn btn-primary" style="margin-top: 8px;"><i class="fa fa-plus-circle"></i> Add New</button> -->
+                                                                </th>
+                                                             
+                                                                <th class="col-md-1">
+                                                                    <input type="number" (change)="Remamount($event.target.value,i)" class="form-control calc" >
+                                                                </th>
+                                                                <th class="col-md-1">
+                                                                    <input type="text" (change)="Rem($event.target.value,i)" class="form-control calc" >
+                                                                </th>
+                            
+                                                            </tr>
+                                                        </tbody>
+                            
+                                                    </table>
+                                               <div class="row">
+                                                <div class="col">
+
+                                                <h2>TOTAL</h2> <br> - <h2>{{supertotal}}</h2>
+                                                </div>
+                                               </div>
+                                               
+                                                </div>
+                                  
+                            
+                                                <div class="row" style="padding-left: 15px;padding-right: 15px;">
+                                                    <div class="col-md-12" style="text-align: center;background-color: #6f88ae;color: white;">
+                                                        <h4 style="text-transform:uppercase">Return Details</h4>
+                                                    </div>
+                                                </div>
+                                                <div style="background-color: #f7f6fa69;padding: 10px;">
+                            
+                            
+                            
+                                                    <div class="row">
+                                                        <div class="col-md-2">
+                                                            <label class="control-label" style="margin-top:5px;">Return Date  <sup style="color:red">*</sup></label>
+                                                        </div>
+                                                        <div class="col-md-4">
+                                                            <div class="form-group">
+                                                                <input type="date" [(ngModel)]="date2" name="ReturnDate" class="form-control datepicker" >
+                                                            </div>
+                                                        </div>
+                            
+                                                        <!-- <div class="col-md-2">
+                                                            <label class="control-label"  style="margin-top:5px;">Broker Name<sup style="color:red">*</sup></label>
+                                                         </div>
+                                                            <div class="col-md-4">
+                                                                <div class="form-group">
+                                                                    <input type="text" class="form-control"[(ngModel)]="broker1"  > 
+                                                                </div>
+                                                            </div> -->
+                                                    </div>
+                                                    <div class="row">
+                                                        
+                                                        <!-- <div class="col-md-2">
+                                                            <label class="control-label"  style="margin-top:5px;">Broker Name<sup style="color:red">*</sup></label>
+                                                         </div>
+                                                            <div class="col-md-4">
+                                                                <div class="form-group">
+                                                                    <input type="text" class="form-control"[(ngModel)]="broker1"  > 
+                                                                </div>
+                                                            </div> -->
+                                                      
+                            
+                                                        <div class="col-md-2">
+                                                            <label class="control-label" style="margin-top:5px;">Driver Name<sup style="color:red">*</sup></label>
+                                                        </div>
+                                                        <div class="col-md-4">
+                                                            <div class="form-group">
+                                                                <select    (click) = "driverno2($event.target.value)" class="form-control " >
+                                                                    <!-- <option>-Select Truck No-</option>
+                                                                        <option value="wd8987j" data-drivername="fendy femaja" data-driverid="17" data-vehicleid="42">wd8987j</option> -->
+                                                                        <option value="" selected> Select Driver Name</option>
+                                                                        <option *ngFor="let item of driver" [value]="item.id">{{item.name}}</option>
+                                                               
+                                                                    </select>  </div>
+                                                        </div>
+                            
+                                                    </div>
+                            
+                                                    <div class="row">
+                                                        <div class="col-md-2">
+                                                            <label class="control-label" style="margin-top:5px;">From <sup style="color:red">*</sup></label>
+                                                        </div>
+                                                        <div class="col-md-4">
+                                                            <div class="form-group">
+                                                                <input class="form-control" (input)="selectlocation2($event.target.value)" placeholder="Type to search location">
+
+                                                                <select [(ngModel)]="selectedfrom1"   class="form-control"  >
+                                                                    <option value="" selected> Select Location</option>
+                                                                        <option *ngFor="let item of location2" [ngValue]="item">{{item.name}}</option>
+                                                               
+                                                                    </select>
+                                                                    <!-- <ul *ngIf="location?.length > 0" class="dropdown-menu show">
+                                                                        <li *ngFor="let item of location" (click)="getlioc(item)" class="dropdown-item">
+                                                                          {{ item.name }}
+                                                                        </li>
+                                                                      </ul> -->
+                                            
+                                                                     </div>
+                                                        </div>
+                                                        <div class="col-md-2">
+                                                            <label class="control-label" style="margin-top:5px;">To  <sup style="color:red">*</sup></label>
+                                                        </div>
+                                                        <div class="col-md-4">
+                                                            <div class="form-group">
+                                                                <input class="form-control" (input)="selectlocation3($event.target.value)" placeholder="Type to search location">
+
+                                                                <select  [(ngModel)]="selectedto1"   (change)="tolocation1($event.target.value)"  class="form-control"  >
+                                                                    <option value="" selected> Select Location</option>
+                                                                        <option *ngFor="let item of location3" [ngValue]="item">{{item.name}}</option>
+                                                               
+                                                                    </select>
+                                                          </div>
+                                                        </div>
+                                                    </div>
+                            
+                                                    <div class="row">
+                                                        <div class="col-md-2">Calculated Distance</div>
+                                                        <div class="col-md-1">
+                                                            {{calculatedDistance1}}
+                                                        </div>
+                                                        <div class="col-md-2">Mileage</div>
+                                                        <div class="col-md-1">
+                                                            <input class="form-control"  (input)="mileage23($event.target.value)" placeholder="Enter the mileage">
+                                                   
+                                                        </div>
+                                                        <div class="col-md-2">Today Diesel</div>
+                                                        <div class="col-md-1">
+                                                         {{petrol}}
+                                                        </div>
+                                                        <div class="col-md-2">Expected amount</div>
+                                                        <div class="col-md-1">{{expense1 }} </div>
+                                                    </div>
+                            
+<!--                             
+                                                    <div class="row">
+                                                        <div class="col-md-2">
+                                                            <label class="control-label" style="margin-top:5px;">Remarks</label>
+                                                        </div>
+                                                        <div class="col-md-10">
+                                                            <div class="form-group">
+                                                                <textarea class="form-control" [(ngModel)]="Rremark" name="RetRemarks" cols="3" rows="2"></textarea>
+                                                            </div>
+                                                        </div>
+                                                    </div> -->
+                                                    <div *ngIf = "checkway11">
+                                                    <button> <i class="fa fa-plus-circle"(click)="addRow1()">Add Item</i>
+                                                    </button>
+                                                    <button> <i class="fa fa-plus-circle"(click)="deleteRow1()">Delete Item</i>
+                                                    </button>
+                                                                                                          <table class="table table-bordered table-condensed">
+                               
+                                                           <tbody><tr class="row">
+                                                               <th class="col-md-1">
+                                                                   S.NO
+                                                               </th>
+                                                               <th class="col-md-2">
+                                                                   ITEM
+                                                               </th>
+                                                               <!-- <th class="col-md-2">
+                                                                   UNIT
+                                                               </th> -->
+                                                               <th class="col-md-2">
+                                                                   WEIGHT <br><small>(in tons)</small>
+                                                               </th>
+                                                                <!-- <th class="col-md-1">
+                                                                   DRIVER ADVANCE <br><small>(Rs.)</small>
+                                                               </th> -->
+                                                               <th class="col-md-1">
+                                                                   TONAGE RATE <br><small>(Rs.)</small>
+                                                               </th>
+                                                                  <th class="col-md-1">
+                                                                   TOTAL <br><small>(Rs.)</small>
+                                                               </th>
+                                                               <th class="col-md-2">
+                                                                   BALANCE <br><small>(Rs.)</small>
+                                                               </th>
+                                                               
+                                                               <th class="col-md-1">
+                                                                   REMARKS
+                                                               </th>
+                                                           </tr>
+                               
+                                                           </tbody><tbody>
+                                                               <tr *ngFor="let row of rows1; let i = index" class="row">
+                                                                   <th class="col-md-1" scope="row">{{ i + 1 }}</th>
+                                                                   <th class="col-md-2" >
+                                                                       <!-- <select class="form-control select2 select2-hidden-accessible" name="Item" id="baitemsdropdown" tabindex="-1" aria-hidden="true"><option value="ty">ty</option><option value="Item_master_test1">Item_master_test1</option><option value="Test">Test</option><option value="sadf">sadf</option><option value="asdf">asdf</option><option value="jj">jj</option><option value="Bricks">Bricks</option><option value="заявка">заявка</option><option value="соф-плд">соф-плд</option><option value="Test_item_one">Test_item_one</option><option value="ffg">ffg</option><option value="Finişer">Finişer</option><option value="dfda">dfda</option><option value="vivo phones">vivo phones</option></select><span class="select2 select2-container select2-container--default" dir="ltr" style="width: 293.5px;"><span class="selection"><span class="select2-selection select2-selection--single" role="combobox" aria-haspopup="true" aria-expanded="false" tabindex="0" aria-labelledby="select2-baitemsdropdown-container"><span class="select2-selection__rendered" id="select2-baitemsdropdown-container" title="ty">ty</span><span class="select2-selection__arrow" role="presentation"><b role="presentation"></b></span></span></span><span class="dropdown-wrapper" aria-hidden="true"></span></span> -->
+                                                                       <input  class="form-control calc" (change)="selectProduct($event.target.value,i)" type="text">
+                                                                    
+                                                                       <!-- <button id="btnAddItem" type="button" class="btn btn-primary" style="margin-top: 8px;"><i class="fa fa-plus-circle"></i> Add New</button> -->
+                                                                   </th>
+                                                                 
+                                                                   <!-- <th class="col-md-2">
+                                                                       <input  class="form-control calc" type="number">
+                                                                   </th> -->
+                                                                   <th class="col-md-2">
+                                                                       <input type="number"  (change)="selectweight1($event.target.value,i)" class="form-control calc" >
+                                                                   </th>
+                                                                    <!-- <th class="col-md-1">
+                                                                       <input type="number" (change)="selectadvance1($event.target.value,i)" class="form-control calc" >
+                                                                   </th> -->
+                                                                   <th class="col-md-1">
+                                                                       <input type="number"  (change)="selecttonerate1($event.target.value,i)" class="form-control calc" value="0" >
+                                                                   </th>
+                                                                   <th class="col-md-1">
+                                                                       <input type="number" [value]="row.total" class="form-control calc">
+                                                                   </th>
+                                                                   <th class="col-md-2">
+                                                                       <input type="number" (change)="Balance1()" class="form-control calc" >
+                                                                   </th>
+                                                                   <th class="col-md-1">
+                                                                       <input type="text" (change)="Remarks1($event.target.value,i)" class="form-control calc" >
+                                                                   </th>
+                               
+                                                               </tr>
+                                                               
+                                       
+                                                           </tbody>
+                                                           
+                                                       </table>
+                                                       <h5> EXPENSES</h5>
+                                                       <button> <i class="fa fa-plus-circle"(click)="Editexpense()">Add Item</i>
+                                                       </button>
+                                                       <button> <i class="fa fa-plus-circle"(click)="Editremoveexpense()">Delete Item</i>
+                                                       </button>
+                                                                                                           <table class="table table-bordered table-condensed">
+                                                                                   
+                                                                                                               <tbody><tr class="row">
+                                                                                                                   <th class="col-md-1">
+                                                                                                                       S.NO
+                                                                                                                   </th>
+                                                                                                                   <th class="col-md-3">
+                                                                                                                    ITEM
+                                                                                                                </th>
+                                                                                                                <th class="col-md-1">
+                                                                                                                    AMOUNT
+                                                                                                                </th>
+                                                                                                                   <th class="col-md-1">
+                                                                                                                       REMARKS
+                                                                                                                   </th>
+                                                                                                               </tr>
+                                                                                   
+                                                                                                               </tbody><tbody>
+                                                                                                                   <tr *ngFor="let row of Editexpenseamount; let i = index" class="row">
+                                                                                                                    <th class="col-md-1" scope="row">{{ i + 1 }}</th>
+                                                                                                                    <th class="col-md-3" >
+                                                                                                                        <!-- <select class="form-control select2 select2-hidden-accessible" name="Item" id="baitemsdropdown" tabindex="-1" aria-hidden="true"><option value="ty">ty</option><option value="Item_master_test1">Item_master_test1</option><option value="Test">Test</option><option value="sadf">sadf</option><option value="asdf">asdf</option><option value="jj">jj</option><option value="Bricks">Bricks</option><option value="заявка">заявка</option><option value="соф-плд">соф-плд</option><option value="Test_item_one">Test_item_one</option><option value="ffg">ffg</option><option value="Finişer">Finişer</option><option value="dfda">dfda</option><option value="vivo phones">vivo phones</option></select><span class="select2 select2-container select2-container--default" dir="ltr" style="width: 293.5px;"><span class="selection"><span class="select2-selection select2-selection--single" role="combobox" aria-haspopup="true" aria-expanded="false" tabindex="0" aria-labelledby="select2-baitemsdropdown-container"><span class="select2-selection__rendered" id="select2-baitemsdropdown-container" title="ty">ty</span><span class="select2-selection__arrow" role="presentation"><b role="presentation"></b></span></span></span><span class="dropdown-wrapper" aria-hidden="true"></span></span> -->
+                                                                                                                        <input  class="form-control calc" (change)="select1($event.target.value,i)" type="text">
+                                                                                                                     
+                                                                                                                        <!-- <button id="btnAddItem" type="button" class="btn btn-primary" style="margin-top: 8px;"><i class="fa fa-plus-circle"></i> Add New</button> -->
+                                                                                                                    </th>
+                                                                                                                 
+                                                                                                                    <th class="col-md-1">
+                                                                                                                        <input type="number" (change)="Remamount1($event.target.value,i)" class="form-control calc" >
+                                                                                                                    </th>
+                                                                                                                    <th class="col-md-1">
+                                                                                                                        <input type="text" (change)="Rem1($event.target.value,i)" class="form-control calc" >
+                                                                                                                    </th>
+                                                                                   
+                                                                                                                   </tr>
+                                                                                                               </tbody>
+                                                                                   
+                                                                                                           </table>
+                                                    </div>
+                                                    <td class="col-md-9">
+                                                        <div class="input-group">
+                                                            <button type="submit" class="btn btn-primary" (click) = "trip()" style="width: 100px;"><i class="fa fa-save"> </i> Save</button>
+                                                            <button type="reset" class="btn btn-danger" style="margin-right: 30px; width: 100px;">
+                                                                <i class="fa fa-remove"> </i> Reset
+                                                            </button>
+                                                        </div>
+                                                    </td>
+                                                </div>
+                            
+                            
+                            
+                                                <table class="table table-bordered table-condensed">
+                                                    <tbody><tr class="row">
+                                                        <td class="col-md-3">
+                                                            &nbsp;
+                                                        </td>
+                                                        <td class="col-md-9">
+                                                            <div class="input-group">
+                                                                <button type="submit" class="btn btn-primary" style="width: 100px;"><i class="fa fa-save"> </i> Save</button>
+                                                                <button type="reset" class="btn btn-danger" style="margin-right: 30px; width: 100px;">
+                                                                    <i class="fa fa-remove"> </i> Reset
+                                                                </button>
+                                                            </div>
+                                                        </td>
+                                                    </tr>
+                            
+                                                </tbody></table>
+                                            </div>
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            
+                            
+                            
+                            <div class="modal" id="ModelPopupId" tabindex="-1" role="dialog" aria-hidden="true">
+                                <div class="modal-dialog" role="document">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <h5 class="modal-title" id="example-Modal3">Add New Item</h5>
+                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                <span aria-hidden="true">×</span>
+                                            </button>
+                                        </div>
+                                        <div class="modal-body">
+                                            <form action="" method="post" id="frmItem">
+                                                <input type="hidden" name="FrmType" id="FrmType" value="Basic">
+                                                <div class="form-group">
+                                                    <label class="form-control-label">Item Name</label>
+                                                    <input type="text" id="ItemName" name="Name" class="form-control" required="">
+                                                </div>
+                                                <span style="color:green;display:none" id="successtext"></span>
+                                                <span style="color:red;display:none" id="errortext"></span>
+                                                <div class="p-5 border-top" style="text-align: center;">
+                                                    <button type="submit" id="btnAddItem" class="btn btn-primary waves-effect waves-light"><i class="fa fa-save"></i> Save</button>
+                                                </div>
+                                            </form>
+                                        </div>
+                                        <div class="modal-footer">
+                                            <button type="button" class="btn btn-danger" data-dismiss="modal"><i class="fa fa-close"></i> Close</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            
+                            
+                            
+                                        </section>
+                            
+                        <!-- <form (submit)="saveChanges()">
+                            <div class="form-group">
+                                <label for="userProfile">Driver name</label>
+                                <input type="text" class="form-control" id="userProfile" [value]="selectedRow ? selectedRow['User Profile'] : ''">
+                            </div>
+                            <div class="form-group">
+                                <label for="userProfile">Date</label>
+                                <input type="date" class="form-control" id="userProfile" [value]="selectedRow ? selectedRow['User Profile'] : ''">
+                            </div>
+                            <div class="form-group">
+                                <label for="vehicleDetails">Mobile number</label>
+                                <input type="text" class="form-control" id="vehicleDetails" [value]="selectedRow ? selectedRow['Vehicle Details'] : ''">
+                            </div>
+                            <div class="form-group">
+                                <label for="newTyresPurchase">License number</label>
+                                <input type="text" class="form-control" id="newTyresPurchase" [value]="selectedRow ? selectedRow['New Tyres Purchase'] : ''">
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="tyreComplaint">Current KM</label>
+                                <input type="text" class="form-control" id="tyreComplaint" >
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="driverShiftChange">Fuel Level</label>
+                                <input type="text" class="form-control" id="tyreComplaint" >
+                            </div>
+                            <div class="form-group">
+                                <label for="transaction">Complaint</label>
+                                <input type="text" class="form-control" id="tyreComplaint">
+                            </div>
+                           
+                            <div class="form-group">
+                                <label for="tyreFitting">Remark</label>
+                                <input type="text" class="form-control" id="tyreComplaint" >
+                            </div>
+                          
+    
+                            <label for="tyreForChase">Photos</label>                       
+    <form action="/action_page.php">
+        <input type="file" id="myFile" name="filename">
+        <input type="submit">
+      </form>
+                           
+                          
+                            <label for="tyreForChase">Tyre condition</label>                       
+                            
+                                <input type="text" class="form-control" id="tyreComplaint" >
+                        
+                            
+                            <button type="button" class="btn btn-primary" (click)="saveChanges()">Save</button>
+                        </form> -->
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- <div class="row">
+            <div class="col-md-12">
+                <div class="card">
+                    <div class="card-header card-header-danger">
+                        <a  >
+                            <i class="fa fa-plus-circle"></i>
+                          </a> Vehicle Summary
+                    </div>
+                    <div class="card-body">
+                        <div class="table-responsive">
+                            <table  id="myTable"  class="table">
+                                <thead class="text-primary">
+                           
+                                    <th>Truck No</th>
+                                    <th>Driver name</th>
+                                    <th>Return Driver name</th>
+                                    <th>Arrival Date</th>
+                                    <th>Return Date</th>
+                                    <th>Mobile number</th>
+                                    <th>License number</th>
+                                    <th>Current KM</th>
+                                    <th>From</th>
+                                    <th>To</th>
+                                    <th>Fuel Level</th>
+                                    <th>Complaint</th>
+                                    <th>Remark</th>
+                                    <th>Reverse Remark</th>
+                                    <th>Tyre condition</th>
+                                </thead>
+                                <tbody>
+ 
+                                    <tr *ngFor="let row of data; let i = index">
+         
+       
+         
+                                    </tr>
+                                     <tr *ngFor="let data of tableData">
+                                        <td><i (click)="editRow(data)"class="fa fa-edit"></i> 
+                                            <i (click)="deleteSelectedRow(data)" class="fa fa-trash"style="margin-left: 5px;"></i>
+                                            <i  (click)="view(data)" class="fa fa-eye"style="margin-left: 5px;"></i>
+                                        </td>
+                                        <td>{{ data['Driver name'] }}</td>
+                                        <td>{{ data['Date'] }}</td>
+        <td>{{ data['Mobile number'] }}</td>
+        <td>{{ data['License number'] }}</td>
+        <td>{{ data['Current KM'] }}</td>
+        <td>{{ data['from'] }}</td>
+        <td>{{ data['To'] }}</td>
+        <td>{{ data['Fuel Level'] }}</td>
+        <td>{{ data['Complaint'] }}</td>
+        <td>{{ data['Remark'] }}</td>
+       
+        <td>{{ data['Tyre condition'] }}</td>
+                                      </tr> -->
+                                <!-- </tbody>
+                            </table>
+          
+                         
+                        </div>
+                    </div>
+                </div>
+            </div>
+          </div> --> 
+          <div class="col">
+                
+            <div class="input-group mb-3">
+                <button  (click)="filterEvents()"><i  class="fa fa-search"></i></button>
+                <button  (click)="returnevent()"><i class="fa fa-close"></i></button>
+              <span class="input-group-text">Arrival Date:</span>
+              <input type="date" class="form-control" [(ngModel)]="arrivalDate">
+              <span class="input-group-text">Return Date:</span>
+              <input type="date" class="form-control" [(ngModel)]="returnDate">
+              <span class="input-group-text">Truck:</span>
+              <select class="form-control" (change)="selecttruck($event.target.value)">
+                <option value=""  selected>Select Truck</option>
+                <option *ngFor="let items of truck" [value]="items.registration_number">{{items.registration_number}}</option>
+            </select>
+            <span class="input-group-text">Driver:</span>
+            <select class="form-control" (change)="selectdriver($event.target.value)" >
+                <option value=""  selected>Select Driver</option>
+                <option *ngFor="let items of driver" [value]="items.name">{{items.name}}</option>
+            </select>
+            <span class="input-group-text">Return Driver:</span>
+            <select class="form-control" (change)="selectdriverr($event.target.value)">
+                <option value=""  selected>Select Return Driver</option>
+                <option *ngFor="let items of driver" [value]="items.name" >{{items.name}}</option>
+            </select>
+            </div>
+         
+          </div>
+          <div  class="card ">
+            <div class="card-header card-header-danger">
+              Summary Details
+            </div>  
+            <div class="card-body"> 
+        <div class="table-responsive">
+    <table id="myTable"  class="table">
+      <thead class="text-primary">
+        <tr>
+            <th>Actions</th>
+            <th>Sl.No</th>
+            <th>Truck No</th>
+            <th>Driver name</th>
+            <th>Return Driver name</th>
+            <th>Loding Date</th>
+            <th>Unloading Date</th>
+            <!-- <th>Mobile number</th> -->
+            <!-- <th>Current KM</th> -->
+            <th>From</th>
+            <th>To</th>
+            <th>Total</th>
+            <!-- <th>Rfrom</th>
+            <th>Rto</th> -->
+            <!-- <th>Fuel Level</th>
+            <th>Complaint</th> -->
+            <!-- <th>Remark</th>
+            <th>Reverse Remark</th>
+            <th>Tyre condition</th> -->
+            <!-- <th>Rmobile</th>
+            <th>Broker</th>
+            <th>Retrun Broker</th> -->
+          
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let row of data; let i = index">
+         
+       
+         
+        </tr>
+      </tbody>
+    </table>
+ 
+  </div>   
+  </div>
+</div>   
+    </div>
+    </div>
+
+    
+    

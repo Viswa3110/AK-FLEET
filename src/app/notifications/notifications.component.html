@@ -1,0 +1,224 @@
+<div class="main-content">
+    <div class="container-fluid">
+
+      <div class="modal"  id="userModal" >
+        <div class="modal-dialog-lg modal-dialog-scrollable" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Update Complaint </h5>
+                    <button type="button" class="close" (click)="closeModal('userModal')" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body" style="max-height: 1500px; overflow-y: auto;">
+                    <form>
+                        <div class="form-row">
+                          <div class="form-group col-md-6">
+                            <label for="inputEmail4">Customer Name</label>
+                            
+                            <select  id="editcustomer"  (change)="selectcustomer($event.target.value)" class="form-control " >
+                              <!-- <option>-Select Truck No-</option>
+                                  <option value="wd8987j" data-drivername="fendy femaja" data-driverid="17" data-vehicleid="42">wd8987j</option> -->
+                                  <option [value]="updateitem?.[0]?.customer_id || ''">{{updateitem?.[0]?.name || 'Select customer'}}</option>
+                                  <option *ngFor="let item of customer" [value]="item.customerid">{{item.name}}</option>
+                         
+                              </select>
+                          </div>
+                          <div class="form-group col-md-6">
+                            <label for="inputPassword4">Registration Number</label>
+
+                            <select  id="editregistration"   class="form-control " >
+                              <!-- <option>-Select Truck No-</option>
+                                  <option value="wd8987j" data-drivername="fendy femaja" data-driverid="17" data-vehicleid="42">wd8987j</option> -->
+                                  <option [value]="updateitem?.[0]?.truck_id || ''" >{{updateitem?.[0]?.registration_number || ''}}</option>
+                                  <option *ngFor="let item of truckno" [value]="item.id">{{item.registration_number}}</option>
+                         
+                              </select>
+                          </div>
+                        </div>
+                        <div class="form-group">
+                          <label for="inputAddress">Complaint Date</label>
+                          <input type="date" class="form-control" [value]="updateitem?.complaint_date" id="editcomplaint" >
+                        </div>
+                        <div class="form-group">
+                          <label for="inputAddress2">Complaint Description</label>
+                          <input type="text" class="form-control" [value]="updateitem?.[0]?.complaint_description" id="editcomplaintdesc">
+                        </div>
+                        <div class="form-row">
+                          <div class="form-group col-md-4">
+                            <label for="inputState">status</label>
+                            <select id="editstatus" class="form-control">
+                              <option selected>{{updateitem?.[0]?.status}}</option>
+                              <option>Pending</option>
+                              <option>Completed</option>
+                            </select>
+                          </div>
+                        </div>
+                        
+                        <div class="form-group">
+                          <label for="multiFileUpload"><h3>Upload a file</h3></label>
+  
+                          
+                          <input 
+                            type="file" 
+                           
+                            id="multiFileUpload" 
+                            (change)="onFileSelect1($event)" 
+                            multiple
+                          >
+                        </div>
+
+                        <div class="form-group">
+                          <div *ngIf="edituploadedfile.length > 0" class="mt-3">
+                            <h5>Uploaded Files:</h5>
+                            <ul>
+                              <li  *ngFor="let file of edituploadedfile; let i = index">
+                                <img [src]="constructFileURL(file.filename)" width="500" height="350" />  {{ file.filename }}
+                         
+                                <a class="fa fa-download" (click)="constructFileURL1(file.filename)"></a>
+
+                                <button 
+                                  type="button" 
+                                  class="btn btn-danger btn-sm ml-2" 
+                                  (click)="deleteFile1(file, i)">
+                                  Delete
+                                </button>
+                              </li>
+                            </ul>
+                          </div>
+                      
+                          </div>
+                        <button type="submit"  (click)="updatecomplaint()" class="btn btn-primary" >Sumbit</button>
+                      </form>
+                
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="modal"  id="createModal" >
+        <div class="modal-dialog-lg modal-dialog-scrollable" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Create Complaint </h5>
+                    <button type="button" class="close" (click)="closeModal('createModal')" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body" style="max-height: 1500px; overflow-y: auto;">
+                    <form>
+                        <div class="form-row">
+                          <div class="form-group col-md-6">
+                            <label for="inputEmail4">Customer Name</label>
+                            <select  id="customer"  (change)="selectcustomer($event.target.value)" class="form-control " >
+                                <!-- <option>-Select Truck No-</option>
+                                    <option value="wd8987j" data-drivername="fendy femaja" data-driverid="17" data-vehicleid="42">wd8987j</option> -->
+                                    <option>Select Customer</option>
+                                    <option *ngFor="let item of customer" [value]="item.customerid">{{item.name}}</option>
+                           
+                                </select>
+                          </div>
+                          <div class="form-group col-md-6">
+                            <label for="inputPassword4">Registration Number</label>
+                            <select  id="truck"   class="form-control " >
+                                <!-- <option>-Select Truck No-</option>
+                                    <option value="wd8987j" data-drivername="fendy femaja" data-driverid="17" data-vehicleid="42">wd8987j</option> -->
+                                    <option>Select Vehicle</option>
+                                    <option *ngFor="let item of truckno" [value]="item.id">{{item.registration_number}}</option>
+                           
+                                </select>
+                          </div>
+                        </div>
+                        <div class="form-group">
+                          <label for="inputAddress">Complaint Date</label>
+                          <input type="date" class="form-control"  id="complaintdate" >
+                        </div>
+    
+                        <div class="form-group">
+                            <label for="autoTextarea">Complaint Description</label>
+                            <textarea id="complaintDescription" (input)="adjustTextareaHeight($event)" class="form-control" rows="1" placeholder="Type here..."></textarea>
+                          </div>
+                          
+                        <div class="form-group">
+                            <label  for="multiFileUpload1"><h3>Upload a file</h3></label>
+    
+                            
+                            <input 
+                              type="file" 
+                             
+                              id="multiFileUpload1" 
+                              (change)="onFileSelect($event)" 
+                              multiple
+                            >
+                          </div>
+                          
+                          
+                          <div *ngIf="uploadedFiles.length > 0" class="mt-3">
+                            <h5>Uploaded Files:</h5>
+                            <ul>
+                              <li *ngFor="let file of uploadedFiles; let i = index">
+                                <img [src]="constructFileURL(file.filename)" width="500" height="350" />   {{ file.filename }}
+                                <button 
+                                  type="button" 
+                                  class="btn btn-danger btn-sm ml-2" 
+                                  (click)="deleteFile(file, i)">
+                                  Delete
+                                </button>
+                              </li>
+                            </ul>
+                          </div>
+                          
+                      
+                          
+                     
+                        <button type="submit" (click)="complaintsubmit()" class="btn btn-primary">Sumbit</button>
+                      </form>
+                
+                </div>
+            </div>
+        </div>
+    </div>
+        <div class="row">
+            <div class="col"></div>
+            <div class="col"></div>
+            <div class="col"></div>
+            <div class="col"><button (click)="open()" type="button" class="btn btn-light"><i class="fa fa-plus-circle"></i>Add Complaint</button></div>
+        </div>        
+<div  class="card ">
+    <div class="card-header card-header-danger">
+        Customer Details
+    </div>  
+    <div class="card-body"> 
+<div class="table-responsive">
+<table id="myTable"  class="table">
+  <thead class="text-primary">
+    <tr>
+        
+      <th><a>
+        <!-- <i (click)="open()" class="fa fa-plus-circle"></i> -->
+      </a>Sl.No</th>
+      <th>ComplaintId</th>
+      <th>Customer Name</th>
+      <th>Complaint Booked Date</th>
+      <th>Complaint Description</th>
+      <th>Registration Number</th>
+      <th>Status</th>
+      <th>Actions</th>
+     
+      
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let row of data; let i = index">
+      <td>{{ i }}</td>
+      <td>{{ row.Name }}</td>
+      <td>{{ row.Rate}}</td>
+   
+     
+    </tr>
+  </tbody>
+</table>
+</div>
+</div>
+</div>
+</div>
+</div>

@@ -1,0 +1,360 @@
+
+<div class="main-content" style="padding-top: 10px; padding-bottom: 30px;">
+    <div class="container-fluid">
+      <div class="row">
+        <div class="col"></div>
+        <div class="col"></div>
+        <div class="col"></div>
+        <!-- <div class="col"><button type="button"(click)="open()" class="btn btn-light"><i class="fa fa-plus-circle"></i>Add Truck</button></div> -->
+    </div>
+        <div  class="card ">
+            <div class="card-header card-header-danger">
+                Truck Details
+            </div>  
+            <div class="card-body"> 
+        <div class="table-responsive">
+    <table id="myTable"  class="table">
+      <thead class="text-primary">
+        <tr>
+            
+            <th >
+                <a>
+                    <!-- <i (click)="open()" class="fa fa-plus-circle"></i> -->
+                </a>Sl.No
+            </th>
+            <th>Customer</th>
+            <th >Registration.No</th>
+            <th >Chassis.No</th>
+            <th >Enginee.No</th>
+            <th >Maker</th>
+            <th >Model</th>
+            <th >year of manufacturing</th>
+            <th >Wheels</th>
+            <th >TyreType</th>
+            <th >Load cap</th>
+            <th >Fuel Type</th>
+            <th >Insurance</th>
+            <th>Insurance.exp.Dat</th>
+            <th>Last.serv.Dat</th>
+            <!-- <th>RC Book</th>
+            <th> Insurnce pic </th>
+            <th>Vehicle Pic</th> -->
+            <th>Actions</th>
+            
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let row of data; let i = index">
+         
+       
+         
+        </tr>
+      </tbody>
+    </table>
+ 
+  </div>   
+  </div>
+</div>         
+ 
+
+<div class="modal"  id="addModal" >
+  <div class="modal-dialog-lg modal-dialog-scrollable" role="document">
+      <div class="modal-content">
+          <div class="modal-header">
+              <h5 class="modal-title">Customer</h5>
+              <button type="button" class="close" (click)="closeModal('addModal')" aria-label="Close">
+                  <span aria-hidden="true">&times;</span>
+              </button>
+          </div>
+          <div class="modal-body" style="max-height: 1500px; overflow-y: auto;">
+              <form>
+                <div class="form-row">
+                  <div class="form-group col-md-6">
+                    <label for="inputEmail4">customer</label>
+                    <select  id="customer"  class="form-control " >
+                      <!-- <option>-Select Truck No-</option>
+                          <option value="wd8987j" data-drivername="fendy femaja" data-driverid="17" data-vehicleid="42">wd8987j</option> -->
+                          <option>Select Customer</option>
+                          <option *ngFor="let item of customer" [value]="item.customerid">{{item.name}}</option>
+                 
+                      </select>
+                  </div>
+                </div>
+                  <div class="form-row">
+                    <div class="form-group col-md-6">
+                      <label for="inputEmail4">Registration No</label>
+                      <input type="text" id="RegistrationNo" class="form-control" >
+                    </div>
+                    <div class="form-group col-md-6">
+                      <label for="inputPassword4">Chassis No</label>
+                      <input type="text" id="ChassisNo" class="form-control" >
+                    </div>
+                  </div>
+                  <div class="form-row">
+                      <div class="form-group col-md-6">
+                        <label for="inputEmail4">Enginee No</label>
+                        <input type="number" id="EngineeNo" class="form-control"  >
+                      </div>
+                      <div class="form-group col-md-6">
+                        <label for="inputPassword4">Maker</label>
+                        <input type="text" id="Maker" class="form-control" >
+                      </div>
+                    </div>
+                    <div class="form-row">
+                      <div class="form-group col-md-6">
+                        <label for="inputEmail4">Model</label>
+                        <input type="text" id="Model" class="form-control"  >
+                      </div>
+                      <div class="form-group col-md-6">
+                        <label for="inputPassword4">Year of manufacturing </label>
+                        <input type="date" id="Yearofmanufacturing" class="form-control"  >
+                      </div>
+                    </div>
+                    <div class="form-row">
+                      <div class="form-group col-md-6">
+                        <label for="inputEmail4">Wheels</label>
+                        <input type="number" id="Wheels" class="form-control"  >
+                      </div>
+                      <div class="form-group col-md-6">
+                        <label for="inputPassword4">Tyre Type</label>
+                        <input type="text" id="TyreType" class="form-control"  >
+                      </div>
+                    </div>
+                    <div class="form-row">
+                      <div class="form-group col-md-6">
+                        <label for="inputEmail4">Fuel Type</label>
+                        <input type="text" id="FuelType" class="form-control"  >
+                      </div>
+                      <div class="form-group col-md-6">
+                        <label for="inputPassword4">Insurance</label>
+                        <input type="text" id="Insurance" class="form-control"  >
+                      </div>
+                    </div>
+                    <div class="form-row">
+                      <div class="form-group col-md-6">
+                        <label for="inputEmail4">Insurance.Exp.Date</label>
+                        <input type="date" id="Insurance.Exp.Date" class="form-control"  >
+                      </div>
+                      <div class="form-group col-md-6">
+                        <label for="inputPassword4">Last.Service</label>
+                        <input type="date" id="Last.Service" class="form-control"  >
+                      </div>
+                    </div>
+                    <div class="form-row">
+                      <div class="form-group col-md-6">
+                        <label for="uploadPic1">R C Book</label>
+                        <input type="file" id="uploadPic1" (change)="previewFile($event, 'picPreview1','RCBook')" class="form-control" >
+                      </div>
+                      <div class="form-group col-md-6">
+                        <label></label>
+                        <img id="picPreview1" class="img-thumbnail" style="display: none; width: 100px; height: 100px;">
+                      </div>
+                    </div>
+
+                    <div class="form-row">
+                      <div class="form-group col-md-6">
+                        <label for="uploadPic2">Insurance</label>
+                        <input type="file" id="uploadPic3" (change)="previewFile($event, 'picPreview3','Insurance')" class="form-control" >
+                      </div>
+                     <div class="form-group col-md-6">
+                      <label></label>
+                      <img id="picPreview3" class="img-thumbnail" style="display: none; width: 100px; height: 100px;">
+                    </div>
+                    </div>
+                    <div class="form-row">
+                      <div class="form-group col-md-6">
+                        <label for="uploadPic3">vehicle</label>
+                        <input type="file" id="uploadPic2" (change)="previewFile($event, 'picPreview2','vehicle')" class="form-control" >
+                      </div>
+                     <div class="form-group col-md-6">
+                      <label></label>
+                      <img id="picPreview2" class="img-thumbnail" style="display: none; width: 100px; height: 100px;">
+                    </div>
+                    </div>
+                    <div class="form-row">
+                      <!-- <div class="form-group col-md-6">
+                        <label for="inputEmail4">Credit</label>
+                        <input type="checkbox"  >
+                      </div> -->
+                     
+                    </div>
+                  
+                  <button type="submit" (click)="create()" class="btn btn-primary">Create</button>
+                </form>
+          </div>
+      </div>
+  </div>
+</div>  
+
+<div class="modal"  id="editModal" >
+  <div class="modal-dialog-lg modal-dialog-scrollable" role="document">
+      <div class="modal-content">
+          <div class="modal-header">
+              <h5 class="modal-title">Customer</h5>
+              <button type="button" class="close" (click)="closeModal('editModal')" aria-label="Close">
+                  <span aria-hidden="true">&times;</span>
+              </button>
+          </div>
+          <div class="modal-body" style="max-height: 1500px; overflow-y: auto;">
+              <form>
+                  <div class="form-row">
+                    <div class="form-group col-md-6">
+                      <label for="inputEmail4">Registration No</label>
+                      <input type="text" id="Registration1" [value] = "item?.registration_number" class="form-control" >
+                    </div>
+                    <div class="form-group col-md-6">
+                      <label for="inputPassword4">Chassis No</label>
+                      <input type="text" id="Chassis1" [value] = "item?.chassis_number" class="form-control" >
+                    </div>
+                  </div>
+                  <div class="form-row">
+                      <div class="form-group col-md-6">
+                        <label for="inputEmail4">Enginee No</label>
+                        <input type="text" id="Enginee1" [value] = "item?.engine_number"  class="form-control"  >
+                      </div>
+                      <div class="form-group col-md-6">
+                        <label for="inputPassword4">Maker</label>
+                        <input type="text" id="Maker1"  [value] = "item?.make"  class="form-control" >
+                      </div>
+                    </div>
+                    <div class="form-row">
+                      <div class="form-group col-md-6">
+                        <label for="inputEmail4">Model</label>
+                        <input type="text" id="Model1"  [value] = "item?.model"  class="form-control"  >
+                      </div>
+                      <div class="form-group col-md-6">
+                        <label for="inputPassword4">Year of manufacturing </label>
+                        <input type="date" id="Yearofmanufacturing1" [value] = "item?.year_of_manufacture"  class="form-control"  >
+                      </div>
+                    </div>
+                    <div class="form-row">
+                      <div class="form-group col-md-6">
+                        <label for="inputEmail4">Wheels</label>
+                        <input type="number" id="Wheels1" [value] = "item?.wheels" class="form-control"  >
+                      </div>
+                      <div class="form-group col-md-6">
+                        <label for="inputPassword4">Tyre Type</label>
+                        <input type="text" id="TyreType1" [value] = "item?.tyre_type" class="form-control"  >
+                      </div>
+                    </div>
+                    <div class="form-row">
+                      <div class="form-group col-md-6">
+                        <label for="inputEmail4">Fuel Type</label>
+                        <input type="text" id="FuelType1" [value] = "item?.fuel_type"  class="form-control"  >
+                      </div>
+                      <div class="form-group col-md-6">
+                        <label for="inputPassword4">Insurance</label>
+                        <input type="text" id="Insurance1" [value] = "item?.insurance_number"  class="form-control"  >
+                      </div>
+                    </div>
+                    <div class="form-row">
+                      <div class="form-group col-md-6">
+                        <label for="inputEmail4">Insurance.Exp.Date</label>
+                        <input type="date" id="Insurance.Exp.Date1" [value] = "item?.insurance_expiry_date"  class="form-control"  >
+                      </div>
+                      <div class="form-group col-md-6">
+                        <label for="inputPassword4">Last.Service</label>
+                        <input type="date" id="Last.Service1" [value] = "item?.last_service_date" class="form-control"  >
+                      </div>
+                    </div>
+                    <div class="form-row">
+                      <div class="form-group col-md-6">
+                        <label for="uploadPic11">R C Book</label>
+                        <input type="file" id="uploadPic11" (change)="previewFile($event, 'picPreview11','RCBook1')" class="form-control" >
+                      </div>
+                      <div  #imageContainer1 class="form-group col-md-3">
+                        <!-- <div #imageContainer></div> -->
+                        
+                        <label>Picture Preview</label>
+                        <!-- <div #imageContainer></div> -->
+                        <img id="picPr" class="img-thumbnail" style="display: none; width: 100px; height: 100px;">
+                      </div>
+                      <!-- <div class="form-group col-md-3">
+                        <label>Edited Preview</label>
+                        <img id="picPreview11" class="img-thumbnail" style="display: none; width: 100px; height: 100px;">
+                      </div> -->
+                     
+                    </div>
+
+                    <div class="form-row">
+                      <div class="form-group col-md-6">
+                        <label for="uploadPic21">vehicle</label>
+                        <input type="file" id="uploadPic21" (change)="previewFile($event, 'picPreview33','Insurance1')" class="form-control" >
+                      </div>
+                     <div #imageContainer2 class="form-group col-md-3">
+                      <label>Picture Preview</label>
+                      <img id="picPrev" class="img-thumbnail" style="display: none; width: 100px; height: 100px;">
+                    </div>
+                    <!-- <div  class="form-group col-md-3">
+                      <label>Edited Preview</label>
+                      <img id="picPreview33" class="img-thumbnail" style="display: none; width: 100px; height: 100px;">
+                    </div> -->
+                    </div>
+                    <div class="form-row">
+                      <div class="form-group col-md-6">
+                        <label for="uploadPic31">Insurance</label>
+                        <input type="file" id="uploadPic31" (change)="previewFile($event, 'picPreview23','vehicle1')" class="form-control" >
+                      </div>
+                     <div  #imageContainer class="form-group col-md-3">
+                      <label>Picture Preview</label>
+                      
+                      <img id="picPre"  class="img-thumbnail" style="display: none; width: 100px; height: 100px;">
+                    </div>
+                    <!-- <div class="form-group col-md-3">
+                      <label>Edited Preview</label>
+                      <img id="picPreview23"  class="img-thumbnail" style="display: none; width: 100px; height: 100px;">
+                    </div> -->
+                    </div>
+                    <div class="form-row">
+                      <!-- <div class="form-group col-md-6">
+                        <label for="inputEmail4">Credit</label>
+                        <input type="checkbox"  >
+                      </div> -->
+                     
+                    </div>
+                  
+                  <!-- <button (click)="update()" type="submit"class="btn btn-primary">Update</button> -->
+                </form>
+          </div>
+      </div>
+  </div>
+</div>  
+<div class="modal" id="viewModal" tabindex="-1" role="dialog">
+  <div class="modal-dialog-lg" role="document">
+      <div class="modal-content">
+        
+        <div class="modal-header">
+            <h3 class="modal-title" >Payment Screen Shot</h3>
+            <button type="button" (click)="closeModal('viewModal')" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+         
+        <div class="modal-body" style="max-height: 400px; overflow-y: auto;">
+            <div class="card">
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-md-12">
+            <img id="modalImage" src="" alt="Image">
+            </div>
+            </div>
+            </div>
+            </div>
+          </div>
+
+          <div class="modal-footer">
+            <button type="button"  (click)="closeModal('viewModal')"class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+            <button type="button" class="btn btn-primary"  (click)="downloadImage(modalImageSrc)">DOWNLOAD</button>
+          </div>
+      </div>
+  </div>
+</div>
+     
+
+    
+    
+    
+    </div>
+</div>
+    
+    

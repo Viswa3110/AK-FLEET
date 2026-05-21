@@ -1,0 +1,2230 @@
+
+
+<!-- <div  *ngIf="!isLoading" >
+
+    <div  class="d-flex justify-content-center align-items-center" style="height: 100vh;">
+        <div class="loader"></div>
+      </div>
+</div>
+<div *ngIf="isLoading"> -->
+   
+
+
+<div class="main-content">
+    <div class="container-fluid">
+
+<div class="row">
+            <div class="col-md-3">
+                <div class="form-group mt-4">
+                  
+                  
+                    <select class="form-control"(change)="select($event.target.value)" >
+                        <option value="" disabled selected>Select Customer</option>
+                        <option *ngFor="let items of custom" [value]="items.customerid">{{items.name}}</option>
+                    </select>
+                    
+        
+
+                  
+                </div>
+            </div>
+            <div class="col-md-3">
+               
+            </div>
+          
+            <div class="col-md-6">
+                
+                <div class="input-group mb-3">
+                    <button (click)="filterEvents(custom1, fromDate, toDate)"><i class="fa fa-search"></i></button>
+                    <button (click)="returnevent()"><i class="fa fa-close"></i></button>
+                  <span class="input-group-text">From Date</span>
+                  <input type="date" class="form-control" [(ngModel)]="fromDate">
+                  <span class="input-group-text">To Date</span>
+                  <input type="date" class="form-control" [(ngModel)]="toDate">
+                </div>
+             
+              </div>
+              
+              
+          </div>
+          
+        
+        <div class="toast-container">
+         <div  style="background-color: lightgreen;"class="toast" role="alert" aria-live="assertive" aria-atomic="true" data-delay="5000">
+           <!-- <div class="toast-header">
+             <strong class="mr-auto">Toast Header</strong>
+             <button type="button" class="ml-2 mb-1 close" data-dismiss="toast" aria-label="Close">
+               <span aria-hidden="true">&times;</span>
+             </button>
+           </div> -->
+           <div class="toast-body">
+             Successfully <button type="button" class="ml-2 mb-1 close" data-dismiss="toast" aria-label="Close">
+               <span aria-hidden="true">&times;</span>
+             </button>
+           </div>
+         </div>
+       </div>
+
+       <div class="modal"  id="getModal" >
+        <div class="modal-dialog-lg modal-dialog-scrollable" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Recipt</h5>
+                    <!-- <button   (click)="closeModal('getModal')"   >
+                        &times;
+                    </button> -->
+                
+                </div>
+                <div class="modal-body" style="max-height: 1500px; overflow-y: auto;">
+                    <div class="container">
+                        <div class="row">
+                            <div style = " margin-top:20px;background:#eee;" class="container">
+                                <div class="col-md-12">
+                                   <div class="invoice">
+                                      <!-- begin invoice-company -->
+                                      <div class="invoice-company text-inverse f-w-600">
+                                         <span class="pull-right hidden-print">
+                                         <!-- <a (click)="downloadPDF()" class="btn btn-sm btn-white m-b-10 p-l-5"><i class="fa fa-file t-plus-1 text-danger fa-fw fa-lg"></i> Export as PDF</a> -->
+                                         <a href="javascript:;" onclick="window.print()" class="btn btn-sm btn-white m-b-10 p-l-5"><i class="fa fa-print t-plus-1 fa-fw fa-lg"></i> Print</a>
+                                         </span>
+                                       AK Tyres
+                                      </div>
+                                      <!-- end invoice-company -->
+                                      <!-- begin invoice-header -->
+                                      <div class="invoice-header">
+                                         <div class="invoice-from">
+                                            <small>from</small>
+                                            <address class="m-t-5 m-b-5">
+                                                <p class="mb-1">SJ RESIDENCY,SFNO.364/2<br>
+                                                    Perambalur Main Road<br>
+                                                    Thuraimangalam,Perambaluer<br>
+                                                    GSTIN/UIN: 33DLNPA5133D1ZL<br>
+                                                    State Name : Tamil Nadu, Code : 3</p>
+                                                <p class="mb-1"><i class="uil uil-envelope-alt me-1"></i>  aktyres0001@gmail.com</p>
+                                             
+                                            </address>
+                                         </div>
+                                         <div class="invoice-to">
+                                            <small>to</small>
+                                            <address class="m-t-5 m-b-5">
+                                               <strong class="text-inverse">{{selectedrecipt?.companyname}}--{{selectedrecipt?.name}} </strong><br>
+                                               <p class="mb-1">{{selectedCustomer?.companyAddress }}{{selectedrecipt?.companyAddress}} </p>
+                                               <p class="mb-1">{{selectedCustomer?.email}}{{selectedrecipt?.email}} </p>
+                                            </address>
+                                         </div>
+                                         <div class="invoice-date">
+                                            <small>Invoice </small>
+                                            <div class="date text-inverse m-t-5">{{selectedrecipt?.purchaseDate}}</div>
+                                            <div class="invoice-detail">
+                                               Inoice Id {{selectedrecipt?.Invoiceid}}<br>
+                                               Services Product
+                                            </div>
+                                         </div>
+                                      </div>
+                                      <!-- end invoice-header -->
+                                      <!-- begin invoice-content -->
+                                      <div class="invoice-content">
+                                         <!-- begin table-responsive -->
+                                         <div class="table-responsive">
+                                            <table class="table table-invoice">
+                                               <thead>
+                                                  <tr>
+                                                     <th>TASK DESCRIPTION</th>
+                                                   
+                                                     <th class="text-right" width="20%"> TOTAL</th>
+                                                  </tr>
+                                               </thead>
+                                               <tbody>
+                                                  <tr>
+                                                     <td>
+                                                        <span class="text-inverse"><i class="fa fa-plus-circle"(click)="addrecipt()"></i> Products</span><br>
+                                                     
+                                                     </td>
+                                          
+                                                     <td class="text-right">{{ bills}}</td>
+
+                                                  </tr>
+                                                  
+                                               </tbody>
+                                            </table>
+                                         </div>
+                                         <!-- end table-responsive -->
+                                         <!-- begin invoice-price -->
+                                         
+                                         <div class="invoice-price">
+                                            <div class="invoice-price-left">
+                                               <div class="invoice-price-row">
+                                                  <div class="sub-price">
+                                                     <small>Credit</small>
+                                                     <span class="text-inverse">{{selectedrecipt?.Credit}} </span>
+                                                  </div>
+                                                  <div class="sub-price">
+                                                     <i class="fa fa-plus text-muted"></i>
+                                                  </div>
+                                                  <div class="sub-price">
+                                                     <small>Debit</small>
+                                                     <span class="text-inverse">{{selectedrecipt?.Debit}}</span>
+                                                  </div>
+                                               </div>
+                                            </div>
+                                            <div class="invoice-price-right">
+                                               <small>INVOICE BALANCE</small> <span class="f-w-600">{{selectedrecipt?.Balance}}</span>
+                                            </div>
+                                         </div>
+
+                                  
+                                         <!-- <div *ngFor="let item of selectedres; let i = index" class="invoice-price">
+                                            <div class="invoice-price-left">
+                                                <div class="invoice-price-row">
+                                                    <ng-container *ngIf="i === 0; else editableRow">
+                                                     
+                                                        <div class="sub-price">
+                                                            <small>Pay</small>
+                                                            <span class="text-inverse">{{ item.pay }}</span>
+                                                        </div>
+                                                        <div class="sub-price">
+                                                            <small>screenshot <i (click)="showImageModal(item.screenshot)" class="fa fa-eye"></i></small>
+                                                           
+                                                        </div>
+                                                        <div class="sub-price">
+                                                            <small>Cheque</small>
+                                                            <span>{{ item.number }}</span>
+                                                        </div>
+                                                    </ng-container>
+                                                    <ng-template #editableRow>
+                                                      
+                                                        <div class="sub-price">
+                                                            <small>Pay</small>
+                                                            <input type="number" [(ngModel)]="item.pay" (ngModelChange)="updatePay(i, $event)">
+                                                        </div>
+                                                        <div class="sub-price">
+                                                            <small>screenshot <i (click)="showImageModal(item.screenshot)" class="fa fa-eye"></i></small>
+                                                            <label for="fileUpload" class="custom-file-upload">
+                                                                <input type="file" id="fileUpload" name="fileUpload" (change)="onFilepay($event, i)">
+                                                            </label>
+                                                        </div>
+                                                        <div class="sub-price">
+                                                            <small>Cheque</small>
+                                                            <input type="number" [(ngModel)]="item.number" (change)="paynumber($event.target.value, i)">
+                                                        </div>
+                                                    </ng-template>
+                                                </div>
+                                            </div>
+                                        </div> -->
+                                        <div *ngFor="let item of selectedres; let i = index" class="invoice-price">
+                                            <div class="invoice-price-left">
+                                              <div class="invoice-price-row">
+                                                <ng-container *ngIf="!item.editable; else editableRow">
+                                                  <div class="sub-price">
+                                                    <small>Pay</small>
+                                                    <span class="text-inverse">{{ item.pay }}</span>
+                                                  </div>
+                                                  <div class="sub-price">
+                                                    <small>screenshot <i (click)="showImageModal(item.screenshot)" class="fa fa-eye"></i></small>
+                                                  </div>
+                                                  <div class="sub-price">
+                                                    <small>Cheque</small>
+                                                    <span>{{ item.number }}</span>
+                                                  </div>
+                                                </ng-container>
+                                                <ng-template #editableRow>
+                                                  <div class="sub-price">
+                                                    <small>Pay</small>
+                                                    <input type="number" [(ngModel)]="item.pay" (ngModelChange)="updatePay(i, $event)">
+                                                  </div>
+                                                  <div class="sub-price">
+                                                    <small>screenshot <i (click)="showImageModal(item.screenshot)" class="fa fa-eye"></i></small>
+                                                    <label for="fileUpload" class="custom-file-upload">
+                                                      <input type="file" id="fileUpload" name="fileUpload" (change)="onFilepay($event, i)">
+                                                    </label>
+                                                  </div>
+                                                  <div class="sub-price">
+                                                    <small>Cheque</small>
+                                                    <input type="number" [(ngModel)]="item.number" (change)="paynumber($event.target.value, i)">
+                                                  </div>
+                                                </ng-template>
+                                              </div>
+                                            </div>
+                                          </div>
+                                          
+                                         <!-- end invoice-price -->
+                                      </div>
+                                      <!-- end invoice-content -->
+                                      <!-- begin invoice-note -->
+                                      <div class="invoice-note">
+                                         * Make all cheques payable to AK TYRES<br>
+                                         * Payment is due within 30 days<br>
+                                         * If you have any questions concerning this invoice, contact  Ajith
+                                      </div>
+                                      <!-- end invoice-note -->
+                                      <!-- begin invoice-footer -->
+                                      <div class="invoice-footer">
+                                         <p class="text-center m-b-5 f-w-600">
+                                            THANK YOU FOR YOUR BUSINESS
+                                         </p>
+                                         <p class="text-center">
+                                            <span class="m-r-10"><i class="fa fa-fw fa-lg fa-globe"></i> aktyres.in</span>
+                                           
+                                            <span class="m-r-10"><i class="fa fa-fw fa-lg fa-envelope"></i> aktyres0001@gmail.com</span>
+                                         </p>
+                                      </div>
+                                      <div class="d-print-none mt-4">
+                                        <div class="float-end">
+                                            <button type="button" (click)="closeModal('getModal')"  class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                            <a href="javascript:window.print()" class="btn btn-success me-1"><i class="fa fa-print"></i></a>
+                                            <a *ngIf = "receptrue" (click)="saverecipt()" class="btn btn-primary w-md">Save</a>
+                                        </div>
+                                    </div>
+                                   </div>
+                                </div>
+                             </div>
+                            </div>
+                        </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+          <div class="modal" id="openModal" tabindex="-1" role="dialog">
+            <div class="modal-dialog-lg modal-dialog-scrollable" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title">Create Invoice Summary</h5>
+                        <button type="button" class="close" (click)="closeModal1('openModal')" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body" style="max-height: 1500px; overflow-y: auto;">
+                        <div class="container">
+                            <div class="row">
+                                    <div class="col-lg-12">
+                                        <div class="card">
+                                            <div class="card-body">
+                                                <div class="invoice-title">
+                                                    <h4 class="float-end font-size-15">Invoice<span class="badge bg-danger font-size-12 ms-2">UnPaid</span></h4> <button><i (click)="myFunction1()" class="fa fa-refresh" style="font-size:24px"></i></button>
+                                                    <div class="mb-4">
+                                                       <div class="row">
+                                                        <div class="col">
+                                                            <h2 class="mb-1 text-muted">AK tyres</h2>
+                                                
+                                                        <div class="text-muted">
+                                                            <p class="mb-1">SJ RESIDENCY,SFNO.364/2<br>
+                                                                Perambalur Main Road<br>
+                                                                Thuraimangalam,Perambaluer<br>
+                                                                GSTIN/UIN: 33DLNPA5133D1ZL<br>
+                                                                State Name : Tamil Nadu, Code : 3</p>
+                                                            <p class="mb-1"><i class="uil uil-envelope-alt me-1"></i>  aktyres0001@gmail.com</p>
+                                                         
+                                                        </div>
+                                                        </div>
+                                                        <div class="col">
+                                                            <div class="company-details text-end">
+                                                                <h2 class="mb-1 text-muted">GST BILL NO</h2>
+        
+                                                                <mat-form-field class="example-full-width">
+                                                                    <input [(ngModel)]="bill1" matInput placeholder="Enter invoice No">
+                                                                  </mat-form-field>
+                                                            </div>
+                                                        </div>
+                                                        </div>
+                                                       </div>
+                                                     
+                                                 
+                                                </div>
+                            
+                                                <hr class="my-4">
+                            
+                                                <div class="row">
+                                                    <div class="col-sm-6">
+                                                        <div class="text-muted">
+                                                            <h5 class="font-size-16 mb-3">Billed To:</h5>
+                                                            <select class="form-control" (change)="selectCustomer($event.target.value)">
+                                                                <option value="" disabled selected>Select a customer</option>
+                                                                <option *ngFor="let item of customers" [value]="item.customerid">{{item.name}}</option>
+                                                              </select>
+                                                            <!-- <h5 class="font-size-15 mb-2">Preston Miller</h5> -->
+                                                            <p class="mb-1">GST : {{selectedCustomer?.gst }}</p>
+                                                            <p class="mb-1">ADDRESS : {{selectedCustomer?.companyAddress }}</p>
+                                                            <p class="mb-1">EMAIL : {{selectedCustomer?.email}}</p>
+                                                            
+                                                            
+                                                            <p> PH.NO : {{ selectedCustomer?.mobile_number}}</p>
+                                                            <h5 class="font-size-16 mb-3"><strong>Credit Limit:</strong><label class="switch">
+                                                                <input type="checkbox" [checked]="selectedCustomer?.IsActive"  [(ngModel)]="switch" (ngModelChange)="switchl()">
+                                                                <span class="slider round"></span>
+                                                              </label></h5>
+                                                            <p>
+                                                                <input type="number" [(ngModel)]="creditlimit" [value]="selectedCustomer?.CreditLimit" (ngModelChange)="handle()"> </p>
+                                                            
+
+                                                        </div>
+                                                    </div>
+                                                    <!-- end col -->
+                                                    <div class="col-sm-6">
+                                                        <div class="text-muted text-sm-end">
+                                                            <div>
+                                                                <h5 class="font-size-15 mb-1">Current Balance:</h5>
+                                                                <p><strong>{{selectedCustomer?.balance}}</strong></p>
+                                                            </div>
+                                                            <div class="mt-4">
+                                                                <h5 class="font-size-15 mb-1">Invoice Date:</h5>
+                                                                <input type="date" class="form-control" [(ngModel)]="invoiceDate">
+                                                            </div>
+                                                          
+                                                        </div>
+                                                    </div>
+                                                    <!-- end col -->
+                                                </div>
+                                                <!-- <div class="row">
+                                                    <div class = "col-sm-6">
+                                                        <div class="mt-4">
+                                                            <h5 class="font-size-15 mb-1">Purchase Date:</h5>
+                                                            <input type="date" class="form-control"[(ngModel)]="PurchaseDate">
+                                                        </div>
+                                                    </div>
+                                                </div> -->
+                                                <!-- end row -->
+                                                
+                                                <div class="py-2">
+                                                    <div class = "row">
+                                                        <div class = "col"><i class="fa fa-plus-circle"(click)="addRow()"></i><h5 class="font-size-15">Order Summary</h5></div>
+                                                        
+                                                    </div>
+                                                    
+                            
+                                                    <div class="table-responsive">
+                                                        <table class="table align-middle table-nowrap table-centered mb-0">
+                                                            <thead>
+                                                                <tr>
+                                                                    <th style="width: 70px;">No.</th>
+                                                                    <th>Item</th>
+                                                                    <th>Price</th>
+                                                                    <th>Quantity</th>
+                                                                    <th class="text-end" style="width: 120px;">Total</th>
+                                                                </tr>
+                                                            </thead><!-- end thead -->
+                                                            <tbody>
+                                                                <tr *ngFor="let row of rows; let i = index">
+                                                                    <th scope="row">{{ i + 1 }}</th>
+                                                                    <td>
+                                                                        <div>
+                                                                            <select class="form-control" (change)="selectProduct($event.target.value,i)">
+                                                                                <option value="" disabled selected>Select a Product</option>
+                                                                                <option *ngFor="let item of product" [value]="item.ProductID">{{item.Name}}</option>
+                                                                              </select>
+                                                                        </div>
+                                                                    </td>
+                                                                    <td ><input  type="number" [(ngModel)]="row.productId"></td>
+                                                                    <td><input  type="number" [(ngModel)]="row.quantity"></td>
+                                                                    <td class="text-end">{{ calculateTotal(row,i) }}</td>
+                                                                </tr>
+                                                                <!-- end tr -->
+                                                              
+                                                                <!-- end tr -->
+                                                                <tr >
+                                                                    <th scope="row" colspan="4" class="text-end">Sub Total</th>
+                                                                    <td class="text-end">{{ fulltotal() }}</td>
+                                                                </tr>
+                                                                <!-- end tr -->
+                                                                <tr>
+                                                                    <th scope="row" colspan="4" class="border-0 text-end">
+                                                                        Discount :</th>
+                                                                    <!-- <td class="border-0 text-end">0</td> -->
+                                                                    <td class="border-0 text-end"><input type="number" [(ngModel)]="rows[0].discount" (ngModelChange)="handleQuantityChange()"></td>
+                                                                </tr>
+                                                                <!-- end tr -->
+                                                              
+                                                                <!-- end tr -->
+                                                                <!-- <tr>
+                                                                    <th scope="row" colspan="4" class="border-0 text-end">
+                                                                        SGST@14%</th>
+                                                                    <td class="border-0 text-end"> {{SGST()}}</td>
+                                                                </tr>
+                                                                <tr>
+                                                                    <th scope="row" colspan="4" class="border-0 text-end">
+                                                                        CGST@14%</th>
+                                                                    <td class="border-0 text-end">{{CGST()}}</td>
+                                                                </tr> -->
+                                                                <!-- end tr -->
+                                                                <tr>
+                                                                    <th scope="row" colspan="4" class="border-0 text-end">Total</th>
+                                                                    <td class="border-0 text-end"><h4 class="m-0 fw-semibold">{{total()}}</h4></td>
+                                                                </tr>
+                                                                <tr>
+                                                                    <th scope="row" colspan="4" class="border-0 text-end">Payment</th>
+                                                                    <td class="border-0 text-end"><h4 class="m-0 fw-semibold">
+                                                                        <span *ngIf="gpay">
+                                                                            <label for="fileUpload" class="custom-file-upload">
+                                                                                <input type="file" id="fileUpload" name="fileUpload" (change)="onFileSelected($event)">
+                                                                            </label>
+                                                                        </span>
+                                                                        <span *ngIf = "cheque">
+                                                                            <input type="number" [(ngModel)]="chequenumber" [value]="selectedCustomer?.CreditLimit">
+                                                                        </span>
+                                                                        
+                                                                        <select class="form-control" id="exampleFormControlSelect1" (change)="pay($event.target.value)">
+                                                                            <option value="" disabled selected> Pay Type</option>
+                                                                            <option>CHEQUE</option>
+                                                                            <option>GPAY</option>
+                                                                            <option>CASH</option>
+                                                                        </select>  
+                                                                        </h4>
+                                                                    </td>
+                                                                </tr>
+                                                                <tr>
+                                                                    <th scope="row" colspan="4" class="border-0 text-end">Advance Payment</th>
+                                                                    <td class="border-0 text-end">      <mat-form-field class="example-full-width">
+                                                                        <input [(ngModel)]="paycredit" matInput placeholder="Enter Amt">
+                                                                      </mat-form-field></td>
+                                                                </tr>
+                                                                <!-- <tr>
+                                                                    <th scope="row" colspan="2" class="border-0 text-end">Notes</th>
+                                                                    <td class="border-0 text-end">      <mat-form-field class="example-full-width">
+                                                                        <input [(ngModel)]="paycredit" matInput placeholder="Enter Amt">
+                                                                      </mat-form-field></td>
+                                                                </tr> -->
+                                                             
+                                                                  
+                                                                <!-- <tr>
+                                                                    <th scope="row" colspan="4" class="border-0 text-end">Debit</th>
+                                                                    <td class="border-0 text-end">
+                                                                        <mat-form-field class="example-full-width">
+                                                                            <input [(ngModel)]="paydebit" matInput placeholder="Enter Amt">
+                                                                          </mat-form-field>
+                                                                    </td>
+                                                                </tr> -->
+                                                                <!-- end tr -->
+                                                            </tbody><!-- end tbody -->
+                                                        </table><!-- end table -->
+                                                    </div><!-- end table responsive -->
+                                                    <div class="my-4" >
+                                                        <th scope="row" class="border-0 text-end">Notes</th>
+                                                       
+                                                          <mat-form-field class="example-full-width" >
+                                                            <input [(ngModel)]="notes" matInput placeholder="Enter Notes" >
+                                                          </mat-form-field>
+                                                       
+                                                    </div>
+                                                    <div class="d-print-none mt-4">
+                                                        <div class="float-end">
+                                                            <a href="javascript:window.print()" class="btn btn-success me-1"><i class="fa fa-print"></i></a>
+                                                            <a  (click)="save()" class="btn btn-primary w-md">Save</a>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div><!-- end col -->
+                                </div>
+                            </div>
+                        <!-- <form>
+                            <div class="form-group">
+                                <label for="userProfile">CustomerID</label>
+                                <input type="text" class="form-control" id="userProfile" >
+                            </div>
+                            <div class="form-group">
+                                <label for="userProfile">Date</label>
+                                <input type="date" class="form-control" id="userProfile" >
+                            </div>
+                            <div class="form-group">
+                                <label for="vehicleDetails">Mobile number</label>
+                                <input type="text" class="form-control" id="vehicleDetails" >
+                            </div>
+                            <div class="form-group">
+                                <label for="newTyresPurchase">License number</label>
+                                <input type="text" class="form-control" id="newTyresPurchase" >
+                            </div>
+                           
+                            <div class="form-group">
+                                <label for="tyreComplaint">Current KM</label>
+                                <input type="text" class="form-control" id="tyreComplaint" >
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="driverShiftChange">Fuel Level</label>
+                                <input type="text" class="form-control" id="tyreComplaint" >
+                            </div>
+                            <div class="form-group">
+                                <label for="transaction">Complaint</label>
+                                <input type="text" class="form-control" id="tyreComplaint">
+                            </div>
+                           
+                            <div class="form-group">
+                                <label for="tyreFitting">Remark</label>
+                                <input type="text" class="form-control" id="tyreComplaint" >
+                            </div>
+                            
+                            <label for="tyreForChase">Photos</label>                       
+    <form action="/action_page.php">
+        <input type="file" id="myFile" name="filename">
+        <input type="submit">
+      </form>
+                           
+                            
+                            <label for="tyreForChase">Tyre condition</label>                       
+                            
+                                <input type="text" class="form-control" id="tyreComplaint" >
+                        
+                        
+                            
+                            <button type="button" class="btn btn-primary" >Save</button>
+                        </form> -->
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="modal" id="editModal" tabindex="-1" role="dialog">
+         <div class="modal-dialog-lg modal-dialog-scrollable" role="document">
+             <div class="modal-content">
+                 <div class="modal-header">
+                     <h5 class="modal-title">Edit Invoice Summary</h5>
+                     <button type="button" class="close" (click)="closeModal('editModal')" aria-label="Close">
+                         <span aria-hidden="true">&times;</span>
+                     </button>
+                 </div>
+                 <div class="modal-body" style="max-height: 1500px; overflow-y: auto;">
+                     <div class="container">
+                         <div class="row">
+                                 <div class="col-lg-12">
+                                     <div class="card">
+                                         <div class="card-body">
+                                             <!-- <div class="invoice-title">
+                                                 <h4 class="float-end font-size-15">Invoice<span class="badge bg-success font-size-12 ms-2">Paid</span></h4>
+                                                 <div class="mb-4">
+                                                    <h2 class="mb-1 text-muted">AK tyres</h2>
+                                                 </div>
+                                                 <div class="text-muted">
+                                                     <p class="mb-1">SJ RESIDENCY,SFNO.364/2<br>
+                                                         Perambalur Main Road<br>
+                                                         Thuraimangalam,Perambaluer<br>
+                                                         GSTIN/UIN: 33DLNPA5133D1ZL<br>
+                                                         State Name : Tamil Nadu, Code : 3</p>
+                                                     <p class="mb-1"><i class="uil uil-envelope-alt me-1"></i>  aktyres0001@gmail.com</p>
+                                                  
+                                                 </div>
+                                             </div> -->
+                                             <div class="invoice-title">
+                                                <h4 class="float-end font-size-15">Invoice<span class="badge bg-success font-size-12 ms-2">Paid</span></h4>
+                                                <div class="mb-4">
+                                                   <div class="row">
+                                                    <div class="col-3">
+                                                        <h2 class="mb-1 text-muted">AK tyres</h2>
+                                            
+                                                    <div class="text-muted">
+                                                        <p class="mb-1">SJ RESIDENCY,SFNO.364/2<br>
+                                                            Perambalur Main Road<br>
+                                                            Thuraimangalam,Perambaluer<br>
+                                                            GSTIN/UIN: 33DLNPA5133D1ZL<br>
+                                                            State Name : Tamil Nadu, Code : 3</p>
+                                                        <p class="mb-1"><i class="uil uil-envelope-alt me-1"></i>  aktyres0001@gmail.com</p>
+                                                     
+                                                    </div>
+                                                    </div>
+                                                    <div class="col-3"></div>
+                                                    <div class="col-3"></div>
+                                                    <div class="col-3">
+                                                        <div class="company-details text-end">
+                                                            <h2 class="mb-1 text-muted">GST BILL NO</h2>
+    
+                                                           
+                                                               <h3><input [(ngModel)]="bill12" matInput ></h3> 
+                                                           
+                                                        </div>
+                                                    </div>
+                                                    </div>
+                                                   </div>
+                                                 
+                                             
+                                            </div>
+                         
+                                             <hr class="my-4">
+                         
+                                             <div class="row">
+                                                 <div class="col-sm-6">
+                                                     <div class="text-muted">
+                                                         <h5 class="font-size-16 mb-3">Billed To:</h5>
+                                                         <select class="form-control" (change)="selectCustomer($event.target.value)">
+                                                             <option value="" disabled selected>{{ selectedrow?.name || 'Select a customer' }}</option>
+                                                             <option *ngFor="let item of customers" [value]="item.customerid">{{item.name}}</option>
+                                                           </select>
+                                                         <!-- <h5 class="font-size-15 mb-2">Preston Miller</h5> -->
+                                                         <p class="mb-1">ADDRESS : {{selectedCustomer?.companyAddress }}{{selectedrow?.companyAddress}} </p>
+                                                         <p class="mb-1">GST : {{selectedCustomer?.gst}}{{selectedrow?.gst}} </p>
+                                                         <p class="mb-1">EMAIL : {{selectedCustomer?.email}}{{selectedrow?.email}} </p>
+                                                         
+                                                         
+                                                         <p>PH.NO : {{ selectedrow?.mobile_number}}</p>
+                                                         <h5 class="font-size-16 mb-3"><strong>Credit Limit:</strong><label class="switch">
+                                                             <input type="checkbox" [checked]="selectedrow?.IsActive"  [(ngModel)]="switch" (ngModelChange)="switchl()">
+                                                             <span class="slider round"></span>
+                                                           </label></h5>
+                                                         <p>
+                                                             <input type="number" [(ngModel)]="creditlimit" [value]="selectedrow?.CreditLimit" (ngModelChange)="handle()"> </p>
+                                                         
+
+                                                     </div>
+                                                 </div>
+                                                 <!-- end col -->
+                                                 <div class="col-sm-6">
+                                                     <div class="text-muted text-sm-end">
+                                                         <div>
+                                                             <h5 class="font-size-15 mb-1">Invoice No:</h5>
+                                                             <p>{{selectedrow?.Invoiceid }}</p>
+                                                         </div>
+                                                         <div class="mt-4">
+                                                             <h5 class="font-size-15 mb-1">Invoice Date:</h5>
+                                                             <input type="date" class="form-control" [value]="selectedrow?.Date" [(ngModel)]="invoiceDate">
+                                                         </div>
+                                                       
+                                                     </div>
+                                                 </div>
+                                                 <!-- end col -->
+                                             </div>
+                                             <div class="row">
+                                                 <div class = "col-sm-6">
+                                                     <div class="mt-4">
+                                                         <h5 class="font-size-15 mb-1">Purchase Date:</h5>
+                                                         <input type="date" class="form-control"[(ngModel)]="PurchaseDate" [value]="selectedrow?.purchaseDate" >
+                                                     </div>
+                                                 </div>
+                                             </div>
+                                             <!-- end row -->
+                                             
+                                             <div class="py-2">
+                                                 <i class="fa fa-plus-circle"(click)="addRow()" style="margin-right: 10px;"></i>          <i class="fa fa-ban"(click)="bandiscount()"></i><h5 class="font-size-15">Order Summary</h5>
+                         
+                                                 <div class="table-responsive">
+                                                     <table class="table align-middle table-nowrap table-centered mb-0">
+                                                         <thead>
+                                                             <tr>
+                                                                 <th style="width: 70px;">No.</th>
+                                                                 <th>Item</th>
+                                                                 <th>Price</th>
+                                                                 <th>Quantity</th>
+                                                                 <th class="text-end" style="width: 120px;">Total</th>
+                                                             </tr>
+                                                         </thead><!-- end thead -->
+                                                         <tbody>
+                                                             <tr *ngFor="let row of rows; let i = index">
+                                                                 <th scope="row">{{ i + 1 }}</th>
+                                                                 <td>
+                                                                     <div>
+                                                                         <select class="form-control" (change)="selectProduct($event.target.value,i)">
+                                                                             <option value="" disabled selected>{{(row.product | uppercase) || 'Select a Product'}}</option>
+                                                                             <option *ngFor="let item of product" [value]="item.ProductID">{{item.Name}}</option>
+                                                                           </select>
+                                                                     </div>
+                                                                 </td>
+                                                                 <td>{{row.productId}}</td>
+                                                                 <td><input type="number" [(ngModel)]="row.quantity"></td>
+                                                                 <td class="text-end">{{ calculateTotal(row,i) }}</td>
+                                                             </tr>
+                                                             <!-- end tr -->
+                                                           
+                                                             <!-- end tr -->
+                                                             <tr >
+                                                                 <th scope="row" colspan="4" class="text-end">Sub Total</th>
+                                                                 <td class="text-end">{{ fulltotal() }}</td>
+                                                             </tr>
+                                                             <!-- end tr -->
+                                                             <tr *ngIf = "isDiscountActive">
+                                                                 <th scope="row" colspan="4" class="border-0 text-end">
+                                                                     Discount :</th>
+                                                                 <!-- <td class="border-0 text-end">0</td> -->
+                                                                 <td class="border-0 text-end"><input type="number" [(ngModel)]="rows[0].discount" (ngModelChange)="handleQuantityChange()"></td>
+                                                             </tr>
+                                                             <!-- end tr -->
+                                                           
+                                                             <!-- end tr -->
+                                                             <!-- <tr>
+                                                                 <th scope="row" colspan="4" class="border-0 text-end">
+                                                                     SGST@14%</th>
+                                                                 <td class="border-0 text-end"> {{SGST()}}</td>
+                                                             </tr> -->
+                                                             <!-- <tr>
+                                                                 <th scope="row" colspan="4" class="border-0 text-end">
+                                                                     CGST@14%</th>
+                                                                 <td class="border-0 text-end">{{CGST()}}</td>
+                                                             </tr> -->
+                                                             <!-- end tr -->
+                                                             <tr>
+                                                                 <th scope="row" colspan="4" class="border-0 text-end">Total</th>
+                                                                 <td class="border-0 text-end"><h4 class="m-0 fw-semibold">{{total()}}</h4></td>
+                                                             </tr>
+                                                             <tr>
+                                                                 <th scope="row" colspan="4" class="border-0 text-end">Payment</th>
+                                                                 <td class="border-0 text-end"><h4 class="m-0 fw-semibold">
+                                                                     <span *ngIf="gpay">
+                                                                         <label for="fileUpload" class="custom-file-upload">
+                                                                             <input type="file" id="fileUpload" name="fileUpload" (change)="onFileSelected($event)">
+                                                                         </label>
+                                                                     </span>
+                                                                     <span *ngIf = "selectedrow?.paymenttype == 'CHEQUE'">
+                                                                         <input type="number" [(ngModel)]="chequenumber" [value]="selectedrow?.paymentNo">
+                                                                     </span>
+                                                                     
+                                                                     <select class="form-control" id="exampleFormControlSelect1" (change)="pay($event.target.value)">
+                                                                         <option value="" disabled selected> {{ selectedrow?.paymenttype || 'Pay Type' }}</option>
+                                                                         <option>CHEQUE</option>
+                                                                         <option>GPAY</option>
+                                                                         <option>CASH</option>
+                                                                     </select>  
+                                                                     </h4>
+                                                                 </td>
+                                                             </tr>
+                                                             <tr>
+                                                                 <th scope="row" colspan="4" class="border-0 text-end">Credit</th>
+                                                                 <td class="border-0 text-end">      <mat-form-field class="example-full-width">
+                                                                     <input [(ngModel)]="paycredit" [value]="selectedrow?.Credit" matInput >
+                                                                   </mat-form-field></td>
+                                                             </tr>
+                                                             <tr>
+                                                                 <th scope="row" colspan="4" class="border-0 text-end">Debit</th>
+                                                                 <td class="border-0 text-end">
+                                                                     <mat-form-field class="example-full-width">
+                                                                         <input [(ngModel)]="paydebit" [value]="selectedrow?.Debit" matInput >
+                                                                       </mat-form-field>
+                                                                 </td>
+                                                             </tr>
+                                                             <!-- end tr -->
+                                                         </tbody><!-- end tbody -->
+                                                     </table><!-- end table -->
+                                                 </div><!-- end table responsive -->
+                                                 <div class="my-4" >
+                                                    <th scope="row" class="border-0 text-end">Notes</th>
+                                                   
+                                                      <mat-form-field class="example-full-width" >
+                                                        <input [value]="selectedrow?.notes" matInput  id="notes" >
+                                                      </mat-form-field>
+                                                   
+                                                </div>
+                                                 <div class="d-print-none mt-4">
+                                                     <div class="float-end">
+                                                         <a href="javascript:window.print()" class="btn btn-success me-1"><i class="fa fa-print"></i></a>
+                                                         <a  (click)="update()" class="btn btn-primary w-md">Update</a>
+                                                     </div>
+                                                 </div>
+                                             </div>
+                                         </div>
+                                     </div>
+                                 </div><!-- end col -->
+                             </div>
+                         </div>
+                     <!-- <form>
+                         <div class="form-group">
+                             <label for="userProfile">CustomerID</label>
+                             <input type="text" class="form-control" id="userProfile" >
+                         </div>
+                         <div class="form-group">
+                             <label for="userProfile">Date</label>
+                             <input type="date" class="form-control" id="userProfile" >
+                         </div>
+                         <div class="form-group">
+                             <label for="vehicleDetails">Mobile number</label>
+                             <input type="text" class="form-control" id="vehicleDetails" >
+                         </div>
+                         <div class="form-group">
+                             <label for="newTyresPurchase">License number</label>
+                             <input type="text" class="form-control" id="newTyresPurchase" >
+                         </div>
+                        
+                         <div class="form-group">
+                             <label for="tyreComplaint">Current KM</label>
+                             <input type="text" class="form-control" id="tyreComplaint" >
+                         </div>
+                         
+                         <div class="form-group">
+                             <label for="driverShiftChange">Fuel Level</label>
+                             <input type="text" class="form-control" id="tyreComplaint" >
+                         </div>
+                         <div class="form-group">
+                             <label for="transaction">Complaint</label>
+                             <input type="text" class="form-control" id="tyreComplaint">
+                         </div>
+                        
+                         <div class="form-group">
+                             <label for="tyreFitting">Remark</label>
+                             <input type="text" class="form-control" id="tyreComplaint" >
+                         </div>
+                         
+                         <label for="tyreForChase">Photos</label>                       
+ <form action="/action_page.php">
+     <input type="file" id="myFile" name="filename">
+     <input type="submit">
+   </form>
+                        
+                         
+                         <label for="tyreForChase">Tyre condition</label>                       
+                         
+                             <input type="text" class="form-control" id="tyreComplaint" >
+                     
+                     
+                         
+                         <button type="button" class="btn btn-primary" >Save</button>
+                     </form> -->
+                 </div>
+             </div>
+         </div>
+     </div>
+
+      <div class="modal" id="viewModal" tabindex="-1" role="dialog">
+          <div class="modal-dialog-lg" role="document">
+              <div class="modal-content">
+                
+                <div class="modal-header">
+                    <h3 class="modal-title" >Payment Screen Shot</h3>
+                    <button type="button" (click)="closeModal('viewModal')" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
+                      <span aria-hidden="true">&times;</span>
+                    </button>
+                  </div>
+                 
+                <div class="modal-body" style="max-height: 400px; overflow-y: auto;">
+                    <div class="card">
+                        <div class="card-body">
+                            <div class="row">
+                                <div class="col-md-12">
+                    <img id="modalImage" src="" alt="Image">
+                    </div>
+                    </div>
+                    </div>
+                    </div>
+                  </div>
+
+                  <div class="modal-footer">
+                    <button type="button"  (click)="closeModal('viewModal')"class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-primary">DOWNLOAD</button>
+                  </div>
+              </div>
+          </div>
+      </div>
+
+      <div class="modal" id="view">
+        <div class="modal-dialog-lg modal-dialog-centered modal-dialog-scrollable">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h1 class="modal-title fs-5" id="staticBackdropLabel">Invoice</h1>
+              <button type="button" (click)="closeModal5('view')" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+          <div class="modal-body">
+    
+   <div id="myElement">
+<div class="container mt-3">
+    
+    <div class="row no-print">
+        <div class="col-12 text-end">
+            <button class="btn btn-primary me-2" (click)="downloadPDF22()">Print Invoice</button>
+            <!-- <button class="btn btn-secondary" id="downloadPDF">Download as PDF</button> -->
+        </div>
+    </div>
+    <!-- Invoice content starts here -->
+    <div class="row">
+        <div class="col-6 border p-1">
+            <h6>AK TYRES(2023-2024)</h6>
+            <p>SJ RESIDENCY, SFNO.364/2</p>
+            <p>Perambalur Main Road</p>
+            <p>Thuraimangalam, Perambalur GSTIN/UIN: 33DLNPA5133D1ZL</p>
+            <p><strong>State Name:</strong> Tamil Nadu, Code: 33</p>
+            <p><strong>E-Mail:</strong> aktyres0001@gmail.com</p>
+        </div>
+        <div class="col-6 border p-1 text-end">
+            <p><strong>Invoice No. e-Way Bill No. :</strong> {{selcsr?.originnum}}</p>
+            <p><strong>Dated:</strong>{{selcsr?.Date}}</p>
+            <p><strong>Delivery Note:</strong> Mode/Terms of Payment</p>
+            <p><strong>Supplier's Ref.:</strong> 15 Days</p>
+            <p><strong>Other Reference(s):</strong></p>
+            <p><strong>Buyer's Order No.:</strong>{{selcsr?.Invoiceid}}</p>
+            <p><strong>Buyer's Order Dated:</strong>{{selcsr?.Date}}</p>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-6 border p-1">
+            <p><strong>Consignee (Ship to):</strong> {{selcsr?.name}}</p>
+            <p>{{selcsr?.companyAddress }}</p>
+            <p>{{selcsr?.email}}</p>
+        </div>
+        <div class="col-6 border p-1 text-end">
+            <p><strong>Buyer (Bill to):</strong>  {{selcsr?.name}}</p>
+            <p>{{selcsr?.companyAddress }}</p>
+            <p>{{selcsr?.email}}</p>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-6 border p-1">
+            <p><strong>Dispatch Doc No.:</strong> Dispatched through</p>
+            <p><strong>Delivery Note Date:</strong> Destination</p>
+            <p><strong>Terms of Delivery:</strong></p>
+        </div>
+    </div>
+
+    <table id="items-table" class="table table-bordered">
+        <thead>
+            <tr>
+                <th class="text-small">Sl No.</th>
+                <th class="text-small">Description of Goods</th>
+                <th class="text-small">HSN/SAC</th>
+                <th class="text-small">GST Rate</th>
+                <th class="text-small">Quantity</th>
+                <th class="text-small">Rate</th>
+                <th class="text-small">per</th>
+                <th class="text-small">Disc. %</th>
+                <th class="text-small">Amount</th>
+            </tr>
+
+        </thead>
+        <tbody>
+            <!-- Add enough rows here to test pagination -->
+            <!-- Example rows -->
+            <tr  *ngFor="let item of sel; let i = index">
+                <td>{{i + 1}}</td>
+                <td >{{item?.product}}</td>
+                <td contenteditable="true">40121010</td>
+                <td  contenteditable="true">28%</td>
+                <td  contenteditable="true">{{item?.quantity}} PC</td>
+                <td contenteditable="true">{{item?.productId}}</td>
+                <td contenteditable="true">PC</td>
+                <td contenteditable="true"></td>
+                <td contenteditable="true">{{item?.total}}</td>
+            </tr>
+             <tr *ngFor="let item of sel; let i = index">
+                <ng-container *ngIf="i === 0">
+                    <td colspan="8" class="text-end">Less : Clm Discount</td>
+             
+                    <td contenteditable="true">(-){{item?.discount}}</td>
+                  </ng-container>
+             
+            </tr>   
+            <tr>
+                <td contenteditable="true" colspan="8" class="text-end">SGST@14%</td>
+                <td contenteditable="true">0</td>
+            </tr>
+            <tr>
+                <td contenteditable="true" colspan="8" class="text-end">CGST@14%</td>
+                <td contenteditable="true">0</td>
+            </tr>
+            <tr>
+                <td contenteditable="true" colspan="9" class="text-end">Round Off</td>
+            </tr>
+            <tr  *ngFor="let item of sel; let i = index">
+                <ng-container *ngIf="i === 0">
+                <td contenteditable="true" colspan="7">Bill Details:<br>New Ref 410 15 Days 30000Dr</td>
+                <td contenteditable="true">Total</td>
+                <td contenteditable="true">{{item?.premiumtotal}}</td>
+            </ng-container>
+            </tr>
+            <!-- Repeat rows as needed -->
+        </tbody>
+    </table>
+
+    <p class="border p-1"><strong>Amount Chargeable (in words):</strong> Thirty thousand</p>
+
+    <table class="table table-bordered">
+        <thead>
+            <tr>
+                <th class="text-small">Taxable Value</th>
+                <th class="text-small">Central Tax</th>
+                <th class="text-small">State Tax</th>
+                <th class="text-small">Total Tax Amount</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td contenteditable="true"></td>
+                <td contenteditable="true"></td>
+                <td contenteditable="true"></td>
+                <td contenteditable="true"></td>
+            </tr>
+        </tbody>
+    </table>
+
+    <p class="border p-1"><strong>Tax Amount (in words):</strong> Thirty thousand</p>
+
+    <div class="row">
+        <div class="col-6 border p-1">
+            <p><strong>Company's Bank Details</strong></p>
+            <p class="mb-1">A/c Holder's Name: AK TYRES(2023-2024)</p>
+            <p class="mb-1">Bank Name: AK TYRES</p>
+            <p class="mb-1">A/c No.: 2366200000945</p>
+            <p class="mb-1">Branch & IFSC Code: PERANBALUR & FDRL0002366</p>
+            <p class="mb-1">Company's PAN : DLNPA5133D SWIFT Code : FDRKINRBBIRD</p>
+        </div>  <div class="col-6 border p-3">
+            <p><strong>for AK TYRES(2023-2024)</strong></p>
+            
+            <p class="mb-1">Authorised Signatory</p>
+        </div>
+    </div>
+</div>
+
+</div>
+        
+        </div>
+            <div class="modal-footer">
+              <button type="button" (click)="closeModal('view')"  class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+              <!-- <button type="button" (click)="downloadPDF1()" class="btn btn-primary">DOWNLOAD</button>
+              <a href="javascript:window.print()" class="btn btn-success me-1"><i class="fa fa-print"></i></a> -->
+                                            
+            </div>
+          </div>
+        </div>
+      </div> 
+
+
+
+      <div class="modal" id="paymentModal" tabindex="-1" role="dialog">
+        <div class="modal-dialog-lg modal-dialog-scrollable" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Payment Details</h5>
+                    <button type="button" class="close" (click)="closeModal1('paymentModal')" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body" style="max-height: 1500px; overflow-y: auto;">
+                    <div class="container">
+                        <div class="row">
+                                <div class="col-lg-12">
+                                    <div class="card">
+                                        <div class="card-body">
+                                            <div style=" height: 11in; margin: 0 auto; overflow: hidden; padding: 0.5in;  background: #FFF; border-radius: 1px;">
+                                                <header style="margin: 0 0 3em;">
+                                                    <h1 style="background: #000; border-radius: 0.25em; color: #FFF; margin: 0 0 1em; padding: 0.5em 0; font: bold 100% sans-serif; letter-spacing: 0.5em; text-align: center; text-transform: uppercase;">Payment</h1>
+                                                    <address style="float: left; font-size: 75%; font-style: normal; line-height: 1.25; margin: 0 1em 1em 0;">
+                                                        <!-- <p style="margin: 0 0 0.25em;">Jonathan Neal</p>
+                                                        <p>101 E. Chapman Ave<br>Orange, CA 92866</p>
+                                                        <p>(800) 555-1234</p> -->
+                                                    </address>
+                                                    <span style="display: block; float: right; margin: 0 0 1em 1em; max-height: 25%; max-width: 60%; position: relative;">
+                                                        <img alt="" src="http://www.jonathantneal.com/examples/invoice/logo.png" style="max-height: 100%; max-width: 100%;">
+                                                        <input type="file" accept="image/*" style="cursor: pointer; height: 100%; left: 0; opacity: 0; position: absolute; top: 0; width: 100%;">
+                                                    </span>
+                                                </header>
+                                                <article>
+                                                    <div class="row">
+                                                        <div class="col-md-3">
+                                                            <div class="input-group mb-3">
+                                                              
+                                                              
+                                                                <select id="customer" class="form-control"(change)="selectpayment($event.target.value)" >
+                                                                    <option value="" disabled selected>Select Customer</option>
+                                                                    <option *ngFor="let items of custom" [value]="items.customerid">{{items.name}}</option>
+                                                                </select>
+                                                                
+                                                    
+                                            
+                                                              
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-md-6">
+                    
+                                                            
+                                                            <div class="input-group mb-3">
+                                                                <span class="input-group-text">Amount Pay:</span>
+                                                                <input id ="amount_paid"  type="text" class="form-control">
+                                                                <span class="input-group-text"> Pay Date:</span>
+                                                                <input  id= "paydate"type="date" class="form-control" >
+                                                               
+                                                                
+                                                            </div>
+                                                          </div>
+                                                          <div class="col-md-3">
+                                                            <div class="input-group mb-3">
+                                                                <select id="handcash" class="form-control">
+                                                                    <option value="" disabled selected>Is Hand Cash</option>
+                                                                    <option value="Yes">YES</option>
+                                                                    <option value="No">No</option>
+                                                                </select>
+                                                                </div>
+                                                        
+                                                                
+                                                          </div>
+
+
+                                                    </div>
+                                                    <div class="row">
+                                                      
+                                                        <div class="col-md-9">
+                    
+                                                            
+                                                            <div class="input-group mb-3">
+                                                                <span class="input-group-text">Gpay No </span>
+                                                                <input id="gpay" type="text" class="form-control" >
+                                                                <span class="input-group-text">Cheque No:</span>
+                                                                <input id="cheque" type="text" class="form-control" >
+                                                               
+                                                                
+                                                            </div>
+                                                          </div>
+                                                          <div class="col-md-3">
+                                                            <div class="input-group mb-3">
+                                                                <select id="account" class="form-control" >
+                                                                    <option value="" disabled selected>Select Account</option>
+                                                                    <option *ngFor="let items of account" [value]="items.item">{{items.item}}</option>
+                                                                </select>
+                                                                </div>
+                                                          </div>
+
+
+                                                          <!-- <div class="col-md-3">
+                    
+                                                            <div class="input-group mb-3">
+                                                                <span class="input-group-text">Amount Pay:</span>
+                                                                <input (keyup)="divideNumberAmongBalances(amount_paid,paymentevents)"  type="text" class="form-control" [(ngModel)]="amount_paid">
+                                                                <span class="input-group-text"> Pay Date:</span>
+                                                                <input type="date" class="form-control" [(ngModel)]="paydate">
+                                                                <span class="input-group-text">Remaining Balance:</span><span>{{remainingBalance}}</span>
+                                                                <span class="input-group-text">Remaining Amount:</span><span>{{remaingamount}}</span>
+                                                                
+                                                            </div>
+                                                         
+                                                          </div> -->
+                                                    </div>
+                                                   <div class = "row">
+                                                    <div class="col-9">
+                                                        <span class="input-group-text">Enter Remark </span>
+                                                        <mat-form-field class="example-full-width" >
+                                                            <input id="payremark" matInput placeholder="Enter Remark" >
+                                                          </mat-form-field>
+                                                    </div>
+                                                    <div class="col-3">
+                                                        <div class="input-group mb-3">
+                                                            <a (click)="savepayment()"  class="btn btn-success w-md">Save</a>
+                                                        </div>
+                                                        
+                                                    </div>
+                                                   </div>
+                                                   <div *ngIf="ispay">
+                                                    <h4>EDIT DETAILS</h4>
+                                                    <div class="row">
+                                                        <div class="col-md-3">
+                                                            <div class="input-group mb-3">
+                                                              
+                                                              
+                                                                <select id="customer1" class="form-control"(change)="selectpaycustomer($event.target.value)" >
+                                                                    <option value="" disabled selected>{{ editpayment?.name || 'Select a customer' }}</option>
+                                                                    <option *ngFor="let items of custom" [value]="items.customerid">{{items.name}}</option>
+                                                                </select>
+                                                                
+                                                    
+                                            
+                                                              
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-md-6">
+                    
+                                                            
+                                                            <div class="input-group mb-3">
+                                                                <span class="input-group-text">Amount Pay:</span>
+                                                                <input id ="amount_paid1" [value]="editpayment?.amount"  type="text" class="form-control">
+                                                                <span class="input-group-text"> Pay Date:</span>
+                                                                <input  id= "paydate1"type="date" [value]="editpayment?.pay_date" class="form-control" >
+                                                               
+                                                                
+                                                            </div>
+                                                          </div>
+                                                          <div class="col-md-3">
+                                                            <div class="input-group mb-3">
+                                                                <select id="handcash1" class="form-control">
+                                                                    <option value="" disabled selected>{{ editpayment?.hand_cash || 'Is Hand Cash' }}</option>
+                                                                    <option value="Yes">YES</option>
+                                                                    <option value="No">No</option>
+                                                                </select>
+                                                                </div>
+                                                        
+                                                                
+                                                          </div>
+
+
+                                                    </div>
+                                                    <div class="row">
+                                                      
+                                                        <div class="col-md-9">
+                    
+                                                            
+                                                            <div class="input-group mb-3">
+                                                                <span class="input-group-text">Gpay No </span>
+                                                                <input id="gpay1" [value]="editpayment?.gpay" type="text" class="form-control" >
+                                                                <span class="input-group-text">Cheque No:</span>
+                                                                <input id="cheque1" [value]="editpayment?.cheque_no" type="text" class="form-control" >
+                                                               
+                                                                
+                                                            </div>
+                                                          </div>
+                                                          <div class="col-md-3">
+                                                            <div class="input-group mb-3">
+                                                                <select id="account1" class="form-control" (change)="selectaccount($event.target.value)" >
+                                                                    <option value="" disabled selected>{{ editpayment?.account || 'Select Account' }}</option>
+                                                                    <option *ngFor="let items of account" [value]="items.item">{{items.item}}</option>
+                                                                </select>
+                                                                </div>
+                                                          </div>
+
+
+                                                          <!-- <div class="col-md-3">
+                    
+                                                            <div class="input-group mb-3">
+                                                                <span class="input-group-text">Amount Pay:</span>
+                                                                <input (keyup)="divideNumberAmongBalances(amount_paid,paymentevents)"  type="text" class="form-control" [(ngModel)]="amount_paid">
+                                                                <span class="input-group-text"> Pay Date:</span>
+                                                                <input type="date" class="form-control" [(ngModel)]="paydate">
+                                                                <span class="input-group-text">Remaining Balance:</span><span>{{remainingBalance}}</span>
+                                                                <span class="input-group-text">Remaining Amount:</span><span>{{remaingamount}}</span>
+                                                                
+                                                            </div>
+                                                         
+                                                          </div> -->
+                                                    </div>
+                                                   <div class = "row">
+                                                    <div class="col-9">
+                                                        <span class="input-group-text">Enter Remark </span>
+                                                        <mat-form-field class="example-full-width" >
+                                                            <input id="payremark1"  [value]="editpayment?.remark" matInput placeholder="Enter Remark" >
+                                                          </mat-form-field>
+                                                    </div>
+                                                    <div class="col-3">
+                                                        <div class="input-group mb-3">
+                                                            <a (click)="editedpayment()"  class="btn btn-success w-md">Update</a>
+                                                            <a (click)="cancelpayment()"  class="btn btn-danger w-md">Cancel</a>
+                                                        </div>
+                                                        
+                                                    </div>
+                                                   </div>
+                                                   </div>
+                                                   
+
+                                                    <!-- <h1 style="clip: rect(0 0 0 0); position: absolute;">Recipient</h1>
+                                                    <address style="float: left; font-size: 125%; font-weight: bold;">
+                                                        <p>Some Company<br>c/o Some Guy</p>
+                                                    </address> -->
+                                                    <!-- <table class="meta" style="float: right; width: 36%; margin: 0 0 3em; border-collapse: separate; border-spacing: 2px; font-size: 75%;">
+                                                        <tr>
+                                                            <th style="width: 40%; background: #EEE; border-color: #BBB; border-radius: 0.25em; border-style: solid; padding: 0.5em;">Invoice #</th>
+                                                            <td style="width: 60%; border-color: #DDD; border-radius: 0.25em; border-style: solid; padding: 0.5em;"><span contenteditable>101138</span></td>
+                                                        </tr>
+                                                        <tr>
+                                                            <th style="background: #EEE; border-color: #BBB; border-radius: 0.25em; border-style: solid; padding: 0.5em;">Date</th>
+                                                            <td style="border-color: #DDD; border-radius: 0.25em; border-style: solid; padding: 0.5em;"><span contenteditable>January 1, 2012</span></td>
+                                                        </tr>
+                                                        <tr>
+                                                            <th style="background: #EEE; border-color: #BBB; border-radius: 0.25em; border-style: solid; padding: 0.5em;">Amount Due</th>
+                                                            <td style="border-color: #DDD; border-radius: 0.25em; border-style: solid; padding: 0.5em;"><span id="prefix" contenteditable>$</span><span>600.00</span></td>
+                                                        </tr>
+                                                    </table> -->
+                                                 
+                                                    
+                                                </article>
+                                                <div  class="card ">
+                                                    <div class="card-header card-header-danger">
+                                                        Payment Details
+                                                    </div>  
+                                                    <div class="card-body"> 
+                                            <div class="table-responsive">
+                                                <table id="myTable"  class="table">
+                                                  <thead class="text-primary">
+                                                    <tr>
+                                                        
+                                                      <th><a>
+                                                        <!-- <i (click)="open()" class="fa fa-plus-circle"></i> -->
+                                                      </a>Sl.No</th>
+                                                      <th>Name</th>
+                                                      <th>Date</th>
+                                                      <th>Is Hand case</th>
+                                                      <th>Cheque No</th>
+                                                      <th>Account</th>
+                                                      <th>Remark</th>
+                                                      <th>Amount</th>
+                                                      <th>Gpay</th>
+                                                      <th>Actions</th>
+                                                      
+                                                    </tr>
+                                                  </thead>
+                                                  <tbody>
+                                                    <tr *ngFor="let row of paydata; let i = index">
+                                                      <td>{{ i }}</td>
+                                                      <td>{{ row.Name }}</td>
+                                                      <td>{{ row.Rate}}</td>
+                                                   
+                                                     
+                                                    </tr>
+                                                  </tbody>
+                                                </table>
+                                              </div>
+                                              </div>
+                                              </div>
+                                            </div>
+                                    </div>
+                                </div><!-- end col -->
+                            </div>
+                        </div>
+               </div>
+            </div>
+        </div>
+    </div>
+
+      </div>
+
+
+
+      <div class="modal" id="pdfmodal">
+        <div  class="modal-dialog-lg modal-dialog-scrollable" role="document">
+          <div class="modal-content">
+              <div class="modal-header">
+                  <button class="close" (click)="closePreview()">×</button>
+              </div>
+              <div class="modal-body" style="max-height: 1500px; overflow-y: auto;">
+                <h4>UPLOAD NEW FILE </h4>
+                
+               
+                    <div >
+                        <input type="file" id="file-upload" (change)="handleFileInput($event)"  />
+                        <button (click)="submitfile()">Submit</button>
+                   <div *ngIf="response">
+                    <iframe
+                    
+                    [src]="fileUrl"
+                    width="100%"
+                    height="500px"
+                  ></iframe>
+                   </div>
+                       
+                    </div>
+                
+<div *ngIf="showdata">
+    <iframe
+                
+    [src]="fileUrl1"
+    width="100%"
+    height="500px"
+  ></iframe>
+</div>
+               
+              
+              </div>
+            <!-- Download and Close buttons -->
+            <div class="modal-footer">
+             
+              <button (click)="closePreview()">Close</button>
+            </div>
+          </div>
+      </div>
+        </div>
+
+      <div class="modal" id="innermodal">
+        <div  class="modal-dialog-lg modal-dialog-scrollable" role="document">
+          <div class="modal-content">
+              <div class="modal-header">
+                  <button class="close" (click)="closePreview()">×</button>
+              </div>
+              <div class="modal-body" style="max-height: 1500px; overflow-y: auto;">
+                  <iframe
+                
+                  [src]="fileUrl"
+                  width="100%"
+                  height="500px"
+                ></iframe>
+              
+              </div>
+            <!-- Download and Close buttons -->
+            <div class="modal-footer">
+             
+              <button (click)="closePreview()">Close</button>
+            </div>
+          </div>
+      </div>
+        </div>
+
+
+
+      <iframe id="printFrame" style="display: none;"></iframe>
+       <div class="modal" id="view1">
+        <div class="modal-dialog-lg modal-dialog-centered modal-dialog-scrollable">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h1 class="modal-title fs-5" id="staticBackdropLabel">Invoice</h1>
+              <button type="button" (click)="closeModal5('view')" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+            <div class="modal-body">
+                     
+                <!-- <style type="text/css"> * {margin:0; padding:0; text-indent:0; }
+                   h1 { color: black; font-family:Arial, sans-serif; font-style: normal; font-weight: bold; text-decoration: none; font-size: 12pt; }
+                   .s1 { color: black; font-family:Arial, sans-serif; font-style: normal; font-weight: bold; text-decoration: none; font-size: 10pt; }
+                   .s2 { color: black; font-family:Arial, sans-serif; font-style: normal; font-weight: normal; text-decoration: none; font-size: 10pt; }
+                   .s3 { color: black; font-family:Arial, sans-serif; font-style: normal; font-weight: normal; text-decoration: none; font-size: 10pt; }
+                   .s4 { color: black; font-family:Arial, sans-serif; font-style: normal; font-weight: normal; text-decoration: none; font-size: 9pt; vertical-align: 1pt; }
+                   .s5 { color: black; font-family:Arial, sans-serif; font-style: normal; font-weight: normal; text-decoration: none; font-size: 10pt; }
+                   .s6 { color: black; font-family:Arial, sans-serif; font-style: normal; font-weight: normal; text-decoration: none; font-size: 9pt; }
+                   .s7 { color: black; font-family:Arial, sans-serif; font-style: italic; font-weight: normal; text-decoration: none; font-size: 9pt; vertical-align: 1pt; }
+                   .s8 { color: black; font-family:Arial, sans-serif; font-style: italic; font-weight: bold; text-decoration: none; font-size: 10pt; }
+                   .s9 { color: black; font-family:Arial, sans-serif; font-style: normal; font-weight: bold; text-decoration: underline; font-size: 10pt; }
+                   .s10 { color: black; font-family:Arial, sans-serif; font-style: italic; font-weight: normal; text-decoration: none; font-size: 10pt; }
+                   .s11 { color: black; font-family:Arial, sans-serif; font-style: normal; font-weight: bold; text-decoration: none; font-size: 12pt; }
+                   .s13 { color: black; font-family:Arial, sans-serif; font-style: normal; font-weight: bold; text-decoration: none; font-size: 9pt; }
+                   .s14 { color: black; font-family:Arial, sans-serif; font-style: normal; font-weight: normal; text-decoration: none; font-size: 9pt; vertical-align: -2pt; }
+                   .s16 { color: black; font-family:Arial, sans-serif; font-style: normal; font-weight: normal; text-decoration: underline; font-size: 9pt; }
+                   p { color: black; font-family:Arial, sans-serif; font-style: normal; font-weight: normal; text-decoration: none; font-size: 9pt; margin:0pt; }
+                   table, tbody {vertical-align: top; overflow: visible; }
+                </style> -->
+                
+                
+            
+          
+                <h1 style="padding-top: 3pt;text-indent: 0pt;text-align: center;">Tax Invoice</h1>
+                <div id="mainword"  style="text-align: left;">
+                    <table style="border-collapse:collapse;text-align: center;" cellspacing="0">
+                        <tr style="height:3pt">
+                           <td style="width:238pt;border-top-style:solid;border-top-width:1pt;border-left-style:solid;border-left-width:1pt;border-bottom-style:solid;border-bottom-width:1pt;border-right-style:solid;border-right-width:1pt" colspan="4" rowspan="4">
+                              <p class="s1" style="padding-top: 2pt;padding-left: 2pt;text-indent: 0pt;text-align: left;">AK TYRES(2023-2024)</p>
+                              <p class="s2" style="padding-left: 2pt;text-indent: 0pt;line-height: 11pt;text-align: left;">SJ RESIDENCY,SFNO.364/2</p>
+                              <p class="s2" style="padding-left: 2pt;padding-right: 51pt;text-indent: 0pt;text-align: left;">Perambalur Main Road Thuraimangalam,Perambaluer GSTIN/UIN: 33DLNPA5133D1ZL</p>
+                              <p class="s2" style="padding-left: 2pt;text-indent: 0pt;line-height: 11pt;text-align: left;">State Name : Tamil Nadu, Code : 33</p>
+                              <p style="padding-left: 2pt;text-indent: 0pt;line-height: 11pt;text-align: left;"><a href="mailto:aktyres0001@gmail.com" class="s3" target="_blank">E-Mail : aktyres0001@gmail.com</a></p>
+                           </td>
+                           <td style="width:114pt;border-top-style:solid;border-top-width:1pt;border-left-style:solid;border-left-width:1pt;border-bottom-style:solid;border-bottom-width:1pt;border-right-style:solid;border-right-width:1pt" colspan="3">
+                              <p class="s4" style="padding-left: 2pt;text-indent: 0pt;line-height: 11pt;text-align: left;">Invoice No.  <span class="s5">e-Way Bill No.</span></p>
+                              <p class="s1" style="padding-top: 2pt;padding-left: 2pt;text-indent: 0pt;line-height: 11pt;text-align: left;">0411</p>
+                           </td>
+                           <td style="width:115pt;border-top-style:solid;border-top-width:1pt;border-left-style:solid;border-left-width:1pt;border-bottom-style:solid;border-bottom-width:1pt;border-right-style:solid;border-right-width:1pt" colspan="2">
+                              <p class="s6" style="padding-left: 2pt;text-indent: 0pt;line-height: 10pt;text-align: left;">Dated</p>
+                              <p class="s1" style="padding-top: 3pt;padding-left: 2pt;text-indent: 0pt;line-height: 11pt;text-align: left;">{{selcsr?.Date}}</p>
+                           </td>
+                        </tr>
+                        <tr style="height:3pt">
+                           <td style="width:114pt;border-top-style:solid;border-top-width:1pt;border-left-style:solid;border-left-width:1pt;border-bottom-style:solid;border-bottom-width:1pt;border-right-style:solid;border-right-width:1pt" colspan="3">
+                              <p class="s6" style="padding-left: 2pt;text-indent: 0pt;line-height: 10pt;text-align: left;">Delivery Note</p>
+                           </td>
+                           <td style="width:115pt;border-top-style:solid;border-top-width:1pt;border-left-style:solid;border-left-width:1pt;border-bottom-style:solid;border-bottom-width:1pt;border-right-style:solid;border-right-width:1pt" colspan="2">
+                              <p class="s6" style="padding-left: 2pt;text-indent: 0pt;line-height: 10pt;text-align: left;">Mode/Terms of Payment</p>
+                              <p class="s1" style="padding-top: 3pt;padding-left: 2pt;text-indent: 0pt;line-height: 11pt;text-align: left;">15 Days</p>
+                           </td>
+                        </tr>
+                        <tr style="height:3pt">
+                           <td style="width:114pt;border-top-style:solid;border-top-width:1pt;border-left-style:solid;border-left-width:1pt;border-bottom-style:solid;border-bottom-width:1pt;border-right-style:solid;border-right-width:1pt" colspan="3">
+                              <p class="s6" style="padding-left: 2pt;text-indent: 0pt;line-height: 10pt;text-align: left;">Reference No. &amp; Date.</p>
+                           </td>
+                           <td style="width:115pt;border-top-style:solid;border-top-width:1pt;border-left-style:solid;border-left-width:1pt;border-bottom-style:solid;border-bottom-width:1pt;border-right-style:solid;border-right-width:1pt" colspan="2">
+                              <p class="s6" style="padding-left: 2pt;text-indent: 0pt;line-height: 10pt;text-align: left;">Other References</p>
+                           </td>
+                        </tr>
+                        <tr style="height:3pt">
+                           <td style="width:114pt;border-top-style:solid;border-top-width:1pt;border-left-style:solid;border-left-width:1pt;border-right-style:solid;border-right-width:1pt" colspan="3" rowspan="2">
+                              <p class="s6" style="padding-left: 2pt;text-indent: 0pt;line-height: 10pt;text-align: left;">Buyer&#39;s Order No.</p>
+                           </td>
+                           <td style="width:115pt;border-top-style:solid;border-top-width:1pt;border-left-style:solid;border-left-width:1pt;border-right-style:solid;border-right-width:1pt" colspan="2" rowspan="2">
+                              <p class="s6" style="padding-left: 2pt;text-indent: 0pt;line-height: 10pt;text-align: left;">Dated</p>
+                           </td>
+                        </tr>
+                        <tr style="height:3pt">
+                           <td style="width:238pt;border-top-style:solid;border-top-width:1pt;border-left-style:solid;border-left-width:1pt;border-right-style:solid;border-right-width:1pt" colspan="4">
+                              <p class="s6" style="padding-left: 2pt;text-indent: 0pt;line-height: 10pt;text-align: left;">Consignee (Ship to)</p>
+                           </td>
+                        </tr>
+                        <tr style="height:3pt">
+                           <td style="width:238pt;border-left-style:solid;border-left-width:1pt;border-bottom-style:solid;border-bottom-width:1pt;border-right-style:solid;border-right-width:1pt" colspan="4" rowspan="3">
+                              <p class="s1" style="padding-top: 1pt;padding-left: 2pt;text-indent: 0pt;text-align: left;">{{selcsr?.name}}</p>
+                              <p class="s2" style="padding-left: 2pt;text-indent: 0pt;text-align: left;">{{selcsr?.companyAddress }}</p>
+                              <p class="s2" style="padding-left: 2pt;text-indent: 0pt;line-height: 10pt;text-align: left;">{{selcsr?.email}}</p>
+                           </td>
+                           <td style="width:114pt;border-left-style:solid;border-left-width:1pt;border-bottom-style:solid;border-bottom-width:1pt;border-right-style:solid;border-right-width:1pt" colspan="3">
+                              <p style="text-indent: 0pt;text-align: left;"><br/></p>
+                           </td>
+                           <td style="width:115pt;border-left-style:solid;border-left-width:1pt;border-bottom-style:solid;border-bottom-width:1pt;border-right-style:solid;border-right-width:1pt" colspan="2">
+                              <p style="text-indent: 0pt;text-align: left;"><br/></p>
+                           </td>
+                        </tr>
+                        <tr style="height:3pt">
+                           <td style="width:114pt;border-top-style:solid;border-top-width:1pt;border-left-style:solid;border-left-width:1pt;border-bottom-style:solid;border-bottom-width:1pt;border-right-style:solid;border-right-width:1pt" colspan="3">
+                              <p class="s6" style="padding-left: 2pt;text-indent: 0pt;line-height: 10pt;text-align: left;">Dispatch Doc No.</p>
+                           </td>
+                           <td style="width:115pt;border-top-style:solid;border-top-width:1pt;border-left-style:solid;border-left-width:1pt;border-bottom-style:solid;border-bottom-width:1pt;border-right-style:solid;border-right-width:1pt" colspan="2">
+                              <p class="s6" style="padding-left: 2pt;text-indent: 0pt;line-height: 10pt;text-align: left;">Delivery Note Date</p>
+                           </td>
+                        </tr>
+                        <tr style="height:5pt">
+                           <td style="width:114pt;border-top-style:solid;border-top-width:1pt;border-left-style:solid;border-left-width:1pt;border-right-style:solid;border-right-width:1pt" colspan="3">
+                              <p class="s6" style="padding-left: 2pt;text-indent: 0pt;line-height: 10pt;text-align: left;">Dispatched through</p>
+                           </td>
+                           <td style="width:115pt;border-top-style:solid;border-top-width:1pt;border-left-style:solid;border-left-width:1pt;border-right-style:solid;border-right-width:1pt" colspan="2">
+                              <p class="s6" style="padding-left: 2pt;text-indent: 0pt;line-height: 10pt;text-align: left;">Destination</p>
+                           </td>
+                        </tr>
+                        <tr style="height:3pt">
+                           <td style="width:238pt;border-top-style:solid;border-top-width:1pt;border-left-style:solid;border-left-width:1pt;border-right-style:solid;border-right-width:1pt" colspan="4">
+                              <p class="s6" style="padding-left: 2pt;text-indent: 0pt;line-height: 9pt;text-align: left;">Buyer (Bill to)</p>
+                           </td>
+                           <td style="width:114pt;border-left-style:solid;border-left-width:1pt;border-bottom-style:solid;border-bottom-width:1pt;border-right-style:solid;border-right-width:1pt" colspan="3">
+                              <p style="text-indent: 0pt;text-align: left;"><br/></p>
+                           </td>
+                           <td style="width:115pt;border-left-style:solid;border-left-width:1pt;border-bottom-style:solid;border-bottom-width:1pt;border-right-style:solid;border-right-width:1pt" colspan="2">
+                              <p style="text-indent: 0pt;text-align: left;"><br/></p>
+                           </td>
+                        </tr>
+                        <tr style="height:10pt">
+                           <td style="width:238pt;border-left-style:solid;border-left-width:1pt;border-bottom-style:solid;border-bottom-width:1pt;border-right-style:solid;border-right-width:1pt" colspan="4">
+                              <p class="s1" style="padding-top: 2pt;padding-left: 2pt;text-indent: 0pt;text-align: left;">{{selcsr?.name}}</p>
+                              <p class="s2" style="padding-left: 2pt;text-indent: 0pt;text-align: left;">{{selcsr?.companyAddress }}</p>
+                              <p class="s2" style="padding-left: 2pt;padding-right: 51pt;text-indent: 0pt;text-align: left;">{{selcsr?.email}}</p>
+                           </td>
+                           <td style="width:229pt;border-top-style:solid;border-top-width:1pt;border-left-style:solid;border-left-width:1pt;border-bottom-style:solid;border-bottom-width:1pt;border-right-style:solid;border-right-width:1pt" colspan="5">
+                              <p class="s6" style="padding-left: 2pt;text-indent: 0pt;line-height: 10pt;text-align: left;">Terms of Delivery</p>
+                           </td>
+                        </tr>
+                        <tr style="height:3pt">
+                           <td style="width:14pt;border-top-style:solid;border-top-width:1pt;border-left-style:solid;border-left-width:1pt;border-bottom-style:solid;border-bottom-width:1pt;border-right-style:solid;border-right-width:1pt">
+                              <p class="s2" style="padding-left: 2pt;text-indent: 0pt;line-height: 11pt;text-align: left;">Sl</p>
+                              <p class="s2" style="padding-left: 2pt;text-indent: 0pt;line-height: 11pt;text-align: left;">No.</p>
+                           </td>
+                           <td style="width:161pt;border-top-style:solid;border-top-width:1pt;border-left-style:solid;border-left-width:1pt;border-bottom-style:solid;border-bottom-width:1pt;border-right-style:solid;border-right-width:1pt">
+                              <p class="s6" style="padding-left: 35pt;text-indent: 0pt;line-height: 10pt;text-align: left;">Description of Goods</p>
+                           </td>
+                           <td style="width:47pt;border-top-style:solid;border-top-width:1pt;border-left-style:solid;border-left-width:1pt;border-bottom-style:solid;border-bottom-width:1pt;border-right-style:solid;border-right-width:1pt">
+                              <p class="s6" style="padding-left: 3pt;text-indent: 0pt;line-height: 10pt;text-align: left;">HSN/SAC</p>
+                           </td>
+                           <td style="width:31pt;border-top-style:solid;border-top-width:1pt;border-left-style:solid;border-left-width:1pt;border-bottom-style:solid;border-bottom-width:1pt;border-right-style:solid;border-right-width:1pt">
+                              <p class="s6" style="padding-left: 6pt;text-indent: 0pt;line-height: 10pt;text-align: left;">GST</p>
+                              <p class="s6" style="padding-top: 1pt;padding-left: 5pt;text-indent: 0pt;text-align: left;">Rate</p>
+                           </td>
+                           <td style="width:47pt;border-top-style:solid;border-top-width:1pt;border-left-style:solid;border-left-width:1pt;border-bottom-style:solid;border-bottom-width:1pt;border-right-style:solid;border-right-width:1pt">
+                              <p class="s6" style="padding-left: 6pt;text-indent: 0pt;line-height: 10pt;text-align: left;">Quantity</p>
+                           </td>
+                           <td style="width:47pt;border-top-style:solid;border-top-width:1pt;border-left-style:solid;border-left-width:1pt;border-bottom-style:solid;border-bottom-width:1pt;border-right-style:solid;border-right-width:1pt">
+                              <p class="s6" style="padding-left: 13pt;text-indent: 0pt;line-height: 10pt;text-align: left;">Rate</p>
+                           </td>
+                           <td style="width:21pt;border-top-style:solid;border-top-width:1pt;border-left-style:solid;border-left-width:1pt;border-bottom-style:solid;border-bottom-width:1pt;border-right-style:solid;border-right-width:1pt">
+                              <p class="s6" style="padding-left: 3pt;text-indent: 0pt;line-height: 10pt;text-align: left;">per</p>
+                           </td>
+                           <td style="width:31pt;border-top-style:solid;border-top-width:1pt;border-left-style:solid;border-left-width:1pt;border-bottom-style:solid;border-bottom-width:1pt;border-right-style:solid;border-right-width:1pt">
+                              <p class="s6" style="padding-left: 2pt;text-indent: 0pt;line-height: 10pt;text-align: left;">Disc. %</p>
+                           </td>
+                           <td style="width:68pt;border-top-style:solid;border-top-width:1pt;border-left-style:solid;border-left-width:1pt;border-bottom-style:solid;border-bottom-width:1pt;border-right-style:solid;border-right-width:1pt">
+                              <p class="s6" style="padding-left: 18pt;text-indent: 0pt;line-height: 10pt;text-align: left;">Amount</p>
+                           </td>
+                        </tr>
+                        <tr style="height:10pt">
+                           <td contenteditable="true" style="width:14pt;border-top-style:solid;border-top-width:1pt;border-left-style:solid;border-left-width:1pt;border-right-style:solid;border-right-width:1pt">
+                              
+                              <div *ngFor="let item of sel; let i = index">
+                                <p contenteditable="true" >{{i + 1}}</p>
+                              </div>
+                              <!-- <p class="s2" style="padding-left: 2pt;text-indent: 0pt;text-align: left;">2</p>
+                              <p class="s2" style="padding-left: 2pt;text-indent: 0pt;text-align: left;">3</p> -->
+                           </td>
+                           <td contenteditable="true" >
+                            <div contenteditable="true" *ngFor="let item of sel">
+                                <p contenteditable="true">{{item?.product}}</p>
+                           
+                            </div>
+                             
+                           </td>
+                           <td  contenteditable="true"style="width:47pt;border-top-style:solid;border-top-width:1pt;border-left-style:solid;border-left-width:1pt;border-right-style:solid;border-right-width:1pt">
+                              <!-- <p class="s6" style="padding-top: 5pt;padding-left: 2pt;text-indent: 0pt;text-align: left;">40112010</p>
+                              <p class="s6" style="padding-top: 1pt;padding-left: 2pt;text-indent: 0pt;text-align: left;">40112010</p> -->
+                              <div contenteditable="true" *ngFor="let item of sel">
+                              <p class="s6" >40112010</p>
+                              </div>
+                           </td>
+                           <td contenteditable="true" style="width:31pt;border-top-style:solid;border-top-width:1pt;border-left-style:solid;border-left-width:1pt;border-right-style:solid;border-right-width:1pt">
+                              <!-- <p class="s6" style="padding-top: 5pt;padding-left: 8pt;text-indent: 0pt;text-align: left;">28 %</p>
+                              <p class="s6" style="padding-top: 1pt;padding-left: 8pt;text-indent: 0pt;text-align: left;">28 %</p>
+                              <p class="s6" style="padding-top: 1pt;padding-left: 8pt;text-indent: 0pt;text-align: left;">28 %</p> -->
+                              <div contenteditable="true"*ngFor="let item of sel">
+
+                                <p class="s6" >28 %</p>
+                              </div>
+                           </td>
+                           <td contenteditable="true" style="width:47pt;border-top-style:solid;border-top-width:1pt;border-left-style:solid;border-left-width:1pt;border-right-style:solid;border-right-width:1pt">
+                              <!-- <p class="s1" style="padding-top: 5pt;padding-left: 22pt;text-indent: 0pt;text-align: left;">2 PC</p>
+                              <p class="s1" style="padding-left: 22pt;text-indent: 0pt;text-align: left;">2 PC</p> -->
+                              <div contenteditable="true" *ngFor="let item of sel">
+                              <p class="s1">{{item?.quantity}} PC</p>
+                              </div>
+                           </td>
+                           <td  contenteditable="true" style="width:47pt;border-top-style:solid;border-top-width:1pt;border-left-style:solid;border-left-width:1pt;border-right-style:solid;border-right-width:1pt">
+                            <div contenteditable="true"  *ngFor="let item of sel">
+                            <p class="s6"    >{{item?.productId}}</p>
+                            </div>
+                              <!-- <p class="s6" style="padding-top: 1pt;padding-right: 1pt;text-indent: 0pt;text-align: right;">481.00</p>
+                              <p class="s6" style="padding-top: 1pt;padding-right: 1pt;text-indent: 0pt;text-align: right;">999.00</p> -->
+                           </td>
+                           <td style="width:21pt;border-top-style:solid;border-top-width:1pt;border-left-style:solid;border-left-width:1pt;border-right-style:solid;border-right-width:1pt">
+                            <div *ngFor="let item of sel"> 
+                            <p class="s6" >PC</p>
+                            </div>  
+                        </td>
+                           <td style="width:31pt;border-top-style:solid;border-top-width:1pt;border-left-style:solid;border-left-width:1pt;border-bottom-style:solid;border-bottom-width:1pt;border-right-style:solid;border-right-width:1pt" rowspan="4">
+                              <p style="text-indent: 0pt;text-align: left;"><br/></p>
+                           </td>
+                           <td style="width:68pt;border-top-style:solid;border-top-width:1pt;border-left-style:solid;border-left-width:1pt;border-bottom-style:solid;border-bottom-width:1pt;border-right-style:solid;border-right-width:1pt">
+                              <!-- <p class="s1" style="padding-top: 5pt;padding-right: 1pt;text-indent: 0pt;text-align: right;">38,446.24</p>
+                              <p class="s1" style="padding-right: 1pt;text-indent: 0pt;text-align: right;">962.00</p> -->
+                              <div *ngFor="let item of sel">
+                              <p class="s1" >{{item?.total}}</p>
+                              </div>
+                           </td>
+                        </tr>
+                        <tr style="height:3pt">
+                           <td style="width:14pt;border-left-style:solid;border-left-width:1pt;border-right-style:solid;border-right-width:1pt">
+                              <p style="text-indent: 0pt;text-align: left;"><br/></p>
+                           </td>
+                           <td style="width:161pt;border-left-style:solid;border-left-width:1pt;border-right-style:solid;border-right-width:1pt">
+                              <p style="text-indent: 0pt;text-align: left;"><br/></p>
+                           </td>
+                           <td style="width:47pt;border-left-style:solid;border-left-width:1pt;border-right-style:solid;border-right-width:1pt">
+                              <p style="text-indent: 0pt;text-align: left;"><br/></p>
+                           </td>
+                           <td style="width:31pt;border-left-style:solid;border-left-width:1pt;border-right-style:solid;border-right-width:1pt">
+                              <p style="text-indent: 0pt;text-align: left;"><br/></p>
+                           </td>
+                           <td style="width:47pt;border-left-style:solid;border-left-width:1pt;border-right-style:solid;border-right-width:1pt">
+                              <p style="text-indent: 0pt;text-align: left;"><br/></p>
+                           </td>
+                           <td style="width:47pt;border-left-style:solid;border-left-width:1pt;border-right-style:solid;border-right-width:1pt">
+                              <p style="text-indent: 0pt;text-align: left;"><br/></p>
+                           </td>
+                           <td style="width:21pt;border-left-style:solid;border-left-width:1pt;border-right-style:solid;border-right-width:1pt">
+                              <p style="text-indent: 0pt;text-align: left;"><br/></p>
+                           </td>
+                           <td style="width:68pt;border-top-style:solid;border-top-width:1pt;border-left-style:solid;border-left-width:1pt;border-right-style:solid;border-right-width:1pt">
+                          
+                            <!-- <div *ngFor="let item of sel">     
+                            <p class="s2" >{{item?.supertotal}}</p>
+                            </div> -->
+                            <!-- <div *ngFor="let item of sel; let i = index">
+                                <ng-container *ngIf="i === 0">
+                                <p class="s1" >{{item?.CGST}}</p>
+                                <p class="s1" >{{item?.SGST}}</p>
+                                </ng-container>
+                                </div> -->
+                        </td>
+                        </tr>
+                        <tr style="height:5pt">
+                           <td style="width:14pt;border-left-style:solid;border-left-width:1pt;border-right-style:solid;border-right-width:1pt">
+                              <p style="text-indent: 0pt;text-align: left;"><br/></p>
+                           </td>
+                           <td style="width:161pt;border-left-style:solid;border-left-width:1pt;border-right-style:solid;border-right-width:1pt">
+                              <p class="s7" style="padding-top: 2pt;padding-left: 100pt;padding-right: 2pt;text-indent: -98pt;text-align: justify;">Less :  <span class="s8">Clim Discount SGST@14% CGST@14%</span></p>
+                              <p class="s8" style="padding-left: 109pt;text-indent: 0pt;text-align: left;">Round Off</p>
+                              <p class="s9" style="padding-left: 2pt;text-indent: 0pt;text-align: left;">Bill Details:</p>
+                           </td>
+                           <td style="width:47pt;border-left-style:solid;border-left-width:1pt;border-right-style:solid;border-right-width:1pt">
+                              <p style="text-indent: 0pt;text-align: left;"><br/></p>
+                           </td>
+                           <td style="width:31pt;border-left-style:solid;border-left-width:1pt;border-right-style:solid;border-right-width:1pt">
+                              <p style="text-indent: 0pt;text-align: left;"><br/></p>
+                           </td>
+                           <td style="width:47pt;border-left-style:solid;border-left-width:1pt;border-right-style:solid;border-right-width:1pt">
+                              <p style="text-indent: 0pt;text-align: left;"><br/></p>
+                           </td>
+                           <td style="width:47pt;border-left-style:solid;border-left-width:1pt;border-right-style:solid;border-right-width:1pt">
+                              <p style="padding-top: 2pt;text-indent: 0pt;text-align: left;"><br/></p>
+                              <p class="s10" style="padding-right: 1pt;text-indent: 0pt;text-align: right;">14</p>
+                              <p class="s10" style="padding-right: 1pt;text-indent: 0pt;text-align: right;">14</p>
+                           </td>
+                           <td style="width:21pt;border-left-style:solid;border-left-width:1pt;border-right-style:solid;border-right-width:1pt">
+                              <p style="padding-top: 2pt;text-indent: 0pt;text-align: left;"><br/></p>
+                              <p class="s10" style="padding-left: 2pt;text-indent: 0pt;text-align: left;">%</p>
+                              <p class="s10" style="padding-left: 2pt;text-indent: 0pt;text-align: left;">%</p>
+                           </td>
+                           <td style="width:68pt;border-left-style:solid;border-left-width:1pt;border-right-style:solid;border-right-width:1pt">
+                            <div *ngFor="let item of sel; let i = index">
+                                <ng-container *ngIf="i === 0">
+                                  <p class="s1" style="padding-top: 2pt; padding-right: 1pt; text-indent: 0; text-align: right;">(-){{item?.discount}}</p>
+                                </ng-container>
+                              </div>
+                              <div *ngFor="let item of sel; let i = index">
+                                <ng-container *ngIf="i === 0">
+                                <p class="s1" >{{item?.CGST}}</p>
+                                <p class="s1" >{{item?.SGST}}</p>
+                                </ng-container>
+                                </div>
+                             
+                           </td>
+                        </tr>
+                        <tr style="height:5pt">
+                           <td style="width:14pt;border-left-style:solid;border-left-width:1pt;border-bottom-style:solid;border-bottom-width:1pt;border-right-style:solid;border-right-width:1pt">
+                              <p style="text-indent: 0pt;text-align: left;"><br/></p>
+                           </td>
+                           <td style="width:161pt;border-left-style:solid;border-left-width:1pt;border-bottom-style:solid;border-bottom-width:1pt;border-right-style:solid;border-right-width:1pt">
+                            <div *ngFor="let item of sel; let i = index">
+                                <ng-container *ngIf="i === 0">
+                                    <p class="s2" style="padding-top: 2pt;padding-right: 1pt;text-indent: 0pt;text-align: right;">New Ref 410  15 Days {{item?.premiumtotal}}<span class="s7">Dr</span></p>
+                           
+                       
+                                </ng-container>
+                                </div>  
+                           </td>
+                           <td style="width:47pt;border-left-style:solid;border-left-width:1pt;border-bottom-style:solid;border-bottom-width:1pt;border-right-style:solid;border-right-width:1pt">
+                              <p style="text-indent: 0pt;text-align: left;"><br/></p>
+                           </td>
+                           <td style="width:31pt;border-left-style:solid;border-left-width:1pt;border-bottom-style:solid;border-bottom-width:1pt;border-right-style:solid;border-right-width:1pt">
+                              <p style="text-indent: 0pt;text-align: left;"><br/></p>
+                           </td>
+                           <td style="width:47pt;border-left-style:solid;border-left-width:1pt;border-bottom-style:solid;border-bottom-width:1pt;border-right-style:solid;border-right-width:1pt">
+                              <p style="text-indent: 0pt;text-align: left;"><br/></p>
+                           </td>
+                           <td style="width:47pt;border-left-style:solid;border-left-width:1pt;border-bottom-style:solid;border-bottom-width:1pt;border-right-style:solid;border-right-width:1pt">
+                              <p style="text-indent: 0pt;text-align: left;"><br/></p>
+                           </td>
+                           <td style="width:21pt;border-left-style:solid;border-left-width:1pt;border-bottom-style:solid;border-bottom-width:1pt;border-right-style:solid;border-right-width:1pt">
+                              <p style="text-indent: 0pt;text-align: left;"><br/></p>
+                           </td>
+                           <td style="width:68pt;border-left-style:solid;border-left-width:1pt;border-bottom-style:solid;border-bottom-width:1pt;border-right-style:solid;border-right-width:1pt">
+                              <p style="text-indent: 0pt;text-align: left;"><br/></p>
+                           </td>
+                        </tr>
+                        <tr style="height:3pt">
+                           <td style="width:14pt;border-top-style:solid;border-top-width:1pt;border-left-style:solid;border-left-width:1pt;border-bottom-style:solid;border-bottom-width:1pt;border-right-style:solid;border-right-width:1pt">
+                              <p style="text-indent: 0pt;text-align: left;"><br/></p>
+                           </td>
+                           <td style="width:161pt;border-top-style:solid;border-top-width:1pt;border-left-style:solid;border-left-width:1pt;border-bottom-style:solid;border-bottom-width:1pt;border-right-style:solid;border-right-width:1pt">
+                              <p class="s6" style="padding-right: 1pt;text-indent: 0pt;line-height: 10pt;text-align: right;">Total</p>
+                           </td>
+                           <td style="width:47pt;border-top-style:solid;border-top-width:1pt;border-left-style:solid;border-left-width:1pt;border-bottom-style:solid;border-bottom-width:1pt;border-right-style:solid;border-right-width:1pt">
+                              <p style="text-indent: 0pt;text-align: left;"><br/></p>
+                           </td>
+                           <td style="width:31pt;border-top-style:solid;border-top-width:1pt;border-left-style:solid;border-left-width:1pt;border-bottom-style:solid;border-bottom-width:1pt;border-right-style:solid;border-right-width:1pt">
+                              <p style="text-indent: 0pt;text-align: left;"><br/></p>
+                           </td>
+                           <td style="width:47pt;border-top-style:solid;border-top-width:1pt;border-left-style:solid;border-left-width:1pt;border-bottom-style:solid;border-bottom-width:1pt;border-right-style:solid;border-right-width:1pt">
+                            <div *ngFor="let item of sel; let i = index">
+                             <ng-container *ngIf="i === 0">
+                                <p class="s1" style="padding-left: 22pt;text-indent: 0pt;line-height: 11pt;text-align: left;">{{item?.quantitytotal  }}PC</p>
+                           
+                       
+                                </ng-container>
+                                
+                                
+                            </div> 
+                            
+                           
+                           </td>
+                           <td style="width:47pt;border-top-style:solid;border-top-width:1pt;border-left-style:solid;border-left-width:1pt;border-bottom-style:solid;border-bottom-width:1pt;border-right-style:solid;border-right-width:1pt">
+                              <p style="text-indent: 0pt;text-align: left;"><br/></p>
+                           </td>
+                           <td style="width:21pt;border-top-style:solid;border-top-width:1pt;border-left-style:solid;border-left-width:1pt;border-bottom-style:solid;border-bottom-width:1pt;border-right-style:solid;border-right-width:1pt">
+                              <p style="text-indent: 0pt;text-align: left;"><br/></p>
+                           </td>
+                           <td style="width:31pt;border-top-style:solid;border-top-width:1pt;border-left-style:solid;border-left-width:1pt;border-bottom-style:solid;border-bottom-width:1pt;border-right-style:solid;border-right-width:1pt">
+                              <p style="text-indent: 0pt;text-align: left;"><br/></p>
+                           </td>
+                           <td style="width:68pt;border-top-style:solid;border-top-width:1pt;border-left-style:solid;border-left-width:1pt;border-bottom-style:solid;border-bottom-width:1pt;border-right-style:solid;border-right-width:1pt">
+                            
+                              <div *ngFor="let item of sel; let i = index">
+                                <ng-container *ngIf="i === 0">
+                           
+                                <p class="s11" style="padding-left: 3pt;text-indent: 0pt;line-height: 13pt;text-align: left;">{{item?.premiumtotal}}</p>
+                                </ng-container>
+                                </div>
+                           </td>
+                        </tr>
+                        <tr style="height:10pt">
+                           <td style="width:467pt;border-top-style:solid;border-top-width:1pt;border-left-style:solid;border-left-width:1pt;border-bottom-style:solid;border-bottom-width:1pt;border-right-style:solid;border-right-width:1pt" colspan="9">
+                              <p class="s6" style="padding-left: 2pt;text-indent: 0pt;line-height: 10pt;text-align: left;">Amount Chargeable (in words)                                       <i>E. &amp; O.E</i></p>
+                              <div *ngFor="let item of sel; let i = index">
+                                <ng-container *ngIf="i === 0">
+                           
+                                    <p class="s1" style="padding-top: 3pt;padding-left: 2pt;text-indent: 0pt;text-align: left;">{{item?.words}}</p>
+                          
+                                </ng-container>
+                                </div>
+                           </td>
+                        </tr>
+                        <tr style="height:3pt">
+                           <td style="width:248pt;border-top-style:solid;border-top-width:1pt;border-left-style:solid;border-left-width:1pt;border-bottom-style:solid;border-bottom-width:1pt;border-right-style:solid;border-right-width:1pt" colspan="4" rowspan="2">
+                              <p class="s6" style="padding-right: 9pt;text-indent: 0pt;line-height: 10pt;text-align: right;">Taxable</p>
+                              <p class="s6" style="padding-right: 13pt;text-indent: 0pt;line-height: 9pt;text-align: right;">Value</p>
+                           </td>
+                           <td style="width:83pt;border-top-style:solid;border-top-width:1pt;border-left-style:solid;border-left-width:1pt;border-bottom-style:solid;border-bottom-width:1pt;border-right-style:solid;border-right-width:1pt" colspan="2">
+                              <p class="s6" style="padding-left: 18pt;text-indent: 0pt;line-height: 9pt;text-align: left;">Central Tax</p>
+                           </td>
+                           <td style="width:84pt;border-top-style:solid;border-top-width:1pt;border-left-style:solid;border-left-width:1pt;border-bottom-style:solid;border-bottom-width:1pt;border-right-style:solid;border-right-width:1pt" colspan="2">
+                              <p class="s6" style="padding-left: 22pt;text-indent: 0pt;line-height: 9pt;text-align: left;">State Tax</p>
+                           </td>
+                           <td style="width:52pt;border-top-style:solid;border-top-width:1pt;border-left-style:solid;border-left-width:1pt;border-bottom-style:solid;border-bottom-width:1pt;border-right-style:solid;border-right-width:1pt" rowspan="2">
+                              <p class="s6" style="text-indent: 0pt;line-height: 10pt;text-align: center;">Total</p>
+                              <p class="s6" style="text-indent: 0pt;line-height: 9pt;text-align: center;">Tax Amount</p>
+                           </td>
+                        </tr>
+                        <tr style="height:4pt">
+                           <td style="width:31pt;border-top-style:solid;border-top-width:1pt;border-left-style:solid;border-left-width:1pt;border-bottom-style:solid;border-bottom-width:1pt;border-right-style:solid;border-right-width:1pt">
+                              <p class="s6" style="padding-left: 6pt;text-indent: 0pt;line-height: 9pt;text-align: left;">Rate</p>
+                           </td>
+                           <td style="width:52pt;border-top-style:solid;border-top-width:1pt;border-left-style:solid;border-left-width:1pt;border-bottom-style:solid;border-bottom-width:1pt;border-right-style:solid;border-right-width:1pt">
+                              <p class="s6" style="padding-left: 10pt;text-indent: 0pt;line-height: 9pt;text-align: left;">Amount</p>
+                           </td>
+                           <td style="width:31pt;border-top-style:solid;border-top-width:1pt;border-left-style:solid;border-left-width:1pt;border-bottom-style:solid;border-bottom-width:1pt;border-right-style:solid;border-right-width:1pt">
+                              <p class="s6" style="padding-left: 6pt;text-indent: 0pt;line-height: 9pt;text-align: left;">Rate</p>
+                           </td>
+                           <td style="width:53pt;border-top-style:solid;border-top-width:1pt;border-left-style:solid;border-left-width:1pt;border-bottom-style:solid;border-bottom-width:1pt;border-right-style:solid;border-right-width:1pt" colspan="1">
+                              <p class="s6" style="padding-left: 10pt;text-indent: 0pt;line-height: 9pt;text-align: left;">Amount</p>
+                           </td>
+                        </tr>
+                        <tr style="height:4pt">
+                           <td style="width:248pt;border-top-style:solid;border-top-width:1pt;border-left-style:solid;border-left-width:1pt;border-bottom-style:solid;border-bottom-width:1pt;border-right-style:solid;border-right-width:1pt" colspan="4">
+                            <div *ngFor="let item of sel; let i = index">
+                                <ng-container *ngIf="i === 0">
+                                    <p class="s6" style="padding-right: 1pt;text-indent: 0pt;line-height: 9pt;text-align: right;">{{item?.total}}</p>
+                                </ng-container>
+                                </div>
+                           
+                            
+                           </td>
+                           <td style="width:31pt;border-top-style:solid;border-top-width:1pt;border-left-style:solid;border-left-width:1pt;border-bottom-style:solid;border-bottom-width:1pt;border-right-style:solid;border-right-width:1pt">
+                              <p class="s6" style="padding-left: 10pt;text-indent: 0pt;line-height: 9pt;text-align: left;">14%</p>
+                           </td>
+                           <td style="width:52pt;border-top-style:solid;border-top-width:1pt;border-left-style:solid;border-left-width:1pt;border-bottom-style:solid;border-bottom-width:1pt;border-right-style:solid;border-right-width:1pt">
+                            <div *ngFor="let item of sel; let i = index">
+                                <ng-container *ngIf="i === 0">
+                                    <p class="s6" style="padding-left: 14pt;text-indent: 0pt;line-height: 9pt;text-align: left;">{{item?.CGST}} </p>
+                                </ng-container>
+                                </div>
+                            
+                           
+                           </td>
+                           <td style="width:31pt;border-top-style:solid;border-top-width:1pt;border-left-style:solid;border-left-width:1pt;border-bottom-style:solid;border-bottom-width:1pt;border-right-style:solid;border-right-width:1pt">
+                              <p class="s6" style="padding-left: 10pt;text-indent: 0pt;line-height: 9pt;text-align: left;">14%</p>
+                           </td>
+                           <td style="width:53pt;border-top-style:solid;border-top-width:1pt;border-left-style:solid;border-left-width:1pt;border-bottom-style:solid;border-bottom-width:1pt;border-right-style:solid;border-right-width:1pt" colspan="1">
+                            <div *ngFor="let item of sel; let i = index">
+                                <ng-container *ngIf="i === 0">
+                                    <p class="s6" style="padding-left: 14pt;text-indent: 0pt;line-height: 9pt;text-align: left;">{{item?.CGST}} </p>
+                                </ng-container>
+                                </div>
+                           </td>
+                           <td style="width:52pt;border-top-style:solid;border-top-width:1pt;border-left-style:solid;border-left-width:1pt;border-bottom-style:solid;border-bottom-width:1pt;border-right-style:solid;border-right-width:1pt">
+                            <div *ngFor="let item of sel; let i = index">
+                                <ng-container *ngIf="i === 0">
+                                
+                                    <p class="s6" style="padding-right: 1pt;text-indent: 0pt;line-height: 9pt;text-align: right;">{{(item?.CGST+item?.CGST)}}</p>
+                                </ng-container>
+                                </div>
+                        
+                           </td>
+                        </tr>
+                         <tr style="height:2pt">
+                           <td style="width:248pt;border-top-style:solid;border-top-width:1pt;border-left-style:solid;border-left-width:1pt;border-bottom-style:solid;border-bottom-width:1pt;border-right-style:solid;border-right-width:1pt" colspan="4">
+                            <div *ngFor="let item of sel; let i = index">
+                                <ng-container *ngIf="i === 0">
+                                    <p class="s13" style="padding-right: 1pt;text-indent: 0pt;line-height: 10pt;text-align: right;">Total:  <strong>{{item?.total}}</strong></p>
+                                   
+                                </ng-container>
+                                </div> 
+                            
+                            
+                           </td>
+                           <td style="width:31pt;border-top-style:solid;border-top-width:1pt;border-left-style:solid;border-left-width:1pt;border-bottom-style:solid;border-bottom-width:1pt;border-right-style:solid;border-right-width:1pt">
+                              <p style="text-indent: 0pt;text-align: left;"><br/></p>
+                           </td>
+                           <td style="width:52pt;border-top-style:solid;border-top-width:1pt;border-left-style:solid;border-left-width:1pt;border-bottom-style:solid;border-bottom-width:1pt;border-right-style:solid;border-right-width:1pt">
+                            <div *ngFor="let item of sel; let i = index">
+                                <ng-container *ngIf="i === 0">
+                                    <p class="s13" style="padding-left: 14pt;text-indent: 0pt;line-height: 10pt;text-align: left;"><strong>{{item?.CGST}} </strong></p>
+                                </ng-container>
+                                </div>
+                           
+                           </td>
+                           <td style="width:31pt;border-top-style:solid;border-top-width:1pt;border-left-style:solid;border-left-width:1pt;border-bottom-style:solid;border-bottom-width:1pt;border-right-style:solid;border-right-width:1pt">
+                              <p style="text-indent: 0pt;text-align: left;"><br/></p>
+                           </td>
+                           <td style="width:53pt;border-top-style:solid;border-top-width:1pt;border-left-style:solid;border-left-width:1pt;border-bottom-style:solid;border-bottom-width:1pt;border-right-style:solid;border-right-width:1pt" colspan="1">
+                             
+                              <div *ngFor="let item of sel; let i = index">
+                                <ng-container *ngIf="i === 0">
+                                    <p class="s13" style="padding-left: 14pt;text-indent: 0pt;line-height: 10pt;text-align: left;"><strong>{{item?.CGST}}</strong> </p>
+                                </ng-container>
+                                </div>
+                           </td>
+                           <td style="width:52pt;border-top-style:solid;border-top-width:1pt;border-left-style:solid;border-left-width:1pt;border-bottom-style:solid;border-bottom-width:1pt;border-right-style:solid;border-right-width:1pt">
+                            <div *ngFor="let item of sel; let i = index">
+                                <ng-container *ngIf="i === 0">
+                                
+                                    <p class="s13" style="padding-right: 1pt;text-indent: 0pt;line-height: 10pt;text-align: right;"><strong>{{(item?.CGST+item?.CGST)}}</strong></p>
+                                </ng-container>
+                                </div>  
+                            
+                            
+                           </td>
+                        </tr> 
+                        <tr style="height:3pt">
+                           <td style="width:467pt;border-top-style:solid;border-top-width:1pt;border-left-style:solid;border-left-width:1pt;border-right-style:solid;border-right-width:1pt" colspan="9">
+                            <div *ngFor="let item of sel; let i = index">
+                                <ng-container *ngIf="i === 0">
+                                    <p class="s4" style="padding-top: 5pt;padding-left: 2pt;text-indent: 0pt;text-align: left;">Tax Amount (in words) : <span class="s1"><strong>{{item?.words}}</strong></span></p>
+                            
+                                    
+                          
+                                </ng-container>
+                                </div> 
+                            
+                             <p class="s6" style="padding-left: 236pt;text-indent: 0pt;line-height: 3pt;text-align: left;">Company&#39;s Bank Details</p>
+                              <p class="s6" style="padding-left: 236pt;text-indent: 0pt;line-height: 3pt;text-align: left;">A/c Holder&#39;s Name: <b>AK TYRES(2023-2024)</b></p>
+                              <p class="s6" style="padding-left: 236pt;text-indent: 0pt;line-height: 3pt;text-align: left;">Bank Name   : <b>AK TYRES</b></p>
+                              <p class="s6" style="padding-left: 236pt;text-indent: 0pt;line-height: 3pt;text-align: left;">A/c No.      : <b>23660200000945</b></p>
+                              <p class="s6" style="padding-left: 236pt;text-indent: 0pt;line-height: 3pt;text-align: left;">Branch &amp; IFS Code: <b>PERANBALUR &amp; FDRL0002366</b></p>
+                              <p class="s6" style="padding-left: 2pt;text-indent: 0pt;line-height: 50%;text-align: left;">Company&#39;s PAN     : <b>DLNPA5133D         </b><span class="s14">SWIFT Code    : </span><b>FDRKINBBIBD</b></p>
+                           </td>
+                        </tr>
+                        <tr style="height:3pt">
+                           <td style="width:234pt;border-left-style:solid;border-left-width:1pt;border-bottom-style:solid;border-bottom-width:1pt;border-right-style:solid;border-right-width:1pt" colspan="4">
+                              <p class="s16" style="padding-left: 2pt;text-indent: 0pt;line-height: 10pt;text-align: left;">Declaration</p>
+                                <p class="s6" style="padding-left: 2pt;text-indent: 0pt;text-align: left;">We declare that this invoice shows the actual price of the goods described and that all particulars are true and correct.</p>
+                          
+                           </td>
+                           <td style="width:233pt;border-top-style:solid;border-top-width:1pt;border-left-style:solid;border-left-width:1pt;border-bottom-style:solid;border-bottom-width:1pt;border-right-style:solid;border-right-width:1pt" colspan="5">
+                              <p class="s13" style="padding-left: 135pt;text-indent: 0pt;line-height: 10pt;text-align: left;">for AK TYRES(2023-2024)</p>
+                              <p style="text-indent: 0pt;text-align: left;"><br/></p>
+                              <p class="s6" style="padding-right: 1pt;text-indent: 0pt;line-height: 9pt;text-align: right;">Authorised Signatory</p>
+                           </td>
+                        </tr>
+                     </table>
+              </div> 
+                <p style="padding-top: 5pt;text-indent: 0pt;text-align: center;">This is a Computer Generated Invoice</p>
+            
+          
+      </div>
+            <div class="modal-footer">
+              <button type="button" (click)="closeModal('view')"  class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+              <button type="button" (click)="downloadPDF1()" class="btn btn-primary">DOWNLOAD</button>
+              <a href="javascript:window.print()" class="btn btn-success me-1"><i class="fa fa-print"></i></a>
+                                            
+            </div>
+          </div>
+        </div>
+      </div> 
+  
+    
+      <div>
+        <div class="row">
+            <!-- <div class="col">
+                Interset  Column YES/NO
+                <label class="switch" style="position: relative; display: inline-block; width: 60px; height: 34px;">
+                    <input [(ngModel)]= "yes" type="checkbox"  style="opacity: 0; width: 0; height: 0;">
+                    <span class="slider round" style="
+                      position: absolute;
+                      cursor: pointer;
+                      top: 0;
+                      left: 0;
+                      right: 0;
+                      bottom: 0;
+                      background-color: skyblue;
+                      -webkit-transition: .4s;
+                      transition: .4s;
+                      border-radius: 34px;">
+                    </span>
+                  </label>
+                  
+        
+            </div> -->
+         
+            <div class="col">
+                Interset column YES/NO
+                <label class="switch" style="position: relative; display: inline-block; width: 60px; height: 34px;">
+                  <input [(ngModel)]="yes" type="checkbox" style="opacity: 0; width: 0; height: 0;" >
+                  <span class="slider round" [ngStyle]="{'background-color': yes ? 'green' : 'skyblue'}" style="
+                    position: absolute;
+                    cursor: pointer;
+                    top: 0;
+                    left: 0;
+                    right: 0;
+                    bottom: 0;
+                    -webkit-transition: .4s;
+                    transition: .4s;
+                    border-radius: 34px;">
+                  </span>
+                </label>
+              </div>
+              
+            <div class="col">   <button (click)=" paymentmodal()" type="button" class="btn btn-light"><i class="fa fa-plus-circle"></i>Add Payment</button>   <button (click)=" toggleFilter1()" type="button" class="btn btn-light"><i class="fa fa-plus-circle"></i>Add Invoice</button>
+                <button (click)="opencus()" type="button" class="btn btn-light"><i class="fa fa-plus-circle"></i>Add Customer</button>
+                <button (click)="openpro()" type="button" class="btn btn-light"><i class="fa fa-plus-circle"></i>Add Product</button></div>
+        </div>
+        <!-- <button (click)=" toggleFilter1()" type="button" class="btn btn-light"><i class="fa fa-plus-circle"></i>Add Invoice</button>
+        <button (click)="opencus()" type="button" class="btn btn-light"><i class="fa fa-plus-circle"></i>Add Customer</button>
+        <button (click)="openpro()" type="button" class="btn btn-light"><i class="fa fa-plus-circle"></i>Add Product</button> -->
+      </div>
+    
+
+        <div class = "row">
+         <div  class="card ">
+             <div class="card-header card-header-danger">
+                 Invoice Summary
+                
+             </div>
+             <div class="card-body">
+               <div class="card-body">
+                   <div class="table-responsive">
+                    <div class = "row">
+                  <div class="col-md-3">
+<input class="text" type="text" [(ngModel)]="searchQuery" placeholder="Search..." (ngModelChange)="search()">
+                  </div>
+                  <div class="col-md-3">
+                    <div *ngIf="twoenters">
+                        <p><strong> OpeningBalance:</strong> {{openingbal}} </p><br>
+                        <p><strong> ClosingBalance:</strong> {{closingBal}}</p> 
+                    </div>
+                    
+                    
+                             
+                  </div>
+                  <div class="col-md-3">
+                    <div *ngIf="twoenters">
+                        <p><strong> OpeningInterst:</strong>{{openingint}} </p><br>
+                        <p><strong> ClosingInterst:</strong> {{closingint}}</p>
+                    </div>
+                    
+                  </div>
+                  <div class="col-md-3">
+                    <button (click) = "downloadPDFone()">
+                        <i class="fa fa-file-pdf-o"></i>Customer PDF
+                      </button>
+                    
+                    <button (click) = "dow()">
+                        <i class="fa fa-file-pdf-o"></i>PDF
+                      </button>
+                      <button (click) = "copyTable()">
+                        <i  class="fa fa-copy"></i> Copy 
+                      </button>
+                      <button (click)="downloadCSV()" >
+                          <i class="fa fa-file-excel-o"></i>Excel
+                        </button>
+                  </div>
+                </div>
+                        <!-- <input class="text" type="text" [(ngModel)]="searchQuery" placeholder="Search..." (ngModelChange)="search()">
+                       
+                  
+                     <div class="text-right">
+                         <button (click) = "dow()">
+                           <i class="fa fa-file-pdf-o"></i>PDF
+                         </button>
+                         <button (click) = "copyTable()">
+                           <i  class="fa fa-copy"></i> Copy 
+                         </button>
+                         <button (click)="downloadCSV()" >
+                             <i class="fa fa-file-excel-o"></i>Excel
+                           </button>
+                       </div> -->
+                       <table id="example" #example  class="table">
+                           <thead class="text-primary">
+                             <tr>
+                                 <!-- <th>Action</th> -->
+                                 <!-- <th>Purchase Date</th> -->
+                                 <th>CustomerID</th>
+                                 <th>CustomerName</th>
+                                 <th>MobileNo</th>
+                                 <th>Inv.No</th>
+                                 <th>Gst.No</th>
+                                 <th>Inv.Date</th>
+                                 <th>Product</th>
+                                 <th>Inv.amount</th>
+                                 <!-- <th>Payment Type</th>
+                                 <th>PaymentNo</th>
+                                 <th>PaySC</th> -->
+                                 <!-- <th>Debit</th> -->
+                                 <th>Adv.amount</th>
+                                 <th>Action</th>
+                                 <th>Balance</th>
+                                 <th>Interset</th>
+                               </tr>
+                           </thead>
+                           <tbody>
+ 
+                             <tr *ngFor = "let item of realorders">
+                                 <!-- <td>  <button (click)="editdata(item)" class="btn btn-info ">
+                                      <i class="fa fa-edit"></i> 
+                                  </button>
+                                  <button (click)="csr(item)" class="btn btn-info ">
+                                      <i class="fa fa-eye"></i>
+                                  </button> 
+                                  <button (click)="getdata(item)" class="btn btn-info ">
+                                    <i class="fa fa-print"></i>
+                                </button>
+                                <button  class="btn btn-info ">
+                                    <i class="fa fa-trash"></i>
+                                </button> </td> -->
+                                
+                                  
+                                
+                                 <!-- <td>{{item.purchaseDate}}</td> -->
+                                 <td>{{item.customer_id}}</td>
+                                 <td>{{item.name}}</td>
+                                 <td>{{item.mobile_number}}</td>
+                                 <td>{{item.Invoiceid}}</td>
+                                 <td>{{item.originnum}}</td>
+                                 <td>{{formatDate(item.Date)}}</td>
+                   
+                                 <td>{{ getProduct(item.product) }}</td>
+ 
+                                 <td>{{item.TotalCost}}</td>
+                                 <!-- <td>{{item.paymenttype}}</td>
+                                 <td>{{item.paymentNo}}</td>
+                                 <td>    <i (click) = "showImageModal(item.screenshot)" class="fa fa-file-pdf-o"></i></td>
+                                 <td>{{item.Debit}}</td> -->
+                                 <td>{{item.Credit}}</td>
+                                 <td style="display: flex; gap: 5px;">
+                                    <button (click)="upload(item)" class="btn btn-info" style="margin: 0; padding: 10px; display: flex; align-items: center; justify-content: center;">
+                                        <i class="fa fa-upload"></i> 
+                                      </button>
+                                    <button (click)="editdata(item)" class="btn btn-info" style="margin: 0; padding: 10px; display: flex; align-items: center; justify-content: center;">
+                                      <i class="fa fa-edit"></i> 
+                                    </button>
+                                    <button (click)="csr(item)" class="btn btn-info" style="margin: 0; padding: 5px; display: flex; align-items: center; justify-content: center;">
+                                      <i class="fa fa-eye"></i>
+                                    </button> 
+                                    <button (click)="getdata(item)" class="btn btn-info" style="margin: 0; padding: 5px; display: flex; align-items: center; justify-content: center;">
+                                      <i class="fa fa-print"></i>
+                                    </button>
+                                    <button (click)="deleteData(item)" class="btn btn-info" style="margin: 0; padding: 5px; display: flex; align-items: center; justify-content: center;">
+                                      <i class="fa fa-trash"></i>
+                                    </button>
+                                  </td>
+                                 <td>{{item.Balance}}</td>
+                                 <td>{{item.interestvalue}}</td>
+                             </tr>
+                         </tbody>
+                       </table>
+     
+    
+                       <nav aria-label="Page navigation example">
+                        <ul class="pagination">
+                            <li class="page-item">
+                                <a class="page-link" (click)="changePage(-1)" [class.disabled]="isPrevDisabled()">Previous</a>
+                            </li>
+                           
+                            <li class="page-item">
+                                <a class="page-link"  (click)="changePage(1)" [class.disabled]="isNextDisabled()">Next  </a>
+                            </li>
+                            
+                            <li class="text-right">
+                              <input type="number" [(ngModel)]="enteredPage" placeholder="Enter page number">
+                              <button (click)="goToEnteredPage()">Go</button>
+                            </li>
+                            
+                        </ul>
+
+                      
+                           
+                        
+                         
+                    </nav>
+                   </div>
+               </div>
+             </div>
+            
+         </div>
+         
+         </div>
+  
+  
+  
+      
+    
+      </div>
+
+    </div>
+ 
+      

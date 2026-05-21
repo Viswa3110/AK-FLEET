@@ -1,0 +1,103 @@
+
+
+<div class="main-content">
+    <div class="container-fluid">
+        <div class="modal"  id="getModal" >
+            <div class="modal-dialog-lg modal-dialog-scrollable" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title">Customer</h5>
+                        <button type="button" class="close" (click)="closeModal('getModal')" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body" style="max-height: 1500px; overflow-y: auto;">
+                        <form>
+                            <div class="form-row">
+                              <div class="form-group col-md-6">
+                                <label for="inputEmail4">ProductName</label>
+                                <input type="text" [(ngModel)]="createpro" class="form-control" id="inputEmail4" placeholder="Product">
+                              </div>
+                              <div class="form-group col-md-6">
+                                <label for="inputPassword4">Rate</label>
+                                <input type="text" [(ngModel)]="createrate" class="form-control" id="inputPassword4" placeholder="Rate">
+                              </div>
+                            </div>
+                            
+                            <button type="submit" (click)="create()" class="btn btn-primary">Create</button>
+                          </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="modal"  id="getModal1" >
+            <div class="modal-dialog-lg modal-dialog-scrollable" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title">Customer</h5>
+                        <button type="button" class="close" (click)="closeModal('getModal1')" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body" style="max-height: 1500px; overflow-y: auto;">
+                        <form>
+                            <div class="form-row">
+                              <div class="form-group col-md-6">
+                                <label >ProductName</label>
+                                <input type="text" id="productName" [value]="pro" class="form-control"  placeholder="Product">
+                              </div>
+                              <div class="form-group col-md-6">
+                                <label>Rate</label>
+                                <input type="text" id="ratenumber" [value]="rate" class="form-control" placeholder="Rate">
+                              </div>
+                            </div>
+                            
+                            <button type="submit" (click)="update()" class="btn btn-primary">Update</button>
+                          </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+          <div class="col"></div>
+          <div class="col"></div>
+          <div class="col"></div>
+          <div class="col"><button (click)="open()" type="button" class="btn btn-light"><i class="fa fa-plus-circle"></i>Add Product</button></div>
+      </div>
+
+
+  <div  class="card ">
+    <div class="card-header card-header-danger">
+        Product Details
+    </div>  
+    <div class="card-body"> 
+      <div class="table-responsive">
+        <table id="myTable"  class="table">
+          <thead class="text-primary">
+            <tr>
+                
+              <th><a>
+                <!-- <i (click)="open()" class="fa fa-plus-circle"></i> -->
+              </a>Sl.No</th>
+              <th>Name</th>
+              <th>Rate</th>
+              <th>Action</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let row of data; let i = index">
+              <td>{{ i }}</td>
+              <td>{{ row.Name}}</td>
+              <td>{{ row.Rate}}</td>
+           
+             
+            </tr>
+          </tbody>
+        </table>
+      </div>
+</div>
+</div>
+    </div>
+</div>
+  

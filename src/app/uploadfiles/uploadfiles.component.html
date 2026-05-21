@@ -1,0 +1,411 @@
+
+
+
+
+
+<div class="main-content" style="padding-top: 10px; padding-bottom: 30px;">
+    <div class="container-fluid">
+
+
+<div class="form-group">
+    <div class="row">
+        <div class="col-3">
+          
+            <span style="font-weight: bold;">Customer</span>
+
+            <select class="form-control" (change)="selectcustomer($event.target.value)"  id="exampleFormControlSelect1">
+                <option value="" disabled selected>Select Customer</option>
+                <option *ngFor="let items of customer" [value]="items.customerid">{{items.name}}</option>
+            </select></div><div class="col-3">
+                <span style="font-weight: bold;">Vehicle</span>
+
+        <select class="form-control" (change)="selectvehicle($event.target.value);filter();" id="exampleFormControlSelect1">
+            <option value="" disabled selected>Select Vehicle</option>
+                <option *ngFor="let items of truck" [value]="items.id">{{items.registration_number}}</option>
+        </select></div><div class="col-3"> 
+        
+            <span style="font-weight: bold;">From</span>
+            <input type="date"  [(ngModel)]="from" 
+             class="form-control" id="exampleFormControlSelect1" ></div>
+            <div class="col-3"> 
+             
+                <span style="font-weight: bold;">To</span>
+                <input type="date" [(ngModel)]="to" (change) = "filter()" class="form-control" id="exampleFormControlSelect1" ></div>
+               
+            </div>
+    
+</div> 
+<div class="toast-container">
+    <div  style="background-color: lightgreen;"class="toast" role="alert" aria-live="assertive" aria-atomic="true" data-delay="5000">
+      <!-- <div class="toast-header">
+        <strong class="mr-auto">Toast Header</strong>
+        <button type="button" class="ml-2 mb-1 close" data-dismiss="toast" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div> -->
+      <div class="toast-body">
+        Successfully <button type="button" class="ml-2 mb-1 close" data-dismiss="toast" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+    </div>
+  </div>
+<div class="modal" id="showModal">
+  <div  class="modal-dialog-lg modal-dialog-scrollable" role="document">
+    <div class="modal-content">
+        <div class="modal-header">
+            <button class="close" (click)="closeModal()">×</button>
+        </div>
+        <div class="modal-body" style="max-height: 1500px; overflow-y: auto;">
+            <iframe
+            *ngIf="isBefore"
+            [src]="pdfBeforeUrl"
+            width="100%"
+            height="500px"
+          ></iframe>
+          <iframe
+            *ngIf="!isBefore"
+            [src]="pdfAfterUrl"
+            width="100%"
+            height="500px"
+          ></iframe>
+        </div>
+      <!-- Download and Close buttons -->
+      <div class="modal-footer">
+     
+        <button (click)="closeModal()">Close</button>
+      </div>
+    </div>
+</div>
+  </div>
+
+<!-- For Mobile (less than 992px) -->
+<div class="modal" id="innermodal2">
+    <div  class="modal-dialog-lg modal-dialog-scrollable" role="document">
+      <div class="modal-content">
+          <div class="modal-header">
+              <button class="close" (click)="closePreview2('innermodal2')">×</button>
+          </div>
+          <div class="modal-body" style="max-height: 1500px; overflow-y: auto;">
+              <iframe
+            
+              [src]="fileUrl2"
+              width="100%"
+              height="500px"
+            ></iframe>
+          
+          </div>
+        <!-- Download and Close buttons -->
+        <div class="modal-footer">
+         
+          <button (click)="closePreview2('innermodal2')">Close</button>
+        </div>
+      </div>
+  </div>
+    </div>
+  
+
+    <div class="modal" id="innermodal3">
+        <div  class="modal-dialog-lg modal-dialog-scrollable" role="document">
+          <div class="modal-content">
+              <div class="modal-header">
+                  <button class="close" (click)="closePreview2('innermodal3')">×</button>
+              </div>
+              <div class="modal-body" style="max-height: 1500px; overflow-y: auto;">
+                  <iframe
+                
+                  [src]="fileUrl3"
+                  width="100%"
+                  height="500px"
+                ></iframe>
+              
+              </div>
+            <!-- Download and Close buttons -->
+            <div class="modal-footer">
+             
+              <button (click)="closePreview2('innermodal3')">Close</button>
+            </div>
+          </div>
+      </div>
+        </div>
+
+  <div class="row" *ngIf="!isedit" >
+    <div class="col-6">
+        
+         <div class="wrapper">
+             <span><h4>ADD DATE </h4></span>
+       <div class="container">
+         <h3>Date of Upload</h3>
+         <div class="upload-container">
+           <div class="border-container">
+ <h4>Select Upload Date</h4>
+ <input type=date  [(ngModel)]="selectdate">
+           </div>
+         </div>
+       </div>
+<br>
+<br>
+       <button (click)="sumbit()" class="button-29" role="button">Sumbit</button>
+     </div>
+    </div>
+    
+    <div class="modal" id="innermodal">
+        <div  class="modal-dialog-lg modal-dialog-scrollable" role="document">
+          <div class="modal-content">
+              <div class="modal-header">
+                  <button class="close" (click)="closePreview()">×</button>
+              </div>
+              <div class="modal-body" style="max-height: 1500px; overflow-y: auto;">
+                  <iframe
+                
+                  [src]="fileUrl"
+                  width="100%"
+                  height="500px"
+                ></iframe>
+              
+              </div>
+            <!-- Download and Close buttons -->
+            <div class="modal-footer">
+             
+              <button (click)="closePreview()">Close</button>
+            </div>
+          </div>
+      </div>
+        </div>
+      
+
+        <div class="modal" id="innermodal1">
+            <div  class="modal-dialog-lg modal-dialog-scrollable" role="document">
+              <div class="modal-content">
+                  <div class="modal-header">
+                      <button class="close" (click)="closePreview()">×</button>
+                  </div>
+                  <div class="modal-body" style="max-height: 1500px; overflow-y: auto;">
+                      <iframe
+                    
+                      [src]="fileUrl1"
+                      width="100%"
+                      height="500px"
+                    ></iframe>
+                  
+                  </div>
+                <!-- Download and Close buttons -->
+                <div class="modal-footer">
+                 
+                  <button (click)="closePreview()">Close</button>
+                </div>
+              </div>
+          </div>
+            </div>
+     <div class="col-6">
+        
+         <div class="wrapper">
+             <span><h4>Alloy Document</h4></span>
+             <div class="container">
+                <h3>Upload a file</h3>
+                <div class="upload-container">
+                  <div class="border-container">
+                    <div class="icons fa-4x" >
+                      <i class="fas fa-file-image" data-fa-transform="shrink-3 down-2 left-6 rotate--45"></i>
+                      <i class="fas fa-file-alt" data-fa-transform="shrink-2 up-4"></i>
+                      <i class="fas fa-file-pdf" data-fa-transform="shrink-3 down-2 right-6 rotate-45"></i>
+                    </div>
+                    <input type="file" id="file-upload" (change)="handleFileInput($event)" style="display: none;" />
+                    <p>Drag and drop files here, or 
+                      <a href="#" id="file-browser" (click)="triggerFileUpload($event)">browse</a> your computer.</p>
+                  </div>
+              
+                  <!-- Display uploaded file here -->
+                  <div *ngIf="selectedFile">
+                    <p>Selected file: {{ selectedFile.name }}</p>
+                    <button (click)="previewFile()">Preview</button>
+                    <button (click)="unselectFile()">Unselect</button>
+                  </div>
+              
+                  <!-- Preview modal for images or PDFs -->
+               
+                </div>
+              </div>
+              
+       
+
+
+
+     </div>
+    </div>
+     <!-- <div class="col-4">
+         
+         <div class="wrapper">
+             <span><h4>AFTER:</h4></span>
+       <div class="container">
+         <h3>Upload a file</h3>
+         <div class="upload-container">
+           <div class="border-container">
+             <div class="icons fa-4x">
+               <i class="fas fa-file-image" data-fa-transform="shrink-3 down-2 left-6 rotate--45"></i>
+               <i class="fas fa-file-alt" data-fa-transform="shrink-2 up-4"></i>
+               <i class="fas fa-file-pdf" data-fa-transform="shrink-3 down-2 right-6 rotate-45"></i>
+             </div>
+             <input type="file" id="file-upload1" (change)="handleFileInput1($event)" style="display: none;" />
+             <p>Drag and drop files here, or 
+               <a href="#" id="file-browser" (click)="triggerFileUpload1($event)">browse</a> your computer.</p>
+           </div>
+       
+           <div *ngIf="selectedFile1">
+             <p>Selected file: {{ selectedFile1.name }}</p>
+             <button (click)="previewFile1()">Preview</button>
+             <button (click)="unselectFile1()">Unselect</button>
+           </div>
+           </div>
+         </div>
+       </div>
+     </div> -->
+    </div>
+     </div>
+
+
+     <div class="row" *ngIf="isedit" >
+        <div class="col-6">
+            
+             <div class="wrapper">
+                 <span><h4>ADD DATE </h4></span>
+           <div class="container">
+             <h3>Date of upload Date</h3>
+             <div class="upload-container">
+               <div class="border-container">
+     <h4>Select Upload Date</h4>
+     <input type=date  [(ngModel)]="editdate">
+               </div>
+             </div>
+           </div>
+    <br>
+    <br>      <button (click)="createon()" class="button-29" role="button" style="margin-right: 10px;">Create</button>
+    <button (click)="update()" class="button-29" role="button">Update</button>
+    
+         </div>
+        </div>
+        
+      
+         <div class="col-6">
+            
+             <div class="wrapper">
+                 <span><h4>Alloy Document</h4></span>
+                 <div class="container">
+                    <h3>Upload a file</h3>
+                    <div class="upload-container">
+                      <div class="border-container">
+                        <div class="icons fa-4x" >
+                          <i class="fas fa-file-image" data-fa-transform="shrink-3 down-2 left-6 rotate--45"></i>
+                          <i class="fas fa-file-alt" data-fa-transform="shrink-2 up-4"></i>
+                          <i class="fas fa-file-pdf" data-fa-transform="shrink-3 down-2 right-6 rotate-45"></i>
+                        </div>
+                        <input type="file" id="file-upload2" (change)="handleFileInput2($event)" style="display: none;" />
+                        <p>Drag and drop files here, or 
+                          <a href="#" id="file-browser" (click)="triggerFileUpload2($event)">browse</a> your computer.</p>
+                      </div>
+                  
+                      <!-- Display uploaded file here -->
+                      <div>
+                        <p>Selected file: {{ selectedbefore.name }}</p>
+                        <button (click)="editpreviewFile()">Preview</button>
+                        <button (click)="editunselectFile()">Unselect</button>
+                      </div>
+                  
+                      <!-- Preview modal for images or PDFs -->
+                   
+                    </div>
+                  </div>
+                  
+           
+    
+    
+    
+         </div>
+        </div>
+         <div class="col-4">
+             
+             <!-- <div class="wrapper">
+                 <span><h4>AFTER:</h4></span>
+           <div class="container">
+             <h3>Upload a file</h3>
+             <div class="upload-container">
+               <div class="border-container">
+                 <div class="icons fa-4x">
+                   <i class="fas fa-file-image" data-fa-transform="shrink-3 down-2 left-6 rotate--45"></i>
+                   <i class="fas fa-file-alt" data-fa-transform="shrink-2 up-4"></i>
+                   <i class="fas fa-file-pdf" data-fa-transform="shrink-3 down-2 right-6 rotate-45"></i>
+                 </div>
+                 <input type="file" id="file-upload3" (change)="handleFileInput3($event)" style="display: none;" />
+                 <p>Drag and drop files here, or 
+                   <a href="#" id="file-browser" (click)="triggerFileUpload3($event)">browse</a> your computer.</p>
+               </div>
+           
+          
+               <div >
+                 <p>Selected file: {{ selectedafter.name }}</p>
+                 <button (click)="editpreviewFile1()">Preview</button>
+                 <button (click)="editunselectFile1()">Unselect</button>
+               </div>
+               </div>
+             </div>
+           </div> -->
+         </div>
+        </div>
+        
+
+
+     
+  
+<div class="row" *ngIf="showtable">
+  <div class="col-md-12">
+      <div class="card">
+          <div class="card-header card-header-danger">
+              <h4 class="card-title">Tyre pressure</h4>
+          </div>
+          <div class="card-body">
+              <div class="table-responsive">
+                  <table id="myTable"  class="table">
+                      <thead class="text-primary">
+                          <th>Sl.No</th>
+                          <th>Date</th>
+                          <th>Vehicle</th>
+                          <th>Doc</th>
+                          <!-- <th>After</th> -->
+                          <th>Action</th>
+                          
+                      </thead>
+                      <tbody>
+                        <tr *ngFor="let row of data; let i = index">
+                            <td>{{ i+1 }}</td>
+                            <td>{{ row.date }}</td>
+                            <td>{{ row.vehicle}}</td>
+                            <td>
+                                
+                                  <i (click)="openModal(row.before, true)" class="fa fa-file-pdf-o" aria-hidden="true"></i>
+                               
+                              </td>
+                              <!-- <td>
+                                
+                                  <i  (click)="openModal(row.after, false)" class="fa fa-file-pdf-o" aria-hidden="true"></i>
+                                
+                              </td> -->
+                              
+                         <td>
+                            <i  (click)="edit(row)" class="fa fa-edit" aria-hidden="true"></i>
+                         </td>
+                          </tr>
+                      </tbody>
+                  </table>
+
+               
+              </div>
+          </div>
+      </div>
+  </div>
+</div>
+
+
+    
+
+    </div>
+

@@ -1,0 +1,474 @@
+
+<div class="formbold-main-wrapper">
+    <div class="formbold-form-wrapper">
+        <div class="formbold-input-group">
+            <label class="formbold-form-label" for="calendar">Select Date</label>
+            <input type="date" id="calendar" class="formbold-form-input">
+        </div>
+        <button (click)="handleclick()" class="formbold-btn">Submit</button>
+    </div>
+</div>
+
+ 
+<div  *ngIf="datashow" class="formbold-main-wrapper">
+  <span class="close" (click)="hideData()">&times;</span>
+  <!-- <button (click)="hideData()" class="close-btn">X</button> -->
+  <div class="formbold-form-wrapper">
+
+<label class="formbold-form-label" >Date Event:  {{date}}</label>
+
+<div (click) = "fromto(item)" *ngFor=" let item of searchdetail" class="formbold-form-input">
+<P>FROM:{{item.from_location}}    / TO:{{item.to_location}}</P>
+</div>
+</div>
+</div>
+<div class="formbold-main-wrapper">
+    <div class="formbold-form-wrapper">
+
+<label class="formbold-form-label" >Today Event</label>
+
+<div (click) = "fromto(item)" *ngFor=" let item of details" class="formbold-form-input">
+ <P>FROM:{{item.from_location}}    / TO:{{item.to_location}}</P>
+</div>
+</div>
+</div>
+
+  <div id="modal" class="modal">
+    <div class="modal-content">
+      <span class="close" (click)="closeModal()">&times;</span>
+      <div class="formbold-main-wrapper">
+        <div class="formbold-form-wrapper">
+          <form action="https://formbold.com/s/FORM_ID" method="POST">
+            <div class="formbold-input-group">
+              <label for="name" class="formbold-form-label"> Vehicle </label>
+              <input type="text" name="name" id="Vehicle" [value]="shift?.truck_no" class="formbold-form-input" disabled />
+            </div>
+            <div class="formbold-input-group">
+              <label for="email" class="formbold-form-label"> Trip Date </label>
+              <input type="email" name="lastname" id="tripdate" [value]="shift?.trip_date" class="formbold-form-input" disabled />
+            </div>
+            <div class="formbold-input-group">
+              <label for="age" class="formbold-form-label"> From</label>
+              <input type="text" name="age" id="from" [value]="shift?.from_location" class="formbold-form-input" disabled/>
+            </div>
+            <div class="formbold-input-group">
+              <label for="age" class="formbold-form-label"> To</label>
+              <input type="text" name="age" id="to" [value]="shift?.to_location" class="formbold-form-input" disabled/>
+            </div>
+            <div *ngIf="!isStarted" class="formbold-input-group">
+              <button type="button" class="formbold-btn" (click)="startTrip()" [disabled]="isStarted">Start</button>
+            </div>
+            <div *ngIf="isStarted" class="formbold-input-group">
+            <button type="button" class="formbold-btn"  [disabled]="isStarted">Started at {{currentDateTime}}</button>
+            </div>
+            <!-- Start Picture -->
+            <div class="formbold-input-group">
+              <label for="start_picture" class="formbold-form-label">Start Picture</label>
+              <input type="file" name="start_picture" class="formbold-form-input" (change)="handleStartPicture($event)" multiple required />
+            </div>
+            <!-- <div *ngIf="isStarted"> <label for="stop_picture" class="formbold-form-label">{{currentDateTime}}</label></div> -->
+           
+            <div class="preview-container">
+              <p>Uploaded Images Preview:</p>
+              <div *ngFor="let file of startPicture; let i = index" class="image-preview">
+                <img [src]="'https://aktyres-in.stackstaging.com/php-truck/class/' + file.location" alt="{{ file.file_name }}" />
+                <button (click)="deletestartFile(i)">Delete</button>
+              </div>
+            </div>
+            <!-- Start Remark -->
+            <div class="formbold-input-group">
+              <label for="start_remark" class="formbold-form-label">Start Remark</label>
+              <textarea id="StartRemark" name="start_remark" class="formbold-form-input" rows="5" required></textarea>
+            </div>
+            <!-- Stop Button -->
+            <div class="formbold-input-group" *ngIf="isStarted && !isStopped">
+              <button type="button" class="formbold-btn" (click)="stopTrip()">Stop</button>
+            </div>
+            <div *ngIf="isStopped" class="formbold-input-group">
+              <button type="button" class="formbold-btn"  [disabled]="isStarted">Stoped at {{stopcurrentDateTime}}</button>
+              </div>
+            <!-- Stop Remark and Picture Upload -->
+            <div *ngIf="isStarted">
+              <div class="formbold-input-group">
+                <label for="stop_remark" class="formbold-form-label">Stop Remark</label>
+                <textarea id="stopRemark" name="stop_remark" class="formbold-form-input" rows="5" required></textarea>
+              </div>
+              <!-- Stop Picture -->
+              <div class="formbold-input-group">
+                <label for="stop_picture" class="formbold-form-label">Stop Picture</label>
+                <input type="file" name="stop_picture" class="formbold-form-input" (change)="handleStopPicture($event)" multiple required />
+              </div>
+              <div class="preview-container">
+                <p>Uploaded Images Preview:</p>
+                <div *ngFor="let file of uploadResults; let i = index" class="image-preview">
+                  <img [src]="'https://aktyres-in.stackstaging.com/php-truck/class/' + file.location" alt="{{ file.file_name }}" />
+                  <button (click)="deleteFile(i)">Delete</button>
+                </div>
+              </div>
+            </div>
+            <button (click)="submit()" class="formbold-btn">Submit</button>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+  <div id="modaldetail" class="modal">
+    <div class="modal-content">
+      <span class="close" (click)="closeModal1()">&times;</span>
+      <div class="formbold-main-wrapper">
+        <div class="formbold-form-wrapper">
+          <form action="https://formbold.com/s/FORM_ID" method="POST">
+            <div class="formbold-input-group">
+              <label for="name" class="formbold-form-label"> Vehicle </label>
+              <input type="text" name="name" id="Vehicle" [value]="shift?.truck_no" class="formbold-form-input" disabled />
+            </div>
+            <div class="formbold-input-group">
+              <label for="email" class="formbold-form-label"> Trip Date </label>
+              <input type="email" name="lastname" id="tripdate" [value]="shift?.trip_date" class="formbold-form-input" disabled />
+            </div>
+            <div class="formbold-input-group">
+              <label for="age" class="formbold-form-label"> From</label>
+              <input type="text" name="age" id="from" [value]="shift?.from_location" class="formbold-form-input" disabled/>
+            </div>
+            <div class="formbold-input-group">
+              <label for="age" class="formbold-form-label"> To</label>
+              <input type="text" name="age" id="to" [value]="shift?.to_location" class="formbold-form-input" disabled/>
+            </div>
+            <div *ngIf="!isStarted1" class="formbold-input-group">
+              <button type="button" class="formbold-btn" (click)="startTrip1()" [disabled]="isStarted1">Start</button>
+            </div>
+            <div *ngIf="isStarted1" class="formbold-input-group">
+            <button type="button" class="formbold-btn"  [disabled]="isStarted1">Started at {{content.shift_start_time}}</button>
+            </div>
+            <!-- Start Picture -->
+            <div class="formbold-input-group">
+              <label for="start_picture" class="formbold-form-label">Start Picture</label>
+              <input type="file" name="start_picture" class="formbold-form-input" (change)="handleStartPicture1($event)" multiple required />
+            </div>
+            <!-- <div *ngIf="isStarted"> <label for="stop_picture" class="formbold-form-label">{{currentDateTime}}</label></div> -->
+           
+            <div class="preview-container">
+              <p>Uploaded Images Preview:</p>
+              <div *ngFor="let file of startPicture1; let i = index" class="image-preview">
+                <img [src]="'https://aktyres-in.stackstaging.com/php-truck/class/' + file.location" alt="{{ file.file_name }}" />
+                <button (click)="deletestartFile1(i)">Delete</button>
+              </div>
+            </div>
+            <!-- Start Remark -->
+            <div class="formbold-input-group">
+              <label for="start_remark" class="formbold-form-label">Start Remark</label>
+              <textarea id="StartRemark1" name="start_remark1" [value]="content?.start_remark"class="formbold-form-input" rows="5" required></textarea>
+            </div>
+            <!-- Stop Button -->
+            <div class="formbold-input-group" *ngIf="isStarted1 && !isStopped1">
+              <button type="button" class="formbold-btn" (click)="stopTrip1()">Stop</button>
+            </div>
+            <div *ngIf="isStopped1" class="formbold-input-group">
+              <button type="button" class="formbold-btn"  [disabled]="isStarted1">Stoped at {{content.shift_end_time}}</button>
+              </div>
+            <!-- Stop Remark and Picture Upload -->
+            <div *ngIf="isStarted1">
+              <div class="formbold-input-group">
+                <label for="stop_remark" class="formbold-form-label">Stop Remark</label>
+                <textarea id="stopRemark1" name="stop_remark" [value]="content?.stop_remark" class="formbold-form-input" rows="5" required></textarea>
+              </div>
+              <!-- Stop Picture -->
+              <div class="formbold-input-group">
+                <label for="stop_picture" class="formbold-form-label">Stop Picture</label>
+                <input type="file" name="stop_picture" class="formbold-form-input" (change)="handleStopPicture1($event)" multiple required />
+              </div>
+              <div class="preview-container">
+                <p>Uploaded Images Preview:</p>
+                <div *ngFor="let file of uploadResults1; let i = index" class="image-preview">
+                  <img [src]="'https://aktyres-in.stackstaging.com/php-truck/class/' + file.location" alt="{{ file.file_name }}" />
+                  <button (click)="deleteFile1(i)">Delete</button>
+                </div>
+              </div>
+            </div>
+            <button  (click)="update()" class="formbold-btn">Update</button>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+
+
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    body {
+        font-family: 'Inter', sans-serif;
+      background-color: #f5f5f5;
+      padding: 20px;
+    }
+    .formbold-main-wrapper {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 48px;
+    }
+  
+    .formbold-form-wrapper {
+        margin: 0 auto;
+      max-width: 800px;
+      width: 100%;
+      background: white;
+      padding: 40px;
+      border-radius: 10px;
+      box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+    }
+  
+    .formbold-form-img {
+      margin-bottom: 45px;
+    }
+  
+    .formbold-input-group {
+      margin-bottom: 18px;
+    }
+  
+    .formbold-form-select {
+      width: 100%;
+      padding: 12px 22px;
+      border-radius: 5px;
+      border: 1px solid #dde3ec;
+      background: #ffffff;
+      font-size: 16px;
+      color: #536387;
+      outline: none;
+      resize: none;
+    }
+  
+    .formbold-input-radio-wrapper {
+      margin-bottom: 25px;
+    }
+    .formbold-radio-flex {
+      display: flex;
+      flex-direction: column;
+      gap: 15px;
+    }
+    .formbold-radio-label {
+      font-size: 14px;
+      line-height: 24px;
+      color: #07074d;
+      position: relative;
+      padding-left: 25px;
+      cursor: pointer;
+      -webkit-user-select: none;
+      -moz-user-select: none;
+      -ms-user-select: none;
+      user-select: none;
+    }
+    .formbold-input-radio {
+      position: absolute;
+      opacity: 0;
+      cursor: pointer;
+    }
+    .formbold-radio-checkmark {
+      position: absolute;
+      top: -1px;
+      left: 0;
+      height: 18px;
+      width: 18px;
+      background-color: #ffffff;
+      border: 1px solid #dde3ec;
+      border-radius: 50%;
+    }
+    .formbold-radio-label
+      .formbold-input-radio:checked
+      ~ .formbold-radio-checkmark {
+      background-color: #6a64f1;
+    }
+    .formbold-radio-checkmark:after {
+      content: '';
+      position: absolute;
+      display: none;
+    }
+  
+    .formbold-radio-label
+      .formbold-input-radio:checked
+      ~ .formbold-radio-checkmark:after {
+      display: block;
+    }
+  
+    .formbold-radio-label .formbold-radio-checkmark:after {
+      top: 50%;
+      left: 50%;
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      background: #ffffff;
+      transform: translate(-50%, -50%);
+    }
+  
+    .formbold-form-input {
+      width: 100%;
+      padding: 13px 22px;
+      border-radius: 5px;
+      border: 1px solid #dde3ec;
+      background: #ffffff;
+      font-weight: 500;
+      font-size: 16px;
+      color: #07074d;
+      outline: none;
+      resize: none;
+    }
+    .formbold-form-input::placeholder {
+      color: #536387;
+    }
+    .formbold-form-input:focus {
+      border-color: #6a64f1;
+      box-shadow: 0px 3px 8px rgba(0, 0, 0, 0.05);
+    }
+    .formbold-form-label {
+      color: #07074d;
+      font-size: 14px;
+      line-height: 24px;
+      display: block;
+      margin-bottom: 10px;
+    }
+    .close-btn {
+  background-color: black;
+  border: none;
+  font-size: 20px;
+  cursor: pointer;
+  position: absolute;
+  right: 10px;
+  top: 10px;
+}
+
+  
+    .formbold-btn {
+      text-align: center;
+      width: 100%;
+      font-size: 16px;
+      border-radius: 5px;
+      padding: 14px 25px;
+      border: none;
+      font-weight: 500;
+      background-color: #6a64f1;
+      color: white;
+      cursor: pointer;
+      margin-top: 25px;
+    }
+    .formbold-btn:hover {
+      box-shadow: 0px 3px 8px rgba(0, 0, 0, 0.05);
+    }
+    #calendar {
+      max-width: 100%;
+      margin: 0 auto;
+    }
+    .preview-container {
+  margin-top: 20px;
+  padding: 10px;
+  border: 1px solid #dde3ec; /* Optional: border around the preview section */
+  border-radius: 5px; /* Rounded corners */
+  background-color: #fff; /* Background color for contrast */
+}
+
+.preview-container p {
+  font-weight: bold;
+  margin-bottom: 10px;
+}
+
+.image-preview {
+  display: flex;
+  align-items: center;
+  margin-bottom: 10px;
+}
+
+.image-preview img {
+  max-width: 100px; /* Adjust width as needed */
+  max-height: 100px; /* Maintain aspect ratio */
+  margin-right: 10px;
+  border: 1px solid #dde3ec; /* Optional: Add a border */
+  border-radius: 4px; /* Optional: Add rounded corners */
+}
+
+.image-preview button {
+  background-color: #ff4d4d; /* Change to desired color */
+  color: white;
+  border: none;
+  padding: 5px 10px;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.image-preview button:hover {
+  background-color: #ff1a1a; /* Darker shade on hover */
+}
+.modal {
+  display: none; /* Hidden by default */
+  position: fixed; /* Stay in place */
+  z-index: 1; /* Sit on top */
+  left: 0;
+  top: 0;
+  width: 100%; /* Full width */
+  height: 100%; /* Full height */
+  overflow: auto; /* Enable scroll if needed */
+  background-color: rgba(0, 0, 0, 0.5); /* Black with opacity */
+}
+
+.modal-content {
+  background-color: #fefefe;
+  margin: 15% auto; /* 15% from the top and centered */
+  /* padding: 20px; */
+  border: 1px solid #888;
+  width: 100%; /* Could be more or less, depending on screen size */
+  max-width: 600px; /* Max width for larger screens */
+  border-radius: 10px;
+}
+
+.close {
+  color: #aaa;
+  float: right;
+  font-size: 28px;
+  font-weight: bold;
+}
+
+.close:hover,
+.close:focus {
+  color: black;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+/* Responsive Design */
+@media (max-width: 600px) {
+  .modal-content {
+    width: 90%; /* Make modal width 90% on mobile */
+  }
+}
+
+/* Media Queries for Mobile */
+@media (max-width: 600px) {
+  .image-preview {
+    flex-direction: column; /* Stack images and buttons vertically */
+    align-items: flex-start; /* Align to the start */
+  }
+
+  .image-preview img {
+    max-width: 80%; /* Adjust width for mobile */
+  }
+
+  .image-preview button {
+    width: 100%; /* Make the button full width */
+    margin-top: 5px; /* Space between image and button */
+  }
+}
+
+    /* Make calendar responsive */
+    @media screen and (max-width: 768px) {
+      .formbold-form-wrapper {
+        padding: 20px;
+      }
+      #calendar {
+        font-size: 0.75rem; /* Adjust calendar font size for mobile */
+      }}
+  </style>

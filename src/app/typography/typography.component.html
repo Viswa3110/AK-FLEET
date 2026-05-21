@@ -1,0 +1,165 @@
+
+
+
+
+
+
+<div class="main-content" style="padding-top: 10px; padding-bottom: 30px;">
+    <div class="container-fluid">
+
+        
+<!-- <ul class="nav nav-pills">
+    <li class="nav-item">
+        <a class="nav-link"[routerLink]="['/dashboard']"><p style="color: rgb(133, 141, 141);">Home</p></a>
+    </li>
+    <li  class=" nav-item" >
+        <a class="nav-link" [routerLink]="['/table-list']"><p style="color: rgb(133, 141, 141);">Tyre</p></a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link active" [routerLink]="['/typography']">Alloy</a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link " href="#"><p style="color: rgb(133, 141, 141);">Invoices</p></a>
+    </li>
+</ul>  -->
+<br>
+<div class="form-group">
+    <div class="row">
+    <div class="col-4">
+                <span style="font-weight: bold;">Vehicle</span>
+
+        <select class="form-control" (change)="selectvehicle($event.target.value)" id="exampleFormControlSelect1">
+            <option value="" disabled selected>Select Vehicle</option>
+                <option *ngFor="let items of truck" [value]="items.id">{{items.registration_number}}</option>
+        </select></div><div class="col-4"> 
+        
+            <span style="font-weight: bold;">From</span>
+            <input type="date"  [(ngModel)]="from" 
+             class="form-control" id="exampleFormControlSelect1" ></div>
+            <div class="col-4"> 
+             
+                <span style="font-weight: bold;">To</span>
+                <input type="date" [(ngModel)]="to" (change) = "filter()" class="form-control" id="exampleFormControlSelect1" ></div>
+               
+            </div>
+    
+</div> 
+
+
+
+<div class="modal" id="showModal">
+    <div  class="modal-dialog-lg modal-dialog-scrollable" role="document">
+      <div class="modal-content">
+          <div class="modal-header">
+              <button class="close" (click)="closeModal('showModal')">×</button>
+          </div>
+          <div class="modal-body" style="max-height: 1500px; overflow-y: auto;">
+              <iframe
+              *ngIf="isBefore"
+              [src]="pdfBeforeUrl"
+              width="100%"
+              height="500px"
+            ></iframe>
+            <iframe
+              *ngIf="!isBefore"
+              [src]="pdfAfterUrl"
+              width="100%"
+              height="500px"
+            ></iframe>
+          </div>
+        <!-- Download and Close buttons -->
+        <div class="modal-footer">
+        
+          <button (click)="closeModal('showModal')">Close</button>
+        </div>
+      </div>
+  </div>
+    </div>
+  
+<div class="row">
+  <div class="col-md-12">
+      <div class="card">
+          <div class="card-header card-header-danger">
+              <h4 class="card-title">Tyre pressure</h4>
+          </div>
+          <div class="card-body">
+              <div class="table-responsive">
+                <table id="myTable"  class="table">
+                    <thead class="text-primary">
+                        <th>Sl.No</th>
+                        <th>Date</th>
+                        <th>Vehicle</th>
+                        <th>Before</th>
+                        <th>After</th>
+             
+                        
+                    </thead>
+                    <tbody>
+                      <tr *ngFor="let row of data; let i = index">
+                          <td>{{ i+1 }}</td>
+                          <td>{{ row.date }}</td>
+                          <td>{{ row.vehicle}}</td>
+                          <td>
+                              
+                                <i (click)="openModal(row.before, true)" class="fa fa-file-pdf-o" aria-hidden="true"></i>
+                             
+                            </td>
+                            <td>
+                              
+                                <i  (click)="openModal(row.after, false)" class="fa fa-file-pdf-o" aria-hidden="true"></i>
+                              
+                            </td>
+                            
+                    
+                        </tr>
+                    </tbody>
+                  </table>
+
+            
+              </div>
+          </div>
+      </div>
+  </div>
+</div>
+<!-- <div class="bottom-bar fixed-bottom bg-white">
+    <div class="container-fluid">
+        <div class="row justify-content-center">
+            
+            <div class="col text-center">
+                <a href="#" class="icon-link">
+                    <i class="material-icons">home</i>
+                    <p class="icon-text">Home</p>
+                </a>
+            </div>
+   
+            <div class="col text-center">
+                <a  [routerLink]="['/table-list']" class="icon-link">
+                    <i class="material-icons">album</i>
+
+                    <p class="icon-text">Tyre</p>
+                </a>
+            </div>
+
+            
+
+            <div class="col text-center">
+                <a  [routerLink]="['/typography']" class="icon-link">
+                    <i class="material-icons">local_shipping</i>
+
+                    <p class="icon-text">Alloy</p>
+                </a>
+            </div>
+
+            <div class="col text-center">
+                <a href="#" class="icon-link">
+                    <i class="material-icons">insert_drive_file</i>
+
+                    <p class="icon-text">Invoice</p>
+                </a>
+            </div>
+        </div>
+    </div>
+</div> -->
+
+    </div>
+</div>

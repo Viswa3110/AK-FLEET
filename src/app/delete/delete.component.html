@@ -1,0 +1,77 @@
+<div class="main-content">
+  <div class="container-fluid">
+
+  <div  class="card ">
+    <div class="card-header card-header-danger">
+        Deleted Details
+    </div>  
+    <div class="card-body"> 
+      <div class="table-responsive">
+        <table id="myTable"  class="table">
+          <thead class="text-primary">
+            <tr>
+                
+              <th><a>
+                <!-- <i (click)="open()" class="fa fa-plus-circle"></i> -->
+              </a>Sl.No</th>
+              <th>Invoiceid</th>
+              <th>orderId</th>
+              <th>Customer Name</th>
+              
+              <th>TotalCost</th>
+              <th>paymenttype</th>
+              <th>paymentNo</th>
+              <th>Credit</th>
+              <th>Debit</th>
+              <th>Balance</th>
+              <th>Date</th>
+              <th>customer_id</th>
+              <th>interestvalue</th>
+              <th>Action</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let row of data; let i = index">
+              <td>{{ i }}</td>
+              <td>{{ row.Name.toUpperCase() }}</td>
+              <td>{{ row.Rate | uppercase}}</td>
+           
+             
+            </tr>
+          </tbody>
+        </table>
+      </div>
+</div>
+</div>  
+  <div class="modal" id="viewModal" tabindex="-1" role="dialog">
+    <div class="modal-dialog-lg" role="document">
+        <div class="modal-content">
+          
+          <div class="modal-header">
+              <h3 class="modal-title" >Payment Screen Shot</h3>
+              <button type="button" (click)="closeModal('viewModal')" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+           
+          <div class="modal-body" style="max-height: 400px; overflow-y: auto;">
+              <div class="card">
+                  <div class="card-body">
+                      <div class="row">
+                          <div class="col-md-12">
+              <img id="modalImage" src="" alt="Image">
+              </div>
+              </div>
+              </div>
+              </div>
+            </div>
+
+            <div class="modal-footer">
+              <button type="button"  (click)="closeModal('viewModal')"class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+              <button type="button" class="btn btn-primary"  (click)="downloadImage(modalImageSrc)">DOWNLOAD</button>
+            </div>
+        </div>
+    </div>
+</div>
+  </div>
+</div>

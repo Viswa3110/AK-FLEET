@@ -1,0 +1,73 @@
+
+  
+  <div [ngStyle]="{ 'background-image': 'url(https://images.pexels.com/photos/5745024/pexels-photo-5745024.jpeg)' }" 
+  class="background-container" *ngIf="!okay">
+ 
+  
+
+<section class="container">
+    <div class="login-container">
+      <div class="circle circle-one"></div>
+      <div class="form-container">
+     
+       <h1 class="opacity text-primary d-lg-none">LOGIN</h1> 
+        <h1 class="opacity d-none d-lg-block">LOGIN</h1> 
+        <form>
+          <input type="text" [(ngModel)]="username"placeholder="USERNAME" />
+          <input type="password"[(ngModel)]="password" placeholder="PASSWORD" />
+          <button class="btn btn-light" (click)="login()"><p style ="color: white;">SUBMIT</p></button>
+        </form>
+        <div class="register-forget opacity">
+          <a href="">REGISTER</a>
+          <a href="">FORGOT PASSWORD</a>
+        </div>
+      </div>
+      <div class="circle circle-two"></div>
+    </div>
+    <div class="theme-btn-container">
+      <div *ngFor="let theme of themes" 
+           [ngStyle]="{'background': theme.background, 'width': '25px', 'height': '25px'}"
+           class="theme-btn"
+           (click)="setTheme(theme)">
+      </div>
+    </div>
+  </section>
+</div>
+  <div *ngIf = "okay">
+    <router-outlet></router-outlet> 
+  </div>
+   
+
+  <!-- <div [ngStyle]="{ 'background-image': 'url(https://images.pexels.com/photos/5745024/pexels-photo-5745024.jpeg)' }" 
+  class="background-container" *ngIf="!okay">
+  <div class="container">
+    <div class="login-container">
+      <div class="circle circle-one"></div>
+      <div class="form-container">
+        <h1 class="opacity text-primary d-lg-none">LOGIN</h1> 
+        <h1 class="opacity d-none d-lg-block">LOGIN</h1> 
+        <form>
+          <input type="text" [(ngModel)]="username" placeholder="USERNAME" class="form-control mb-3"    style="background-color: white; color: black;"/>
+          <input type="password" [(ngModel)]="password" placeholder="PASSWORD" class="form-control mb-3"    style="background-color: white; color: black;"/>
+          <button class="btn btn-primary btn-block" (click)="login()"><p style ="color: white;">SUBMIT</p></button>
+        </form>
+        <div class="register-forget opacity">
+          <a href="#">REGISTER</a>
+          <a href="#">FORGOT PASSWORD</a>
+        </div>
+      </div>
+      <div class="circle circle-two"></div>
+    </div>
+    <div class="theme-btn-container">
+      <div *ngFor="let theme of themes"
+           [ngStyle]="{'background': theme.background, 'width': '25px', 'height': '25px'}"
+           class="theme-btn"
+           (click)="setTheme(theme)">
+      </div>
+    </div>
+  </div>
+  <div *ngIf="okay">
+    <router-outlet></router-outlet>
+  </div> -->
+  
+  

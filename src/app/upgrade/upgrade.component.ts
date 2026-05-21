@@ -979,17 +979,17 @@ handlePaste(event: ClipboardEvent) {
 //   doc.save(`${this.selectedpaycustomer[0].name}.pdf`);
 // }
 formatDateToCustom(date: string | Date): string {
+  if (!date) return '';
+
   const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
 
-  // Ensure that the input is a Date object
   const d = new Date(date);
+  if (isNaN(d.getTime())) return '';
 
-  // Get the day, month (short form), and year
-  const day = ('0' + d.getDate()).slice(-2); // Ensure two digits for day
-  const month = months[d.getMonth()];        // Get month name from the array
-  const year = d.getFullYear();              // Get the full year
+  const day = ('0' + d.getDate()).slice(-2);
+  const month = months[d.getMonth()];
+  const year = d.getFullYear();
 
-  // Return the formatted date in 'dd-MMM-yyyy' format
   return `${day}-${month}-${year}`;
 }
 
@@ -1000,7 +1000,8 @@ downloadPDFone() {
   const columns = ["Date", "Particulars", "Vch Type", "Vch No", "Debit", "Credit"];
 
   // Initialize balance variables
-  let openingBalance = this.paymentopen;
+  const initialOpeningBalance = this.openingbal ?? this.paymentopen ?? 0;
+  let openingBalance = initialOpeningBalance;
   let monthlyDebit = 0;
   let monthlyCredit = 0;
 
@@ -1031,7 +1032,7 @@ downloadPDFone() {
     const openingBalanceDisplay = Math.max(0, openingBalance);
 
     // Add the opening balance for the month with full row styling
-    rows.push([{ content: `${month} Opening Balance:`, styles: { fillColor: 'AliceBlue', textColor: 'Black', fontStyle: 'bold' }}, "", "", "", openingBalanceDisplay.toFixed(2), ""]);
+    rows.push([{ content: `Created Balance:`, styles: { fillColor: 'AliceBlue', textColor: 'Black', fontStyle: 'bold' }}, "", "", "", openingBalanceDisplay.toFixed(2), ""]);
 
     // Loop through each transaction of the month
     transactions.forEach(item => {
@@ -1083,18 +1084,19 @@ downloadPDFone() {
   doc.text('To:', 110, 10); // Position "To" address on the right side, column 6
   doc.text(this.selectedpaycustomer[0].name, 110, 15); // Add customer name
   doc.text(this.selectedpaycustomer[0].companyname, 110, 20); // Add customer company name
+  doc.text(`Created Balance: ${initialOpeningBalance.toFixed(2)}`, 110, 25); // Add opening balance
 
-  // Adding date range in the center
-  const pageWidth = doc.internal.pageSize.getWidth(); // Get the width of the page
-  const dateRangeText = `${this.formatDateToCustom(this.fromDatepay)} to ${this.formatDateToCustom(this.toDatepay)}`; // The date range text
-  const textWidth = doc.getTextWidth(dateRangeText); // Calculate the width of the date range text
-  
-  // Center the text by adjusting the x-coordinate
-  const xPos = (pageWidth - textWidth) / 2;
-
-  // Set font size and print the date range
-  doc.setFontSize(10);
-  doc.text(dateRangeText, xPos, 35); // Place in the center of the page at y = 35
+  // Adding date range in the center (only if both dates are valid)
+  const pageWidth = doc.internal.pageSize.getWidth();
+  const fromDateStr = this.formatDateToCustom(this.fromDatepay);
+  const toDateStr = this.formatDateToCustom(this.toDatepay);
+  if (fromDateStr && toDateStr) {
+    const dateRangeText = `${fromDateStr} to ${toDateStr}`;
+    const textWidth = doc.getTextWidth(dateRangeText);
+    const xPos = (pageWidth - textWidth) / 2;
+    doc.setFontSize(10);
+    doc.text(dateRangeText, xPos, 35);
+  }
 
   // Add the table to the PDF
   doc.autoTable({
@@ -2788,7 +2790,9 @@ console.log("balance",  (this.selectedrow.balance + this.paydebit)-this.paycredi
         this.real = response;
         this.totalPages = Math.ceil(this.filteredEvents.length / this.rowsPerPage);
         this.totalPagesArray = Array(this.totalPages).fill(0).map((x, i) => i + 1);
-      
+        if (response && response.length > 0) {
+          this.openingbal = parseFloat(response[0].balance) || 0;
+        }
         this.populateTable(1,this.filteredEvents);
         console.log("this.filteredEvents",this.filteredEvents)
       },
